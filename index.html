@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>verified.work | Professional Trust Ledger</title>
+    
+    <!-- Standardized to Inter globally -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@300,0..1" rel="stylesheet"/>
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            green: "#2D6A4F",
+                            "green-hover": "#1B4D36",
+                            ink: "#1A1A1A",
+                            bg: "#F7F4EF",
+                            white: "#FFFFFF",
+                            grey: "#4A5568",
+                            border: "#E2DDD6",
+                            "success-bg": "#D1FAE5",
+                            error: "#991B1B",
+                            amber: "#F59E0B"
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        * {
+            font-family: 'Inter', sans-serif !important;
+        }
+        
+        body {
+            background-color: #F7F4EF;
+            color: #1A1A1A;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        .brand-border {
+            border: 1px solid #E2DDD6;
+        }
+        
+        .brand-shadow-sm {
+            box-shadow: 0 1px 2px 0 rgba(26, 26, 26, 0.02);
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+            line-height: 1;
+        }
+
+        .page-transition {
+            animation: fadeIn 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-brand-success-bg selection:text-brand-green">
+
+    <!-- HEADER NAVIGATION -->
+    <header id="app-header" class="hidden bg-white border-b border-brand-border sticky top-0 z-40 brand-shadow-sm">
+        <div class="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-2 cursor-pointer" onclick="switchScreen('dashboard')">
+                <!-- SVG Logo -->
+                <svg width="24" height="24" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M28 44 L48 88 L62 55" stroke="#1A1A1A" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M62 55 L74 82 L94 38" stroke="#2D6A4F" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <span class="font-bold text-lg tracking-tight text-brand-ink">verified.work</span>
+            </div>
+            
+            <div class="flex items-center gap-6">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-lg bg-brand-green/10 text-brand-green font-bold text-xs flex items-center justify-center">
+                        FD
+                    </div>
+                    <span class="text-xs font-semibold tracking-wide text-brand-grey hidden sm:inline" id="header-user-label">Frank Docent</span>
+                </div>
+                <button onclick="switchScreen('profile')" class="text-xs font-bold text-brand-green hover:underline flex items-center gap-1">
+                    <span class="material-symbols-outlined text-sm">public</span> Public Profile
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENT WRAPPER -->
+    <main class="flex-grow flex flex-col justify-center py-10 px-4 max-w-4xl w-full mx-auto">
+
+        <!-- SCREEN 1: MODERNIZED LANDING / LOGIN -->
+        <div id="screen-login" class="hidden max-w-md w-full mx-auto space-y-8 page-transition">
+            <div class="text-center">
+                <!-- Folding 'W' checkmark logo from image -->
+                <svg width="96" height="96" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" class="mx-auto mb-4">
+                    <path d="M28 44 L48 88 L62 55" stroke="#1A1A1A" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M62 55 L74 82 L94 38" stroke="#2D6A4F" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <h1 class="text-3.5xl font-extrabold text-brand-ink tracking-tight leading-tight">Prove what you actually built.</h1>
+                <p class="text-sm text-brand-grey mt-2">The definitive trust infrastructure for professional engineering accomplishments.</p>
+            </div>
+
+            <div class="bg-white brand-border rounded-xl p-8 space-y-6 brand-shadow-sm">
+                <div class="space-y-2">
+                    <label class="block text-[11px] font-bold uppercase tracking-wider text-brand-grey">Work Email</label>
+                    <input id="login-email" class="w-full h-12 px-4 bg-white brand-border focus:border-brand-green focus:ring-0 rounded-lg text-sm outline-none transition-all placeholder:text-brand-grey/40" placeholder="your@email.com" value="frank@dtcbrand.co" type="email"/>
+                </div>
+
+                <button onclick="handleLoginSubmit()" class="h-12 w-full bg-brand-green text-white text-sm font-semibold rounded-lg hover:bg-brand-green-hover transition-all flex items-center justify-center gap-2">
+                    Send magic link <span class="material-symbols-outlined text-sm">magic_exchange</span>
+                </button>
+
+                <div class="relative flex items-center justify-center py-2 text-xs text-brand-grey">
+                    <div class="absolute w-full border-t border-brand-border"></div>
+                    <span class="relative bg-white px-3 font-bold uppercase tracking-widest text-[9px]">or</span>
+                </div>
+
+                <button onclick="handleLoginSubmit()" class="h-12 w-full bg-white brand-border text-brand-ink text-sm font-semibold rounded-lg hover:bg-slate-50 transition-colors flex items-center justify-center gap-2">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24">
+                        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 12-4.53z" fill="#EA4335"/>
+                    </svg>
+                    Continue with Google
+                </button>
+            </div>
+
+            <p class="text-center text-xs text-brand-grey font-medium tracking-wide">No password required.</p>
+        </div>
+
+        <!-- SCREEN 2: ONBOARDING -->
+        <div id="screen-onboarding" class="hidden max-w-md w-full mx-auto space-y-8 page-transition">
+            <div class="space-y-2">
+                <h1 class="text-3xl font-extrabold text-brand-ink tracking-tight">Welcome. Let's set up.</h1>
+                <p class="text-sm text-brand-grey">Establish your public ledger handle.</p>
+            </div>
+
+            <div class="bg-white brand-border rounded-xl p-8 space-y-6 brand-shadow-sm">
+                <!-- Typographic initial replaces visual avatar -->
+                <div class="flex items-center gap-4 pb-6 border-b border-brand-border">
+                    <div class="w-14 h-14 rounded-xl bg-brand-green text-white flex items-center justify-center font-bold text-lg brand-shadow-sm">
+                        FD
+                    </div>
+                    <div>
+                        <p class="text-sm font-bold text-brand-ink">Frank Docent</p>
+                        <p class="text-xs text-brand-grey">Verified System Member</p>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="space-y-1.5">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-brand-grey">Your Name</label>
+                        <input id="onboarding-name" class="w-full h-12 px-4 bg-white brand-border focus:border-brand-green focus:ring-0 rounded-lg text-sm outline-none transition-all" value="Frank Docent"/>
+                    </div>
+                    
+                    <div class="space-y-1.5">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-brand-grey">Profile Link</label>
+                        <div class="h-12 w-full px-4 bg-brand-bg brand-border rounded-lg flex items-center justify-between text-xs text-brand-grey font-medium">
+                            <span>verified.work/frank-docent</span>
+                            <span class="material-symbols-outlined text-sm text-brand-grey">lock</span>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="handleOnboardingSubmit()" class="h-12 w-full bg-brand-green text-white text-sm font-semibold rounded-lg hover:bg-brand-green-hover transition-colors">
+                    Continue to Dashboard
+                </button>
+            </div>
+        </div>
+
+        <!-- SCREEN 3: DASHBOARD -->
+        <div id="screen-dashboard" class="hidden space-y-8 page-transition">
+            <div class="flex items-center justify-between border-b border-brand-border pb-4">
+                <div>
+                    <h1 class="text-3xl font-extrabold text-brand-ink tracking-tight">Your work</h1>
+                    <p class="text-xs text-brand-grey font-medium tracking-wide mt-1">Cross-referenced verification logs</p>
+                </div>
+                <button onclick="switchScreen('new-entry')" class="h-10 px-4 bg-brand-green text-white text-xs font-bold uppercase tracking-wider rounded-lg hover:bg-brand-green-hover transition-all flex items-center gap-1">
+                    <span class="material-symbols-outlined text-sm">add</span> New
+                </button>
+            </div>
+
+            <!-- Dashboard items grid -->
+            <div id="dashboard-list" class="space-y-4">
+                <!-- Populated dynamically from storage -->
+            </div>
+
+            <div class="pt-4 flex justify-center">
+                <button onclick="switchScreen('profile')" class="h-12 px-6 bg-white brand-border text-brand-ink text-sm font-semibold rounded-lg hover:bg-slate-50 transition-colors flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-base">public</span> View my public profile
+                </button>
+            </div>
+        </div>
+
+        <!-- SCREEN 4: NEW ENTRY FORM -->
+        <div id="screen-new-entry" class="hidden max-w-xl w-full mx-auto space-y-6 page-transition">
+            <div class="flex items-center gap-2 text-brand-grey">
+                <button onclick="switchScreen('dashboard')" class="flex items-center gap-1 hover:text-brand-ink text-xs font-bold uppercase tracking-wider">
+                    <span class="material-symbols-outlined text-sm">arrow_back</span> back
+                </button>
+                <span class="text-xs font-semibold uppercase tracking-wider">• Add work</span>
+            </div>
+
+            <div class="bg-white brand-border rounded-xl p-8 space-y-6 brand-shadow-sm">
+                <div>
+                    <h2 class="text-xl font-bold text-brand-ink">Add Work Entry</h2>
+                    <p class="text-xs text-brand-grey mt-0.5">List your project context, timeline, and metric.</p>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="space-y-1.5">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-brand-grey">Role / title</label>
+                        <input id="form-role" class="w-full h-12 px-4 bg-white brand-border focus:border-brand-green focus:ring-0 rounded-lg text-sm outline-none transition-all" value="Checkout redesign"/>
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-brand-grey block">Work Type</label>
+                        <div class="flex gap-2">
+                            <button onclick="selectWorkTypePill('Full-time')" id="wt-Full-time" class="wt-pills min-h-[44px] px-5 rounded-full text-xs font-bold uppercase tracking-wider bg-brand-green text-white">Full-time</button>
+                            <button onclick="selectWorkTypePill('Internship')" id="wt-Internship" class="wt-pills min-h-[44px] px-5 rounded-full text-xs font-bold uppercase tracking-wider bg-white brand-border text-brand-ink hover:bg-slate-50">Internship</button>
+                            <button onclick="selectWorkTypePill('Freelance')" id="wt-Freelance" class="wt-pills min-h-[44px] px-5 rounded-full text-xs font-bold uppercase tracking-wider bg-white brand-border text-brand-ink hover:bg-slate-50">Freelance</button>
+                        </div>
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <div class="flex justify-between items-center">
+                            <label class="block text-xs font-bold uppercase tracking-wider text-brand-grey">Company or Project</label>
+                            <div class="flex items-center gap-1.5">
+                                <input type="checkbox" id="form-defunct-company" class="rounded border-brand-border text-brand-green focus:ring-brand-green"/>
+                                <span class="text-[10px] font-bold text-brand-grey uppercase">This company no longer exists</span>
+                            </div>
+                        </div>
+                        <input id="form-company" class="w-full h-12 px-4 bg-white brand-border focus:border-brand-green focus:ring-0 rounded-lg text-sm outline-none transition-all" value="DTC Brand"/>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="space-y-1.5">
+                            <label class="block text-xs font-bold uppercase tracking-wider text-brand-grey">Start Month-Year</label>
+                            <input id="form-start" class="w-full h-12 px-4 bg-white brand-border focus:border-brand-green focus:ring-0 rounded-lg text-xs font-medium outline-none" value="Jan 2024"/>
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="block text-xs font-bold uppercase tracking-wider text-brand-grey">End Month-Year</label>
+                            <input id="form-end" class="w-full h-12 px-4 bg-white brand-border focus:border-brand-green focus:ring-0 rounded-lg text-xs font-medium outline-none" value="Mar 2024"/>
+                        </div>
+                    </div>
+
+                    <div class="p-6 bg-slate-50 brand-border rounded-xl space-y-4">
+                        <span class="text-[10px] font-bold text-brand-grey uppercase tracking-widest block">Core Achievements</span>
+                        
+                        <div class="space-y-1.5">
+                            <label class="block text-xs font-bold uppercase tracking-wider text-brand-grey">Problem You Solved</label>
+                            <input id="form-problem" class="w-full h-12 px-4 bg-white brand-border focus:border-brand-green focus:ring-0 rounded-lg text-sm outline-none transition-all" value="DTC checkout interface had highly elevated bounce rates on mobile."/>
+                        </div>
+
+                        <div class="space-y-1.5">
+                            <label class="block text-xs font-bold uppercase tracking-wider text-brand-grey">What You Did</label>
+                            <input id="form-did" class="w-full h-12 px-4 bg-white brand-border focus:border-brand-green focus:ring-0 rounded-lg text-sm outline-none transition-all" value="Redesigned checkout pipeline into a seamless single-page modular form architecture."/>
+                        </div>
+
+                        <div class="space-y-1.5">
+                            <label class="block text-xs font-bold uppercase tracking-wider text-brand-grey">Metrics (Optional)</label>
+                            <input id="form-metric" class="w-full h-12 px-4 bg-white brand-border focus:border-brand-green focus:ring-0 rounded-lg text-sm outline-none transition-all" value="Reduced drop-off by 23% within 6 weeks"/>
+                        </div>
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <div class="flex justify-between items-center">
+                            <label class="block text-xs font-bold uppercase tracking-wider text-brand-grey">Artifact Link (Optional)</label>
+                            <div class="flex items-center gap-1.5">
+                                <input type="checkbox" id="form-nda" class="rounded border-brand-border text-brand-green focus:ring-brand-green" checked/>
+                                <span class="text-[10px] font-bold text-brand-grey uppercase">NDA Restricted</span>
+                            </div>
+                        </div>
+                        <input id="form-link" class="w-full h-12 px-4 bg-white brand-border focus:border-brand-green focus:ring-0 rounded-lg text-sm outline-none transition-all" value="https://figma.com/file/checkout-proof"/>
+                    </div>
+                </div>
+
+                <button onclick="handleNewEntrySubmit()" class="h-12 w-full bg-brand-green text-white text-sm font-semibold rounded-lg hover:bg-brand-green-hover transition-colors">
+                    Continue to Verifier setup
+                </button>
+            </div>
+        </div>
+
+        <!-- SCREEN 5: SEND FOR VERIFICATION -->
+        <div id="screen-send-verification" class="hidden max-w-xl w-full mx-auto space-y-6 page-transition">
+            <div class="flex items-center gap-2 text-brand-grey">
+                <button onclick="switchScreen('new-entry')" class="flex items-center gap-1 hover:text-brand-ink text-xs font-bold uppercase tracking-wider">
+                    <span class="material-symbols-outlined text-sm">arrow_back</span> back
+                </button>
+                <span class="text-xs font-semibold uppercase tracking-wider">• Send verification</span>
+            </div>
+
+            <div class="bg-white brand-border rounded-xl p-8 space-y-6 brand-shadow-sm">
+                <div>
+                    <h2 class="text-xl font-bold text-brand-ink">Who can verify this?</h2>
+                    <p class="text-xs text-brand-grey mt-0.5">Someone who was there — a manager, client, or senior colleague.</p>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="space-y-1.5">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-brand-grey">Their Name</label>
+                        <input id="verifier-name" class="w-full h-12 px-4 bg-white brand-border focus:border-brand-green focus:ring-0 rounded-lg text-sm outline-none" value="Ravi Mehra"/>
+                    </div>
+                    
+                    <div class="space-y-1.5">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-brand-grey">Their Email</label>
+                        <input id="verifier-email" class="w-full h-12 px-4 bg-white brand-border focus:border-brand-green focus:ring-0 rounded-lg text-sm outline-none" value="ravi@dtcbrand.co"/>
+                    </div>
+
+                    <!-- Relationship badge selector pills -->
+                    <div class="space-y-2">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-brand-grey">Your Relationship</label>
+                        <div class="flex flex-wrap gap-2" id="relationship-pills-container">
+                            <button onclick="selectRelationshipPill('Manager')" id="rep-Manager" class="rep-pills min-h-[44px] px-4 rounded-full text-xs font-bold uppercase tracking-wider bg-brand-green text-white">Manager</button>
+                            <button onclick="selectRelationshipPill('Client')" id="rep-Client" class="rep-pills min-h-[44px] px-4 rounded-full text-xs font-bold uppercase tracking-wider bg-white brand-border text-brand-ink hover:bg-slate-50">Client</button>
+                            <button onclick="selectRelationshipPill('Peer')" id="rep-Peer" class="rep-pills min-h-[44px] px-4 rounded-full text-xs font-bold uppercase tracking-wider bg-white brand-border text-brand-ink hover:bg-slate-50">Peer</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-brand-success-bg p-4 rounded-lg brand-border border-brand-green/10 flex items-start gap-3">
+                    <span class="material-symbols-outlined text-brand-green mt-0.5">lightbulb</span>
+                    <p class="text-xs text-brand-green leading-relaxed">
+                        <strong class="font-bold">Tip:</strong> send them a quick personal message first so they know it's coming. It doubles the response rate.
+                    </p>
+                </div>
+
+                <button onclick="triggerVerificationSend()" class="h-12 w-full bg-brand-green text-white text-sm font-semibold rounded-lg hover:bg-brand-green-hover transition-colors flex items-center justify-center gap-1.5">
+                    Send verification request <span class="material-symbols-outlined text-sm">send</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- SCREEN 6.1: VALIDATOR GUIDED FLOW - CONFIRM RELATIONSHIP -->
+        <div id="screen-validator-1" class="hidden max-w-xl w-full mx-auto space-y-6 page-transition">
+            <div class="text-center space-y-1">
+                <p class="text-xs uppercase tracking-widest text-brand-grey font-bold flex items-center justify-center gap-1.5">
+                    <span class="text-brand-green">●</span> <span>○</span> <span>○</span> <span>○</span>
+                    <span class="ml-1 text-brand-ink font-bold">1 of 4</span>
+                </p>
+                <span class="text-[10px] text-brand-green font-bold tracking-widest block uppercase">verifier sign-off portal</span>
+            </div>
+
+            <div class="bg-white brand-border rounded-xl p-8 space-y-6 brand-shadow-sm">
+                <h2 class="text-2xl font-semibold text-brand-ink leading-snug">
+                    Frank Docent says you worked together on the <span class="font-extrabold text-brand-green" id="vld-project-title">checkout redesign</span> at <span class="font-extrabold text-brand-green" id="vld-project-company">DTC Brand</span>. Is that right?
+                </h2>
+
+                <div class="flex flex-col gap-3 pt-4">
+                    <button onclick="validatorSelectState('rel', 'Yes', 'validator-2')" class="min-h-[44px] w-full px-5 py-3 text-left bg-white brand-border hover:border-brand-green text-brand-ink rounded-lg text-sm font-bold uppercase tracking-wider transition-colors flex justify-between items-center group">
+                        <span>Yes, I can speak to his work</span>
+                        <span class="material-symbols-outlined text-brand-green opacity-0 group-hover:opacity-100 transition-opacity">check_circle</span>
+                    </button>
+                    <button onclick="validatorSelectState('rel', 'Peers', 'validator-2')" class="min-h-[44px] w-full px-5 py-3 text-left bg-white brand-border hover:border-brand-green text-brand-ink rounded-lg text-sm font-bold uppercase tracking-wider transition-colors flex justify-between items-center group">
+                        <span>We were peers</span>
+                        <span class="material-symbols-outlined text-brand-green opacity-0 group-hover:opacity-100 transition-opacity">check_circle</span>
+                    </button>
+                    <button onclick="alert('Declining feedback received'); switchScreen('dashboard')" class="min-h-[44px] w-full px-5 py-3 text-left bg-white brand-border hover:border-brand-error text-brand-error rounded-lg text-sm font-bold uppercase tracking-wider transition-colors">
+                        <span>I'm not the right person</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN 6.2: VALIDATOR GUIDED FLOW - CONTRIBUTION LEVEL -->
+        <div id="screen-validator-2" class="hidden max-w-xl w-full mx-auto space-y-6 page-transition">
+            <div class="text-center space-y-1">
+                <p class="text-xs uppercase tracking-widest text-brand-grey font-bold flex items-center justify-center gap-1.5">
+                    <span class="text-brand-green">●</span> <span class="text-brand-green">●</span> <span>○</span> <span>○</span>
+                    <span class="ml-1 text-brand-ink font-bold">2 of 4</span>
+                </p>
+                <span class="text-[10px] text-brand-green font-bold tracking-widest block uppercase">verifier sign-off portal</span>
+            </div>
+
+            <div class="bg-white brand-border rounded-xl p-8 space-y-6 brand-shadow-sm">
+                <h2 class="text-2xl font-semibold text-brand-ink leading-snug">
+                    What was Frank's involvement?
+                </h2>
+
+                <div class="flex flex-col gap-4 pt-2">
+                    <button onclick="validatorSelectState('depth', 'Owner', 'validator-3')" class="w-full p-5 text-left bg-white brand-border hover:border-brand-green rounded-xl transition-all group flex justify-between items-center">
+                        <div>
+                            <span class="text-sm font-bold uppercase tracking-wider text-brand-ink block mb-0.5">Owner</span>
+                            <span class="text-xs text-brand-grey">End-to-end ownership</span>
+                        </div>
+                        <span class="material-symbols-outlined text-brand-green opacity-0 group-hover:opacity-100">check_circle</span>
+                    </button>
+                    
+                    <button onclick="validatorSelectState('depth', 'Executor', 'validator-3')" class="w-full p-5 text-left bg-white brand-border hover:border-brand-green rounded-xl transition-all group flex justify-between items-center">
+                        <div>
+                            <span class="text-sm font-bold uppercase tracking-wider text-brand-ink block mb-0.5">Executor</span>
+                            <span class="text-xs text-brand-grey">Tasks under someone's leadership</span>
+                        </div>
+                        <span class="material-symbols-outlined text-brand-green opacity-0 group-hover:opacity-100">check_circle</span>
+                    </button>
+                    
+                    <button onclick="validatorSelectState('depth', 'Partner', 'validator-3')" class="w-full p-5 text-left bg-white brand-border hover:border-brand-green rounded-xl transition-all group flex justify-between items-center">
+                        <div>
+                            <span class="text-sm font-bold uppercase tracking-wider text-brand-green block mb-0.5">Partner</span>
+                            <span class="text-xs text-brand-grey">Owned a specific area in a cross-functional project</span>
+                        </div>
+                        <span class="material-symbols-outlined text-brand-green opacity-0 group-hover:opacity-100">check_circle</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN 6.3: VALIDATOR GUIDED FLOW - OUTCOME ACCURACY -->
+        <div id="screen-validator-3" class="hidden max-w-xl w-full mx-auto space-y-6 page-transition">
+            <div class="text-center space-y-1">
+                <p class="text-xs uppercase tracking-widest text-brand-grey font-bold flex items-center justify-center gap-1.5">
+                    <span class="text-brand-green">●</span> <span class="text-brand-green">●</span> <span class="text-brand-green">●</span> <span>○</span>
+                    <span class="ml-1 text-brand-ink font-bold">3 of 4</span>
+                </p>
+                <span class="text-[10px] text-brand-green font-bold tracking-widest block uppercase">verifier sign-off portal</span>
+            </div>
+
+            <div class="bg-white brand-border rounded-xl p-8 space-y-6 brand-shadow-sm">
+                <div>
+                    <span class="text-[10px] font-bold text-brand-grey uppercase tracking-widest block mb-2">Frank described the outcome as:</span>
+                    <div class="p-4 bg-slate-50 brand-border border-dashed rounded-lg">
+                        <p class="text-sm italic font-medium text-brand-ink" id="vld-metric-text">"Reduced drop-off by 23% within 6 weeks"</p>
+                    </div>
+                </div>
+
+                <h2 class="text-xl font-bold text-brand-ink mt-4">Does this reflect what you saw?</h2>
+
+                <div class="flex flex-col gap-3 pt-2">
+                    <button onclick="validatorSelectState('metric', 'accurate', 'validator-4')" class="min-h-[44px] w-full px-5 py-3.5 text-left bg-white brand-border hover:border-brand-green text-brand-ink rounded-lg text-sm font-bold uppercase tracking-wider transition-colors flex justify-between items-center group">
+                        <span>Yes, that's accurate</span>
+                        <span class="material-symbols-outlined text-brand-green opacity-0 group-hover:opacity-100">check_circle</span>
+                    </button>
+                    <button onclick="validatorSelectState('metric', 'rough', 'validator-4')" class="min-h-[44px] w-full px-5 py-3.5 text-left bg-white brand-border hover:border-brand-green text-brand-ink rounded-lg text-sm font-bold uppercase tracking-wider transition-colors flex justify-between items-center group">
+                        <span>Roughly right</span>
+                        <span class="material-symbols-outlined text-brand-green opacity-0 group-hover:opacity-100">check_circle</span>
+                    </button>
+                    <button onclick="validatorSelectState('metric', 'unconfirmed', 'validator-4')" class="min-h-[44px] w-full px-5 py-3.5 text-left bg-white brand-border hover:border-brand-green text-brand-ink rounded-lg text-sm font-bold uppercase tracking-wider transition-colors flex justify-between items-center group">
+                        <span>Can't confirm this</span>
+                        <span class="material-symbols-outlined text-brand-grey opacity-0 group-hover:opacity-100">help</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN 6.4: VALIDATOR GUIDED FLOW - TESTIMONIAL COMMENT -->
+        <div id="screen-validator-4" class="hidden max-w-xl w-full mx-auto space-y-6 page-transition">
+            <div class="text-center space-y-1">
+                <p class="text-xs uppercase tracking-widest text-brand-grey font-bold flex items-center justify-center gap-1.5">
+                    <span class="text-brand-green">●</span> <span class="text-brand-green">●</span> <span class="text-brand-green">●</span> <span class="text-brand-green">●</span>
+                    <span class="ml-1 text-brand-ink font-bold">4 of 4</span>
+                </p>
+                <span class="text-[10px] text-brand-green font-bold tracking-widest block uppercase">verifier sign-off portal</span>
+            </div>
+
+            <div class="bg-white brand-border rounded-xl p-8 space-y-6 brand-shadow-sm">
+                <h2 class="text-2xl font-semibold text-brand-ink leading-snug">
+                    In your own words — what would you want someone hiring Frank to know?
+                </h2>
+
+                <div class="space-y-4">
+                    <div class="space-y-1.5">
+                        <textarea id="verifier-comment-input" class="w-full p-4 bg-white brand-border focus:border-brand-green focus:ring-0 rounded-lg text-sm outline-none placeholder:text-brand-grey/40" rows="4" placeholder="e.g. Frank has a rare systematic approach to UX design...">Frank had an unusually strong grasp of user psychology — every decision was grounded in why users behave the way they do.</textarea>
+                        <span class="text-xs font-semibold text-brand-grey block">Just one sentence is enough.</span>
+                    </div>
+
+                    <div class="space-y-2 pt-2 border-t border-slate-100">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-brand-grey">Would you work with him again?</label>
+                        <div class="flex gap-2">
+                            <button onclick="selectWorkAgainChoice('Yes')" id="vwa-Yes" class="vwa-choices min-h-[44px] px-5 rounded-full text-xs font-bold uppercase tracking-wider bg-brand-green text-white">Yes</button>
+                            <button onclick="selectWorkAgainChoice('Depends')" id="vwa-Depends" class="vwa-choices min-h-[44px] px-5 rounded-full text-xs font-bold uppercase tracking-wider bg-white brand-border text-brand-ink hover:bg-slate-50">Depends</button>
+                            <button onclick="selectWorkAgainChoice('No')" id="vwa-No" class="vwa-choices min-h-[44px] px-5 rounded-full text-xs font-bold uppercase tracking-wider bg-white brand-border text-brand-ink hover:bg-slate-50">No</button>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="submitVerifierTestimonial()" id="btn-verifier-submit" class="h-12 w-full bg-brand-green text-white text-sm font-semibold rounded-lg hover:bg-brand-green-hover transition-colors flex items-center justify-center gap-2">
+                    Submit Endorsement <span class="material-symbols-outlined text-sm">workspace_premium</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- SCREEN 7: PUBLIC LEDGER PORTFOLIO -->
+        <div id="screen-profile" class="hidden space-y-8 page-transition">
+            <div class="bg-white brand-border rounded-xl p-8 flex flex-col md:flex-row items-center md:items-start gap-6 brand-shadow-sm relative overflow-hidden">
+                <div class="w-20 h-20 rounded-xl bg-brand-green text-white flex items-center justify-center font-black text-2xl tracking-tight shrink-0 brand-shadow-sm">
+                    FD
+                </div>
+                <div class="flex-grow text-center md:text-left space-y-2">
+                    <div class="flex flex-col md:flex-row items-center gap-2.5">
+                        <h1 class="text-3xl font-extrabold text-brand-ink tracking-tight">Frank Docent</h1>
+                        <span class="px-2.5 py-0.5 bg-brand-success-bg text-brand-green text-[10px] font-bold tracking-widest uppercase rounded border border-brand-green/10">LEDGER SYNC: 100% VERIFIED</span>
+                    </div>
+                    <p class="text-sm text-brand-grey max-w-xl">Product Designer specialized in high-conversion checkout flows, systemic product architecture, and intent-based transactional interactions.</p>
+                    <span class="text-xs font-semibold text-brand-grey block">verified.work/frank-docent</span>
+                </div>
+                <div class="absolute right-0 top-0 w-24 h-24 bg-brand-success-bg/10 rounded-bl-full pointer-events-none"></div>
+            </div>
+
+            <div class="space-y-6">
+                <div class="border-b border-brand-border pb-2 flex items-center justify-between">
+                    <span class="text-xs font-bold text-brand-grey tracking-widest uppercase">VERIFIED WORK RECORD</span>
+                    <span class="text-xs font-semibold text-brand-green" id="profile-verified-count">1 Entry</span>
+                </div>
+                
+                <div class="space-y-4" id="profile-work-list">
+                    <!-- Dynamically generated profiles cards loaded from state -->
+                </div>
+            </div>
+        </div>
+
+        <!-- SYSTEM MOCK STATES (SKELETONS & ALERTS) -->
+        <div id="screen-system-states" class="hidden space-y-8 page-transition">
+            <div class="border-b border-brand-border pb-4">
+                <h1 class="text-2xl font-extrabold text-brand-ink tracking-tight">Fallback Fallback States</h1>
+                <p class="text-sm text-brand-grey mt-1">Simulated error overlays and system components.</p>
+            </div>
+
+            <div class="space-y-6">
+                <!-- Selector controls -->
+                <div class="flex flex-wrap gap-2.5 text-xs font-semibold">
+                    <button onclick="toggleSubState('loading')" class="px-3.5 py-2 rounded-lg bg-white brand-border text-brand-ink hover:bg-slate-50">Loading Skeletons</button>
+                    <button onclick="toggleSubState('empty')" class="px-3.5 py-2 rounded-lg bg-white brand-border text-brand-ink hover:bg-slate-50">Empty Dashboard</button>
+                    <button onclick="toggleSubState('invalid-err')" class="px-3.5 py-2 rounded-lg bg-white brand-border text-brand-ink hover:bg-slate-50">Inline Input Validation</button>
+                    <button onclick="toggleSubState('sys-error')" class="px-3.5 py-2 rounded-lg bg-white brand-border text-brand-ink hover:bg-slate-50">Global Exceptions</button>
+                </div>
+
+                <div class="p-8 bg-white brand-border rounded-xl" id="substate-canvas">
+                    <div class="text-center text-brand-grey text-xs py-12">Select an inspection sub-state above...</div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-brand-border py-6 mt-10">
+        <div class="max-w-4xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-brand-grey font-medium">
+            <div class="flex items-center gap-1">
+                <span class="font-extrabold text-brand-ink">verified.work</span>
+                <span>© 2026. All rights reserved.</span>
+            </div>
+            <div class="flex gap-6">
+                <a href="#" class="hover:text-brand-ink">Terms</a>
+                <a href="#" class="hover:text-brand-ink">Privacy</a>
+                <a href="#" class="hover:text-brand-ink">Security</a>
+                <button onclick="switchScreen('system-states')" class="hover:text-brand-ink font-semibold">Inspect System States</button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SUCCESS VERIFIER POPUP MODAL -->
+    <div id="alert-overlay" class="fixed inset-0 bg-brand-ink/50 flex items-center justify-center z-50 p-4 hidden">
+        <div class="bg-white brand-border rounded-xl p-6 max-w-sm w-full space-y-4 brand-shadow-sm text-center page-transition">
+            <div class="w-12 h-12 bg-brand-success-bg rounded-full flex items-center justify-center text-brand-green mx-auto">
+                <span class="material-symbols-outlined text-2xl">vpn_key</span>
+            </div>
+            <div class="space-y-1">
+                <h4 class="text-base font-bold text-brand-ink" id="alert-title">Request Dispatched!</h4>
+                <p class="text-xs text-brand-grey" id="alert-msg">A signature credential request has been queued for your verifier. You can now simulate their 4-step guided response flow.</p>
+            </div>
+            <div class="flex flex-col gap-2 pt-2">
+                <button id="alert-primary-btn" class="h-10 w-full bg-brand-green hover:bg-brand-green-hover text-white text-xs font-bold uppercase tracking-wider rounded-lg">Simulate Verifier Response</button>
+                <button onclick="toggleAlertModal(false)" class="h-10 w-full bg-white brand-border text-brand-ink text-xs font-bold uppercase tracking-wider rounded-lg">Return to Dashboard</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION EMITTER -->
+    <div id="toast-notif" class="fixed bottom-6 right-6 z-50 p-4 bg-brand-ink text-brand-bg rounded-lg border border-brand-border/20 shadow-xl flex items-center gap-3 transition-transform translate-y-24 opacity-0 max-w-xs">
+        <span class="material-symbols-outlined text-brand-success-bg" id="toast-icon">check_circle</span>
+        <div>
+            <p class="text-xs font-bold" id="toast-title">Success</p>
+            <p class="text-[10px] text-brand-border mt-0.5" id="toast-desc">Transaction logged to verification registry.</p>
+        </div>
+    </div>
+
+    <!-- STATE MANAGEMENT SCRIPT -->
+    <script>
+        const DB = {
+            activeScreen: 'login',
+            draftEntry: {
+                role: 'Checkout redesign',
+                workType: 'Full-time',
+                company: 'DTC Brand',
+                defunct: false,
+                start: 'Jan 2024',
+                end: 'Mar 2024',
+                problem: 'DTC checkout interface had highly elevated bounce rates on mobile.',
+                did: 'Redesigned checkout pipeline into a seamless single-page modular form architecture.',
+                metric: 'Reduced drop-off by 23% within 6 weeks',
+                nda: true,
+                link: 'https://figma.com/file/checkout-proof',
+                verifierName: 'Ravi Mehra',
+                verifierEmail: 'ravi@dtcbrand.co',
+                verifierRelationship: 'Manager'
+            },
+            verifierInput: {
+                relationship: 'Yes',
+                involvement: 'Partner',
+                accuracy: 'accurate',
+                testimonial: 'Frank had an unusually strong grasp of user psychology — every decision was grounded in why users behave the way they do.',
+                workAgain: 'Yes'
+            },
+            entries: [
+                {
+                    id: 1,
+                    role: 'Backend migration',
+                    company: 'Acme (closed)',
+                    workType: 'Full-time',
+                    problem: 'Database query bottlenecks on legacy relational schemas.',
+                    did: 'Decoupled relational nodes and moved catalog indexing to key-value cache layer.',
+                    metric: 'Latency halved within 2 months',
+                    status: 'Pending verification',
+                    statusType: 'pending',
+                    vname: 'John Doe',
+                    vemail: 'john@acme.com',
+                    vrelationship: 'Manager',
+                    hash: null,
+                    comment: null
+                },
+                {
+                    id: 2,
+                    role: 'Landing page build',
+                    company: 'Webflow Studio',
+                    workType: 'Freelance',
+                    problem: 'Low initial traffic pipeline validation.',
+                    did: 'Integrated localized micro-copy, SEO hooks and customized vector visuals.',
+                    metric: 'Conversion lift of 14%',
+                    status: 'Expired — resend',
+                    statusType: 'expired',
+                    vname: 'David King',
+                    vemail: 'david@webflow.io',
+                    vrelationship: 'Client',
+                    hash: null,
+                    comment: null
+                }
+            ]
+        };
+
+        function switchScreen(screenId) {
+            const screens = [
+                'login', 'onboarding', 'dashboard', 'new-entry', 'send-verification', 
+                'validator-1', 'validator-2', 'validator-3', 'validator-4',
+                'profile', 'system-states'
+            ];
+            
+            screens.forEach(id => {
+                document.getElementById(`screen-${id}`).classList.add('hidden');
+            });
+
+            document.getElementById(`screen-${screenId}`).classList.remove('hidden');
+            DB.activeScreen = screenId;
+
+            // Header state visibility check
+            const header = document.getElementById('app-header');
+            if (screenId === 'login' || screenId === 'onboarding') {
+                header.classList.add('hidden');
+            } else {
+                header.classList.remove('hidden');
+            }
+
+            // Sync dynamic template renders
+            if (screenId === 'dashboard') {
+                renderDashboard();
+            } else if (screenId === 'profile') {
+                renderProfile();
+            } else if (screenId === 'validator-1') {
+                document.getElementById('vld-project-title').innerText = DB.draftEntry.role;
+                document.getElementById('vld-project-company').innerText = DB.draftEntry.company;
+            } else if (screenId === 'validator-3') {
+                document.getElementById('vld-metric-text').innerText = `"${DB.draftEntry.metric || 'Outcomes verified successfully'}"`;
+            }
+        }
+
+        function renderDashboard() {
+            const container = document.getElementById('dashboard-list');
+            container.innerHTML = '';
+
+            DB.entries.forEach(entry => {
+                let statusClass = 'bg-slate-100 text-brand-grey';
+                if (entry.statusType === 'pending') statusClass = 'bg-amber-50 border border-brand-amber/30 text-brand-amber';
+                if (entry.statusType === 'verified') statusClass = 'bg-brand-success-bg text-brand-green';
+                if (entry.statusType === 'expired') statusClass = 'bg-red-50 border border-brand-error/30 text-brand-error';
+
+                const card = `
+                    <div class="bg-white brand-border rounded-xl p-6 space-y-4 brand-shadow-sm hover:border-brand-green/30 transition-colors duration-200">
+                        <div class="flex items-start justify-between gap-4">
+                            <div>
+                                <h3 class="font-bold text-base text-brand-ink leading-tight">${entry.role}</h3>
+                                <p class="text-xs text-brand-grey font-semibold uppercase mt-1">${entry.company} • ${entry.workType}</p>
+                            </div>
+                            <span class="px-3 py-1 rounded text-[10px] font-bold uppercase tracking-wider ${statusClass}">${entry.status}</span>
+                        </div>
+                        <p class="text-xs text-brand-grey font-medium leading-relaxed">${entry.did}</p>
+                        ${entry.comment ? `
+                            <div class="p-4 bg-slate-50 rounded-lg brand-border border-dashed space-y-2 mt-2">
+                                <span class="text-[9px] font-bold uppercase tracking-wider text-brand-grey">Supervisor Endorsement:</span>
+                                <p class="text-xs italic text-brand-ink">"${entry.comment}"</p>
+                                <span class="text-[10px] text-brand-green block font-semibold">— Verified by ${entry.vname}, ${entry.vrelationship} (Ledger Anchor: ${entry.hash})</span>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+                container.innerHTML += card;
+            });
+        }
+
+        function renderProfile() {
+            const container = document.getElementById('profile-work-list');
+            container.innerHTML = '';
+
+            const verifiedList = DB.entries.filter(e => e.statusType === 'verified');
+            document.getElementById('profile-verified-count').innerText = `${verifiedList.length} Entries`;
+
+            if (verifiedList.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 bg-white brand-border rounded-xl">
+                        <span class="material-symbols-outlined text-4xl text-brand-grey">cloud_sync</span>
+                        <p class="text-sm font-bold text-brand-ink mt-2">No Verified Entries</p>
+                        <p class="text-xs text-brand-grey">Complete a project verifier guided response to build public proofs.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            verifiedList.forEach(entry => {
+                const verifiedCard = `
+                    <div class="bg-white brand-border rounded-xl p-8 space-y-5 brand-shadow-sm hover:border-brand-green/30 transition-all duration-300">
+                        <div class="flex items-start justify-between gap-4 flex-wrap">
+                            <div>
+                                <h3 class="font-bold text-lg text-brand-ink leading-tight">${entry.role}</h3>
+                                <p class="text-xs text-brand-grey font-semibold uppercase mt-0.5">${entry.company} • ${entry.workType}</p>
+                            </div>
+                            <span class="px-3 py-1 bg-brand-success-bg text-brand-green text-xs font-semibold uppercase rounded flex items-center gap-1.5 border border-brand-green/10">
+                                <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">verified</span>
+                                Partner
+                            </span>
+                        </div>
+
+                        <div class="py-4 border-y border-brand-border space-y-4">
+                            <span class="text-[10px] font-bold text-brand-grey uppercase tracking-widest block">SUPERVISOR ATTESTATION:</span>
+                            <p class="text-sm italic text-brand-ink font-medium leading-relaxed">
+                                "${entry.comment || 'Contribution verified on the ledger successfully.'}"
+                            </p>
+                            <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 rounded-lg bg-brand-green/10 text-brand-green flex items-center justify-center font-bold text-xs">
+                                    ${entry.vname ? entry.vname[0] : 'V'}
+                                </div>
+                                <div class="text-[11px] leading-tight">
+                                    <p class="font-bold text-brand-ink">${entry.vname}</p>
+                                    <p class="text-brand-grey font-medium">${entry.vrelationship} Sign-off</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between items-center text-[11px] text-brand-grey flex-wrap gap-2">
+                            <span>Outcome: <strong class="text-brand-green font-bold uppercase">${entry.metric || 'Confirmed'}</strong></span>
+                            <span class="text-brand-green flex items-center gap-1">
+                                <span class="material-symbols-outlined text-xs">lock</span> 
+                                Sync: ${entry.hash || '0x4f...a2e1'}
+                            </span>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += verifiedCard;
+            });
+        }
+
+        function handleLoginSubmit() {
+            triggerToast('Authorized', 'Magic link initialized.');
+            switchScreen('onboarding');
+        }
+
+        function handleOnboardingSubmit() {
+            const name = document.getElementById('onboarding-name').value || 'Frank Docent';
+            document.getElementById('header-user-label').innerText = name;
+            
+            triggerToast('Ready', 'Profile handle anchored.');
+            switchScreen('dashboard');
+        }
+
+        function selectWorkTypePill(type) {
+            DB.draftEntry.workType = type;
+            document.querySelectorAll('.wt-pills').forEach(btn => {
+                btn.className = "wt-pills min-h-[44px] px-5 rounded-full text-xs font-bold uppercase tracking-wider bg-white brand-border text-brand-ink hover:bg-slate-50";
+            });
+            document.getElementById(`wt-${type}`).className = "wt-pills min-h-[44px] px-5 rounded-full text-xs font-bold uppercase tracking-wider bg-brand-green text-white";
+        }
+
+        function selectRelationshipPill(relationship) {
+            DB.draftEntry.verifierRelationship = relationship;
+            document.querySelectorAll('.rep-pills').forEach(btn => {
+                btn.className = "rep-pills min-h-[44px] px-4 rounded-full text-xs font-bold uppercase bg-white brand-border text-brand-ink hover:bg-slate-50";
+            });
+            document.getElementById(`rep-${relationship}`).className = "rep-pills min-h-[44px] px-4 rounded-full text-xs font-bold uppercase bg-brand-green text-white";
+        }
+
+        function handleNewEntrySubmit() {
+            DB.draftEntry.role = document.getElementById('form-role').value;
+            DB.draftEntry.company = document.getElementById('form-company').value;
+            DB.draftEntry.start = document.getElementById('form-start').value;
+            DB.draftEntry.end = document.getElementById('form-end').value;
+            DB.draftEntry.problem = document.getElementById('form-problem').value;
+            DB.draftEntry.did = document.getElementById('form-did').value;
+            DB.draftEntry.metric = document.getElementById('form-metric').value;
+            DB.draftEntry.link = document.getElementById('form-link').value;
+            DB.draftEntry.defunct = document.getElementById('form-defunct-company').checked;
+            DB.draftEntry.nda = document.getElementById('form-nda').checked;
+
+            switchScreen('send-verification');
+        }
+
+        function triggerVerificationSend() {
+            DB.draftEntry.verifierName = document.getElementById('verifier-name').value;
+            DB.draftEntry.verifierEmail = document.getElementById('verifier-email').value;
+
+            // Inject the new record as pending
+            DB.entries = DB.entries.filter(e => e.statusType !== 'pending');
+            DB.entries.push({
+                id: DB.entries.length + 1,
+                role: DB.draftEntry.role,
+                company: DB.draftEntry.company,
+                workType: DB.draftEntry.workType,
+                problem: DB.draftEntry.problem,
+                did: DB.draftEntry.did,
+                metric: DB.draftEntry.metric,
+                status: 'Pending verification',
+                statusType: 'pending',
+                vname: DB.draftEntry.verifierName,
+                vemail: DB.draftEntry.verifierEmail,
+                vrelationship: DB.draftEntry.verifierRelationship,
+                hash: null,
+                comment: null
+            });
+
+            document.getElementById('vld-project-title').innerText = DB.draftEntry.role;
+            document.getElementById('vld-project-company').innerText = DB.draftEntry.company;
+
+            toggleAlertModal(true);
+        }
+
+        function toggleAlertModal(show) {
+            const el = document.getElementById('alert-overlay');
+            if (show) {
+                el.classList.remove('hidden');
+                document.getElementById('alert-primary-btn').onclick = () => {
+                    toggleAlertModal(false);
+                    switchScreen('validator-1');
+                };
+            } else {
+                el.classList.add('hidden');
+            }
+        }
+
+        function validatorSelectState(field, value, nextScreenId) {
+            DB.verifierInput[field] = value;
+            switchScreen(nextScreenId);
+        }
+
+        function selectWorkAgainChoice(choice) {
+            DB.verifierInput.workAgain = choice;
+            document.querySelectorAll('.vwa-choices').forEach(btn => {
+                btn.className = "vwa-choices min-h-[44px] px-5 rounded-full text-xs font-bold uppercase tracking-wider bg-white brand-border text-brand-ink hover:bg-slate-50";
+            });
+            document.getElementById(`vwa-${choice}`).className = "vwa-choices min-h-[44px] px-5 rounded-full text-xs font-bold uppercase tracking-wider bg-brand-green text-white";
+        }
+
+        function submitVerifierTestimonial() {
+            const btn = document.getElementById('btn-verifier-submit');
+            btn.innerText = "Signing Ledger Signature...";
+            btn.disabled = true;
+
+            setTimeout(() => {
+                // Find and update our local pending project state
+                const idx = DB.entries.findIndex(e => e.statusType === 'pending');
+                if (idx !== -1) {
+                    DB.entries[idx].status = 'Verified';
+                    DB.entries[idx].statusType = 'verified';
+                    DB.entries[idx].comment = document.getElementById('verifier-comment-input').value;
+                    DB.entries[idx].hash = '0x' + Math.random().toString(16).substring(2, 6).toUpperCase() + '...' + Math.random().toString(16).substring(2, 6).toUpperCase();
+                }
+
+                btn.innerText = "Submit Endorsement";
+                btn.disabled = false;
+
+                triggerToast('Verification Recorded', 'Cryptographic testimonial anchored to profile ledger.', 'success');
+                switchScreen('dashboard');
+            }, 1000);
+        }
+
+        function toggleSubState(stateId) {
+            const canvas = document.getElementById('substate-canvas');
+            canvas.innerHTML = '';
+
+            if (stateId === 'loading') {
+                canvas.innerHTML = `
+                    <div class="space-y-4 py-6">
+                        <span class="text-[10px] font-bold text-brand-grey block uppercase mb-2">1. Loading Skeletons State</span>
+                        <div class="animate-pulse space-y-4">
+                            <div class="h-6 bg-slate-200 rounded w-1/4"></div>
+                            <div class="h-24 bg-slate-200 rounded-xl w-full"></div>
+                        </div>
+                    </div>
+                `;
+            } else if (stateId === 'empty') {
+                canvas.innerHTML = `
+                    <div class="text-center py-12 space-y-4">
+                        <span class="text-[10px] font-bold text-brand-grey block uppercase">2. Empty Dashboard</span>
+                        <div class="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mx-auto text-brand-grey">
+                            <span class="material-symbols-outlined text-3xl">post_add</span>
+                        </div>
+                        <h4 class="text-base font-bold text-brand-ink">Add your first piece of work</h4>
+                        <button onclick="switchScreen('new-entry')" class="h-10 px-6 bg-brand-green text-white text-xs font-bold uppercase tracking-wider rounded-lg">Get Started</button>
+                    </div>
+                `;
+            } else if (stateId === 'invalid-err') {
+                canvas.innerHTML = `
+                    <div class="space-y-4 max-w-sm mx-auto">
+                        <span class="text-[10px] font-bold text-brand-grey block uppercase text-center">3. Inline Input Validation</span>
+                        <div class="space-y-1.5">
+                            <label class="block text-xs font-bold uppercase tracking-wider text-brand-grey">Their Email</label>
+                            <input class="w-full h-12 px-4 bg-white border border-brand-error focus:ring-0 rounded-lg text-sm text-brand-error outline-none" value="invalid-email-string"/>
+                            <span class="text-[11px] font-bold text-brand-error uppercase tracking-wider block">Enter a valid email</span>
+                        </div>
+                    </div>
+                `;
+            } else if (stateId === 'sys-error') {
+                canvas.innerHTML = `
+                    <div class="text-center py-12 space-y-4 max-w-sm mx-auto">
+                        <span class="text-[10px] font-bold text-brand-grey block uppercase">4. System Exceptions Fallback</span>
+                        <span class="material-symbols-outlined text-4xl text-brand-error">gpp_maybe</span>
+                        <h3 class="text-lg font-bold text-brand-ink">Something went wrong on our end.</h3>
+                        <p class="text-xs text-brand-grey leading-relaxed">No raw stack traces are exposed to maintain ledger compliance. Please retry.</p>
+                        <button onclick="toggleSubState('sys-error')" class="h-10 px-6 bg-white brand-border text-brand-ink text-xs font-bold uppercase rounded-lg">Retry Connection</button>
+                    </div>
+                `;
+            }
+        }
+
+        let toastTimeout = null;
+        function triggerToast(title, message) {
+            const toast = document.getElementById('toast-notif');
+            document.getElementById('toast-title').innerText = title;
+            document.getElementById('toast-desc').innerText = message;
+
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            if (toastTimeout) clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.add('translate-y-24', 'opacity-0');
+                toast.classList.remove('translate-y-0', 'opacity-100');
+            }, 3500);
+        }
+
+        window.onload = () => {
+            switchScreen('login');
+        };
+    </script>
+</body>
+</html>
