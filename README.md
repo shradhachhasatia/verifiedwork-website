@@ -1,36 +1,53 @@
 # verifiedwork-website
 
-The product prototype for **verified.work** — a verified professional profile
-platform built on intent-based hiring.
+The marketing site **and** interactive product prototype for **verified.work** —
+a verified professional profile platform built on intent-based hiring.
 
 > Human validation in an AI world.
 
-`index.html` is a self-contained, fully interactive prototype (React + Babel via
-CDN) presented inside an iPhone frame. It walks the complete flow end to end:
+## Structure
 
-**splash → sign up → magic-link sent → onboarding (name + role) → dashboard →
-add project → invite validator → request sent → validator flow → public profile.**
+| File | What it is |
+|---|---|
+| `index.html` | **Landing / waitlist page.** Fluid responsive marketing site with the full animation layer — hero icon draw-in, word-cycling headline, scroll-reveal, parallax pills, a self-filling roadmap timeline, and the expandable + auto-rotating research carousel. Leads into the app via **Sign in** / **Preview the product**. |
+| `app.html` | **The product prototype.** A responsive web app (no device frame) built in the landing page's design language. |
+| `careers.html`, `privacy.html`, `terms.html`, `blog/` | Supporting pages. |
+| `favicon.*`, `og-image.*`, `apple-touch-icon.png` | Brand + social assets. |
+| `assets/` | The V/W app icon and the standalone verification check mark. |
 
-The validator flow is the hero: four conversational steps that culminate in the
-signature **verification stamp** animation and an "Endorsement published" state.
-A **Tweaks** panel (bottom-right) swaps the public-profile card style between
-*Classic record*, *Quote-led*, and *Receipt*.
+## The app (`app.html`)
 
-## Design system
+A single self-contained React app (React + Babel via CDN) with a hash router, so
+every screen is linkable (`app.html#/dashboard`, `#/profile`, `#/validate`, …).
 
-Built on the locked **verified.work** design system — pure white surfaces, black
-`#1A1A1A` text, grey `#6B7280` secondary, and a single green accent `#2D6A4F`
-reserved for the verification stamp. Inter for everything; IBM Plex Mono for IDs,
-emails, and timestamps. No other colors, no emoji.
+**Candidate flow** — auth (with a simulated *Continue with Google* account chooser
++ email magic link) → onboarding → **dashboard** (projects with verified / pending
+status, expandable) → add project → invite validator → request sent.
 
-## Assets
+**Validator / endorser flow** (`#/validate`) — the standalone experience for the
+person *asked* to verify someone: the request intro, four conversational steps, and
+the signature **verification stamp** → "Endorsement published."
 
-- `assets/logo-icon.svg` — the V/W app icon (favicon + splash)
-- `assets/logo-mark.svg` — the standalone verification check dot
+**User profile** (`#/profile`) — a rich public + owner profile: identity header with
+inline **edit mode**, stat strip, contribution badges, **expandable verified-work
+cards** (full quote, endorser, outcome receipt, artifact link), and an endorsements
+wall.
+
+### Design language
+
+Inherited from the landing page: pure white surfaces, `#1A1A1A` ink, `#6B7280` grey,
+a single green accent `#2D6A4F` reserved for verification (the stamp, check dots,
+verified badges). **Black-pill CTAs** that turn green on hover. Inter + JetBrains
+Mono. Fluid `clamp()` type, scroll-reveal animations, and the verification stamp
+(`scale 0.6 → 1.08 → 1.0`). Respects `prefers-reduced-motion`.
+
+> The Google sign-in is a **prototype simulation** — no real Google account or
+> backend is involved. Wiring real Google Identity Services later needs an OAuth
+> Client ID and a backend to verify tokens.
 
 ## Running
 
-It's a single static file. Open `index.html` in a browser, or serve the folder:
+Static files — open `index.html`, or serve the folder:
 
 ```
 python3 -m http.server

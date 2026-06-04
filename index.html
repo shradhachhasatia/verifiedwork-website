@@ -1,2125 +1,1768 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>verified.work — Human validation in an AI world</title>
-<link rel="icon" href="assets/logo-icon.svg" />
-<meta name="ext-resource-dependency" content="assets/logo-icon.svg" data-resource-id="logoIcon" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+<title>verified.work | Get on the waitlist</title>
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="description" content="Human validation in an AI world. A verified professional profile, endorsed by the people who'd know.">
+<link rel="canonical" href="https://verifiedwork.co/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="verified.work">
+<meta property="og:url" content="https://verifiedwork.co/">
+<meta property="og:title" content="verified.work | Human validation in an AI world">
+<meta property="og:description" content="Hiring based on what you've done, not what your CV says. Join the waitlist for intent-based hiring built on human verification.">
+<meta property="og:image" content="https://verifiedwork.co/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="verified.work, human validation in an AI world">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="verified.work | Human validation in an AI world">
+<meta name="twitter:description" content="Hiring based on what you've done, not what your CV says. Join the waitlist.">
+<meta name="twitter:image" content="https://verifiedwork.co/og-image.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://getlaunchlist.com/js/widget.js" defer></script>
+
+<!-- Google Analytics (replace G-XXXXXXXXXX with your real Measurement ID) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX');
+</script>
+
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap');
+/* ============================================================
+   Tokens
+   ============================================================ */
+:root {
+  --green: #2D6A4F;
+  --green-2: #40916C;
+  --green-tint: #D8F3DC;
+  --green-deep: #1F4A37;
+  --black: #1A1A1A;
+  --white: #FFFFFF;
+  --grey: #6B7280;
+  --grey-2: #9CA3AF;
+  --grey-3: #4B5563;
+  --line: #E5E7EB;
+  --line-faint: #F3F4F6;
+  --surface-2: #F9FAFB;
 
-:root{
-  --vw-green:#2D6A4F; --vw-green-2:#40916C; --vw-green-tint:#D8F3DC;
-  --vw-green-deep:#1F4A37; --vw-green-ring:rgba(45,106,79,.22);
-  --vw-black:#1A1A1A; --vw-white:#FFFFFF;
-  --vw-grey:#6B7280; --vw-grey-2:#9CA3AF; --vw-grey-3:#4B5563;
-  --vw-ink:#1A1A1A; --vw-ink-2:#374151; --vw-ink-3:#6B7280;
-  --vw-surface-2:#F9FAFB; --vw-surface-3:#F3F4F6;
-  --vw-line:#E5E7EB; --vw-line-strong:#D1D5DB; --vw-line-faint:#F3F4F6;
-  --vw-warning:#B5800B; --vw-warning-tint:#FEF3C7;
-  --vw-danger:#B91C1C; --vw-danger-tint:#FEE2E2;
-  --vw-font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-  --vw-font-mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-stamp: cubic-bezier(0.2, 1.3, 0.4, 1);
+
+  /* Fluid responsive type scale. clamp(min, fluid, max) */
+  --fs-eyebrow: clamp(10px, 0.7vw + 8px, 13px);
+  --fs-body:    clamp(15px, 0.4vw + 13px, 18px);
+  --fs-lede:    clamp(17px, 0.9vw + 14px, 22px);
+  --fs-h3:      clamp(20px, 1.0vw + 16px, 28px);
+  --fs-h2:      clamp(28px, 2.2vw + 18px, 48px);
+  --fs-h1:      clamp(40px, 5vw + 16px, 80px);
+  --fs-mega:    clamp(48px, 8vw + 16px, 128px);
+
+  /* Spacing */
+  --gap-section: clamp(80px, 8vw, 160px);
+  --gap-block: clamp(40px, 4vw, 72px);
+  --pad-x: clamp(20px, 4vw, 64px);
+  --max-w: 1280px;
 }
 
-*{box-sizing:border-box;}
-html,body{margin:0;height:100%;}
-body{
-  font-family:var(--vw-font);
-  background:#E9E9ED;
-  color:var(--vw-ink);
-  -webkit-font-smoothing:antialiased;
-  text-rendering:optimizeLegibility;
+/* ============================================================
+   Reset + base
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  font-family: var(--font);
+  font-size: var(--fs-body);
+  line-height: 1.5;
+  color: var(--black);
+  background: var(--white);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
 }
-#root{min-height:100%;}
+::selection { background: var(--green-tint); color: var(--green-deep); }
+img, svg { display: block; max-width: 100%; }
+button { font-family: inherit; cursor: pointer; }
+input { font-family: inherit; }
 
-/* ---- Stage ---- */
-.stage{
-  min-height:100vh;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:22px;padding:40px 16px 56px;
+/* ============================================================
+   Layout
+   ============================================================ */
+.container {
+  width: 100%;
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding-left: var(--pad-x);
+  padding-right: var(--pad-x);
 }
-.stage-cap{
-  display:flex;align-items:center;gap:10px;
-  font-family:var(--vw-font-mono);font-size:11px;letter-spacing:.06em;
-  text-transform:uppercase;color:#8A8A93;
+
+/* ============================================================
+   Nav
+   ============================================================ */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: saturate(180%) blur(12px);
+  -webkit-backdrop-filter: saturate(180%) blur(12px);
+  border-bottom: 1px solid transparent;
+  transition: border-color 200ms var(--ease-out);
 }
-.stage-cap .dot{width:5px;height:5px;border-radius:50%;background:#B8B8BE;}
-.stage-hint{
-  font-size:12.5px;color:#8A8A93;max-width:380px;text-align:center;line-height:1.5;
+.nav.scrolled { border-color: var(--line); }
+.nav .inner {
+  height: clamp(56px, 5vw, 72px);
+  display: flex; align-items: center; justify-content: space-between;
 }
-.stage-hint b{color:#5C5C64;font-weight:600;}
-
-/* ---- App canvas inside device ---- */
-.vw-app{
-  height:100%;background:var(--vw-white);
-  display:flex;flex-direction:column;position:relative;
-  font-family:var(--vw-font);color:var(--vw-ink);
+.nav-mark {
+  display: inline-flex; align-items: center; gap: 0;
+  text-decoration: none; color: var(--black);
+  font-family: var(--font); font-weight: 700;
+  font-size: clamp(17px, 0.6vw + 14px, 21px);
+  letter-spacing: -0.015em;
 }
-.vw-scroll{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;}
-.vw-scroll::-webkit-scrollbar{width:0;height:0;}
-
-/* screen padding presets (clear island/status bar + home indicator) */
-.vw-pad{padding:64px 24px 40px;}
-
-/* ---- Screen transition ---- */
-.scr{animation:scr-in .22s cubic-bezier(.2,.7,.3,1) both;}
-@keyframes scr-in{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
-@keyframes splashIcon{from{opacity:0;transform:scale(.72);}to{opacity:1;transform:scale(1);}}
-@keyframes splashFade{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
-@media (prefers-reduced-motion:reduce){.scr{animation:none;}}
-
-/* ---- Wordmark ---- */
-.wm{display:inline-flex;align-items:center;gap:.18em;letter-spacing:-.01em;line-height:1;}
-.wm .v{font-weight:700;color:var(--vw-black);}
-.wm .w{font-weight:400;color:var(--vw-grey);}
-
-/* ---- Eyebrow / mono ---- */
-.eyebrow{font-family:var(--vw-font);font-weight:500;font-size:11px;letter-spacing:.08em;
-  text-transform:uppercase;color:var(--vw-grey);}
-.mono{font-family:var(--vw-font-mono);letter-spacing:.02em;}
-
-/* ---- Progress dots ---- */
-.prog{display:flex;align-items:center;gap:14px;}
-.prog-dots{display:flex;gap:7px;}
-.prog-dots i{width:8px;height:8px;border-radius:50%;background:var(--vw-line-strong);
-  transition:background .2s ease,transform .2s ease;}
-.prog-dots i.on{background:var(--vw-green);}
-.prog-lbl{font-family:var(--vw-font-mono);font-size:12px;color:var(--vw-grey);letter-spacing:.02em;}
-
-/* ---- Question ---- */
-.q{font-weight:600;font-size:23px;line-height:1.32;letter-spacing:-.015em;color:var(--vw-black);
-  text-wrap:pretty;}
-.q b{font-weight:700;}
-.lede{font-size:15px;line-height:1.55;color:var(--vw-grey-3);text-wrap:pretty;}
-
-/* ---- Answer options ---- */
-.opts{display:flex;flex-direction:column;gap:12px;}
-.opt{
-  appearance:none;width:100%;text-align:left;cursor:pointer;
-  background:var(--vw-white);border:1px solid var(--vw-line-strong);
-  border-radius:14px;padding:18px 18px;min-height:60px;
-  display:flex;align-items:center;justify-content:space-between;gap:12px;
-  font-family:var(--vw-font);color:var(--vw-ink);
-  transition:border-color .16s ease,background .16s ease,box-shadow .16s ease,transform .08s ease;
+.nav-mark .work { font-weight: 400; color: var(--grey); }
+.nav-mark .check {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--green); margin: 0 2px;
 }
-.opt:hover{border-color:var(--vw-black);}
-.opt:active{transform:scale(.99);}
-.opt .opt-main{display:flex;flex-direction:column;gap:3px;}
-.opt .opt-label{font-weight:600;font-size:16px;line-height:1.25;}
-.opt .opt-sub{font-size:13px;color:var(--vw-grey);line-height:1.35;}
-.opt .opt-tick{flex-shrink:0;opacity:0;transform:scale(.6);transition:opacity .16s,transform .2s;}
-.opt.is-sel{background:var(--vw-green);border-color:var(--vw-green);box-shadow:0 6px 18px -6px rgba(45,106,79,.45);}
-.opt.is-sel .opt-label{color:#fff;}
-.opt.is-sel .opt-sub{color:rgba(255,255,255,.82);}
-.opt.is-sel .opt-tick{opacity:1;transform:scale(1);}
-.opt.is-icon{align-items:flex-start;}
-.opt .opt-ic{width:40px;height:40px;border-radius:11px;background:var(--vw-surface-3);
-  display:flex;align-items:center;justify-content:center;color:var(--vw-grey-3);flex-shrink:0;
-  transition:background .16s,color .16s;}
-.opt.is-sel .opt-ic{background:rgba(255,255,255,.16);color:#fff;}
-.opt-row{display:flex;align-items:center;gap:14px;flex:1;}
+.nav-mark .check svg { width: 8px; height: 8px; }
+.nav-cta {
+  background: var(--black);
+  color: var(--white);
+  border: 0;
+  padding: 9px 16px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: clamp(12px, 0.4vw + 11px, 14px);
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+  transition: background 150ms;
+}
+.nav-cta:hover { background: var(--green); }
+.nav-signin {
+  text-decoration: none;
+  color: var(--black);
+  font-weight: 600;
+  font-size: clamp(12px, 0.4vw + 11px, 14px);
+  letter-spacing: -0.005em;
+  padding: 9px 6px;
+  transition: color 150ms;
+  white-space: nowrap;
+}
+.nav-signin:hover { color: var(--green); }
+@media (max-width: 520px) { .nav-signin { display: none; } }
 
-/* ---- Small yes/depends/no pills ---- */
-.pills{display:flex;gap:8px;}
-.pill{appearance:none;cursor:pointer;flex:1;
-  background:var(--vw-white);border:1px solid var(--vw-line-strong);border-radius:10px;
-  padding:11px 10px;font-family:var(--vw-font);font-weight:600;font-size:14px;color:var(--vw-ink);
-  min-height:44px;transition:border-color .16s,background .16s,color .16s;}
-.pill:hover{border-color:var(--vw-black);}
-.pill.is-sel{background:var(--vw-green);border-color:var(--vw-green);color:#fff;}
+/* Hero preview link into the app */
+.hero-preview {
+  margin-top: 18px;
+  opacity: 0; transform: translateY(8px);
+  animation: rise 700ms var(--ease-out) 1600ms forwards;
+}
+.hero-preview a {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-weight: 600; font-size: 14px;
+  color: var(--black); text-decoration: none;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 2px;
+  transition: color 150ms, border-color 150ms;
+}
+.hero-preview a:hover { color: var(--green); border-color: var(--green); }
+.hero-preview a svg { width: 15px; height: 15px; transition: transform 200ms var(--ease-out); }
+.hero-preview a:hover svg { transform: translateX(3px); }
 
-/* ---- Buttons ---- */
-.btn{appearance:none;cursor:pointer;font-family:var(--vw-font);font-weight:600;
-  border:1px solid transparent;border-radius:12px;
-  display:inline-flex;align-items:center;justify-content:center;gap:8px;
-  transition:background .16s,border-color .16s,color .16s,transform .08s,box-shadow .16s;
-  letter-spacing:-.005em;width:100%;min-height:52px;font-size:16px;}
-.btn:active{transform:scale(.985);}
-.btn-primary{background:var(--vw-green);color:#fff;box-shadow:0 8px 22px -10px rgba(45,106,79,.6);}
-.btn-primary:hover{background:var(--vw-green-deep);}
-.btn-primary:disabled{background:var(--vw-grey-2);box-shadow:none;cursor:not-allowed;}
-.btn-secondary{background:#fff;color:var(--vw-ink);border-color:var(--vw-line-strong);box-shadow:none;}
-.btn-secondary:hover{border-color:var(--vw-black);}
-.btn-ghost{background:transparent;color:var(--vw-grey-3);min-height:44px;font-size:15px;width:auto;}
-.btn-ghost:hover{color:var(--vw-black);}
+/* Nav menu dropdown */
+.nav-right { display: inline-flex; align-items: center; gap: 8px; position: relative; }
+.nav-menu-btn {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: transparent;
+  border: 1px solid var(--line);
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 4px;
+  cursor: pointer;
+  transition: background 150ms, border-color 150ms;
+  padding: 0;
+}
+.nav-menu-btn:hover { background: var(--surface-2); border-color: var(--grey-2); }
+.nav-menu-btn span {
+  display: block;
+  width: 16px; height: 2px;
+  background: var(--black);
+  border-radius: 2px;
+  transition: transform 220ms var(--ease-out), opacity 180ms;
+}
+.nav-menu-btn[aria-expanded="true"] span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.nav-menu-btn[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.nav-menu-btn[aria-expanded="true"] span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+.nav-menu {
+  position: absolute; top: calc(100% + 10px); right: 0;
+  min-width: 180px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 6px;
+  box-shadow: 0 22px 44px -18px rgba(26,26,26,0.20), 0 2px 6px rgba(26,26,26,0.05);
+  opacity: 0;
+  transform: translateY(-8px) scale(0.96);
+  transform-origin: top right;
+  transition: opacity 180ms var(--ease-out), transform 220ms var(--ease-out);
+  pointer-events: none;
+  z-index: 110;
+}
+.nav-menu.is-open { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+.nav-menu a {
+  display: block;
+  padding: 9px 14px;
+  border-radius: 9px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--black);
+  text-decoration: none;
+  transition: background 150ms, color 150ms;
+}
+.nav-menu a:hover { background: var(--surface-2); color: var(--green); }
 
-/* ---- Inputs ---- */
-.field{display:flex;flex-direction:column;gap:8px;}
-.field-lbl{font-family:var(--vw-font);font-weight:500;font-size:12px;letter-spacing:.02em;
-  color:var(--vw-ink-2);}
-.field-lbl.mono{font-family:var(--vw-font-mono);text-transform:uppercase;letter-spacing:.07em;font-size:11px;color:var(--vw-grey);}
-.input,.textarea{
-  width:100%;background:#fff;border:1px solid var(--vw-line-strong);border-radius:10px;
-  padding:14px 14px;font-family:var(--vw-font);font-size:16px;color:var(--vw-ink);outline:none;
-  transition:border-color .16s,box-shadow .16s;}
-.input{min-height:52px;}
-.textarea{min-height:120px;resize:none;line-height:1.5;}
-.input::placeholder,.textarea::placeholder{color:var(--vw-grey-2);}
-.input:focus,.textarea:focus{border-color:var(--vw-green);box-shadow:0 0 0 3px var(--vw-green-ring);}
-.input.err{border-color:var(--vw-danger);}
-.input.err:focus{box-shadow:0 0 0 3px rgba(185,28,28,.15);}
-.field-err{font-family:var(--vw-font-mono);font-size:12px;color:var(--vw-danger);letter-spacing:.01em;}
+/* LaunchList widget brand overrides */
+.launchlist-widget form,
+.launchlist-widget .launchlist-form {
+  gap: 8px !important;
+}
+.launchlist-widget input[type="email"],
+.launchlist-widget .launchlist-input {
+  background: var(--white) !important;
+  border: 1px solid var(--line) !important;
+  border-radius: 999px !important;
+  padding: 14px 18px !important;
+  font-size: 15px !important;
+  color: var(--black) !important;
+  font-family: var(--font) !important;
+}
+.launchlist-widget input[type="email"]:focus,
+.launchlist-widget .launchlist-input:focus {
+  outline: none !important;
+  border-color: var(--green) !important;
+  box-shadow: 0 0 0 3px rgba(45,106,79,0.18) !important;
+}
+.launchlist-widget button,
+.launchlist-widget [type="submit"],
+.launchlist-widget .launchlist-button {
+  background: var(--black) !important;
+  color: var(--white) !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  padding: 14px 24px !important;
+  font-family: var(--font) !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  letter-spacing: -0.005em !important;
+  cursor: pointer !important;
+  transition: background 150ms !important;
+}
+.launchlist-widget button:hover,
+.launchlist-widget [type="submit"]:hover,
+.launchlist-widget .launchlist-button:hover { background: var(--green) !important; }
 
-/* ---- Callout ---- */
-.callout{background:var(--vw-green-tint);border-radius:12px;padding:16px 16px;
-  display:flex;gap:12px;align-items:flex-start;}
-.callout .ico{color:var(--vw-green);flex-shrink:0;margin-top:1px;}
-.callout p{margin:0;font-size:14px;line-height:1.5;color:#23503D;}
-.callout p b{font-weight:700;color:#1B3E2E;}
+/* ============================================================
+   Hero
+   ============================================================ */
+.hero {
+  position: relative;
+  padding-top: clamp(110px, 12vw, 160px);
+  padding-bottom: clamp(80px, 10vw, 140px);
+  text-align: center;
+  overflow: hidden;
+}
+.hero::before {
+  content: "";
+  position: absolute; inset: 0; z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(58% 46% at 50% 0%,
+    rgba(216, 243, 220, 0.6) 0%, rgba(255, 255, 255, 0) 72%);
+}
 
-/* ---- Quote box ---- */
-.quotebox{background:var(--vw-surface-2);border:1px solid var(--vw-line);border-radius:12px;
-  padding:18px 18px;position:relative;}
-.quotebox .qm{position:absolute;top:10px;left:14px;font-size:34px;line-height:1;color:var(--vw-line-strong);
-  font-family:Georgia,serif;}
-.quotebox p{margin:0;padding-left:26px;font-size:17px;line-height:1.45;font-weight:500;color:var(--vw-black);}
+/* Floating hero pills */
+.hero-pill {
+  position: absolute;
+  display: none;
+  z-index: 2;
+  will-change: transform;
+  transition: transform 320ms var(--ease-out);
+}
+@media (min-width: 1120px) { .hero-pill { display: block; } }
+.hero-pill-body {
+  display: inline-flex; align-items: center; gap: 9px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 8px 16px 8px 8px;
+  box-shadow: 0 16px 36px -14px rgba(26, 26, 26, 0.20);
+  font-size: 13px; font-weight: 600; color: var(--black);
+  white-space: nowrap;
+  animation: float-card 6s ease-in-out infinite;
+}
+.hero-pill .pi {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: var(--green-tint); color: var(--green);
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.hero-pill .pi svg { width: 14px; height: 14px; }
+.hero-pill .pi.dark { background: var(--black); color: var(--white); }
+.hero-pill.p-1 { top: 17%; left: clamp(12px, 4vw, 64px); }
+.hero-pill.p-2 { top: 38%; right: clamp(12px, 3vw, 52px); }
+.hero-pill.p-2 .hero-pill-body { animation-delay: -2s; }
+.hero-pill.p-3 { top: 63%; left: clamp(24px, 6vw, 116px); }
+.hero-pill.p-3 .hero-pill-body { animation-delay: -4s; }
 
-/* ---- Verified card (profile hero) ---- */
-.vcard{background:#fff;border:1px solid var(--vw-line);border-radius:16px;
-  box-shadow:0 1px 2px rgba(17,24,39,.05);overflow:hidden;}
-.vcard .vc-pad{padding:22px;}
-.vcard .vc-quote{font-size:16px;line-height:1.5;color:var(--vw-ink);font-weight:450;text-wrap:pretty;}
-.divider{height:1px;background:var(--vw-line);border:0;margin:0;}
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: var(--fs-eyebrow);
+  font-weight: 500;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--grey);
+  padding: 6px 14px 6px 8px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--white);
+  margin-bottom: clamp(28px, 3vw, 44px);
 
-/* ---- Status pills (mono) ---- */
-.spill{display:inline-flex;align-items:center;gap:6px;font-family:var(--vw-font-mono);
-  font-size:11px;font-weight:500;letter-spacing:.03em;padding:5px 10px;border-radius:999px;}
-.spill.verified{background:var(--vw-green-tint);color:#1F4A37;}
-.spill.pending{background:var(--vw-warning-tint);color:#7A5708;}
-.spill.draft{background:var(--vw-surface-3);color:var(--vw-grey-3);}
-.spill.expired{background:var(--vw-danger-tint);color:var(--vw-danger);}
+  /* entrance */
+  opacity: 0; transform: translateY(8px);
+  animation: rise 700ms var(--ease-out) 600ms forwards;
+}
+.hero-eyebrow .dot {
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--green);
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.hero-eyebrow .dot svg { width: 9px; height: 9px; }
 
-/* ---- Contribution badge (profile) ---- */
-.contrib{display:inline-flex;align-items:center;gap:7px;font-family:var(--vw-font);
-  font-weight:600;font-size:13px;color:var(--vw-black);
-  background:var(--vw-surface-2);border:1px solid var(--vw-line);border-radius:999px;padding:5px 12px 5px 10px;}
+.hero-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto clamp(20px, 2.5vw, 32px);
+  width: clamp(104px, 14vw, 176px);
+  height: clamp(104px, 14vw, 176px);
 
-/* ---- Stamp ---- */
-.stamp{display:flex;align-items:center;justify-content:center;}
-.stamp.go svg{animation:stamp-pop .28s cubic-bezier(.34,1.2,.5,1) both;}
-@keyframes stamp-pop{0%{transform:scale(.6);opacity:0;}60%{transform:scale(1.08);opacity:1;}100%{transform:scale(1);}}
-@media (prefers-reduced-motion:reduce){.stamp.go svg{animation:none;}}
-.stamp-ring{position:absolute;border-radius:50%;border:2px solid var(--vw-green);opacity:0;}
-.stamp.go .stamp-ring{animation:stamp-ring .6s ease-out .08s both;}
-@keyframes stamp-ring{0%{transform:scale(.7);opacity:.5;}100%{transform:scale(1.5);opacity:0;}}
+  /* entrance: scale in */
+  opacity: 0;
+  transform: scale(0.7);
+  animation: stamp-in 800ms var(--ease-stamp) 200ms forwards;
 
-/* ---- Skeleton ---- */
-.sk{background:linear-gradient(90deg,var(--vw-surface-3) 25%,#ECEEF1 37%,var(--vw-surface-3) 63%);
-  background-size:400% 100%;border-radius:8px;animation:sk 1.4s ease infinite;}
-@keyframes sk{0%{background-position:100% 0;}100%{background-position:0 0;}}
+  /* scroll-driven shrink (set via JS) */
+  will-change: transform;
+}
+.hero-icon-wrap svg { width: 100%; height: 100%; overflow: visible; }
 
-/* ---- Link ---- */
-.tlink{display:inline-flex;align-items:center;gap:5px;color:var(--vw-green);font-weight:600;
-  font-size:14px;text-decoration:none;cursor:pointer;}
-.tlink:hover{color:var(--vw-green-deep);}
+.hero-icon-wrap .v-path,
+.hero-icon-wrap .w-path {
+  fill: none;
+  stroke-width: 14;
+  stroke-linecap: round;
+  stroke-linejoin: miter;
+  stroke-miterlimit: 6;
+  /* draw-in animation */
+  stroke-dasharray: 600;
+  stroke-dashoffset: 600;
+  animation: draw 900ms var(--ease-out) 500ms forwards;
+}
+.hero-icon-wrap .v-path { stroke: var(--black); }
+.hero-icon-wrap .w-path { stroke: var(--green-2); animation-delay: 700ms; }
 
-/* avatar */
-.avi{border-radius:50%;display:inline-flex;align-items:center;justify-content:center;
-  color:#fff;font-weight:600;flex-shrink:0;overflow:hidden;}
+.hero-title {
+  font-weight: 700;
+  font-size: var(--fs-h1);
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+  margin: 0 auto;
+  max-width: 16ch;
+  color: var(--black);
+  text-wrap: balance;
+
+  display: flex; flex-direction: column; gap: clamp(2px, 0.4vw, 8px);
+  align-items: center;
+
+  opacity: 0; transform: translateY(16px);
+  animation: rise 700ms var(--ease-out) 700ms forwards;
+}
+.hero-title .line { display: block; }
+.hero-title .cycle {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  vertical-align: bottom;
+  height: 1.1em;
+  min-width: 3ch;
+}
+.hero-title .cycle-word {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--green);
+  white-space: nowrap;
+  opacity: 0;
+  transition: transform 440ms var(--ease-out),
+              opacity 300ms var(--ease-out),
+              filter 380ms var(--ease-out);
+  will-change: transform, opacity, filter;
+}
+.hero-title .cycle-word.ready { opacity: 1; }
+.hero-title .cycle-word.out {
+  transform: translateY(-100%);
+  opacity: 0;
+  filter: blur(6px);
+}
+.hero-title .cycle-word.in-up {
+  transform: translateY(100%);
+  opacity: 0;
+  filter: blur(6px);
+}
+.hero-title .work {
+  font-weight: 400;
+  color: var(--grey);
+}
+.hero-title .word {
+  /* simplified — just fades in, no per-word delay to avoid layout jank */
+  display: inline;
+}
+
+.hero-sub {
+  font-size: var(--fs-lede);
+  color: var(--grey);
+  max-width: 36ch;
+  margin: clamp(20px, 2vw, 28px) auto 0;
+  line-height: 1.5;
+
+  opacity: 0; transform: translateY(12px);
+  animation: rise 700ms var(--ease-out) 1100ms forwards;
+}
+
+/* Waitlist form */
+.waitlist {
+  display: flex; align-items: stretch;
+  max-width: 480px; margin: clamp(28px, 3vw, 40px) auto 0;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px;
+  transition: border-color 180ms, box-shadow 180ms;
+
+  opacity: 0; transform: translateY(12px);
+  animation: rise 700ms var(--ease-out) 1300ms forwards;
+}
+.waitlist:focus-within {
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px var(--green-ring, rgba(45, 106, 79, 0.22));
+}
+.waitlist input {
+  flex: 1; min-width: 0;
+  border: 0; outline: 0; background: transparent;
+  padding: 15px 14px 15px 22px;
+  font-size: 15px;
+  color: var(--black);
+  letter-spacing: -0.005em;
+}
+.waitlist input::placeholder { color: var(--grey-2); }
+.waitlist button {
+  background: var(--black); color: var(--white);
+  border: 0; border-radius: 999px;
+  padding: 0 26px;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: background 150ms, transform 80ms;
+}
+.waitlist button:hover { background: var(--green); }
+.waitlist button:active { transform: scale(0.98); }
+
+.waitlist-meta {
+  margin-top: 14px;
+  font-size: clamp(12px, 0.2vw + 11px, 13px);
+  color: var(--grey);
+  display: inline-flex; align-items: center; gap: 10px;
+  flex-wrap: wrap; justify-content: center;
+
+  opacity: 0; transform: translateY(8px);
+  animation: rise 700ms var(--ease-out) 1500ms forwards;
+}
+.waitlist-meta .dotg { width: 6px; height: 6px; border-radius: 50%; background: var(--green-2); }
+.waitlist-meta .sep-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--grey-2); }
+.waitlist-meta .social-proof { display: inline-flex; align-items: center; gap: 6px; color: var(--black); font-weight: 600; }
+.waitlist-meta .social-proof svg { flex-shrink: 0; }
+
+/* success state */
+.waitlist.success { border-color: var(--green); }
+.waitlist.success .check-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--green); margin: 8px;
+  animation: stamp 380ms var(--ease-stamp);
+}
+.waitlist.success .check-icon svg { width: 16px; height: 16px; }
+.waitlist.success .success-text {
+  flex: 1; padding: 12px 8px;
+  font-weight: 600; color: var(--black);
+  font-size: clamp(14px, 0.3vw + 13px, 16px);
+  text-align: left;
+}
+
+/* ============================================================
+   Animations (declarative)
+   ============================================================ */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes stamp-in {
+  0%   { opacity: 0; transform: scale(0.65); }
+  60%  { opacity: 1; transform: scale(1.05); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes stamp {
+  0%   { transform: scale(0.6); opacity: 0; }
+  60%  { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(1); }
+}
+@keyframes draw {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes float-card {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+
+/* JS-driven reveal classes */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 800ms var(--ease-out), transform 800ms var(--ease-out);
+}
+.reveal.in {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay-1 { transition-delay: 80ms; }
+.reveal-delay-2 { transition-delay: 160ms; }
+.reveal-delay-3 { transition-delay: 240ms; }
+.reveal-delay-4 { transition-delay: 320ms; }
+
+/* ============================================================
+   Problem section — split copy + stacked document cards
+   ============================================================ */
+.problem { padding: var(--gap-section) 0; overflow: hidden; }
+.problem-grid {
+  display: grid; grid-template-columns: 1fr;
+  gap: clamp(56px, 7vw, 96px);
+  align-items: center;
+  max-width: 1080px; margin: 0 auto;
+}
+@media (min-width: 900px) { .problem-grid { grid-template-columns: 1.05fr 1fr; } }
+.problem-copy { text-align: left; }
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 9px;
+  font-family: var(--mono); font-size: 12px;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--green); margin-bottom: 20px;
+}
+.eyebrow::before { content: ""; width: 26px; height: 1px; background: var(--green); }
+.problem-copy h2 {
+  margin: 0 0 18px;
+  font-weight: 700; font-size: var(--fs-h2);
+  line-height: 1.08; letter-spacing: -0.03em;
+  color: var(--black); text-wrap: balance;
+}
+.problem-copy .lede {
+  margin: 0; font-size: var(--fs-lede);
+  color: var(--grey); line-height: 1.55; max-width: 40ch;
+}
+.problem-copy .lede .emph { color: var(--black); font-weight: 600; }
+
+/* Stacked document cards */
+.doc-stack {
+  position: relative;
+  height: clamp(360px, 42vw, 420px);
+  width: 100%; max-width: 400px;
+  margin: 0 auto;
+}
+.doc-card {
+  position: absolute; left: 0; right: 0;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 20px 22px;
+  box-shadow: 0 18px 40px -16px rgba(26, 26, 26, 0.18);
+  opacity: 0;
+  transform: translateY(40px) rotate(0deg);
+  transition: opacity 700ms var(--ease-out), transform 800ms var(--ease-stamp);
+}
+.doc-card .dc-head {
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: 11.5px;
+  color: var(--grey-2); letter-spacing: 0.02em;
+  padding-bottom: 10px; margin-bottom: 12px;
+  border-bottom: 1px dashed var(--line);
+}
+.doc-card .dc-head svg { width: 13px; height: 13px; flex-shrink: 0; }
+.doc-card .dc-text {
+  margin: 0; font-size: 15px; font-weight: 500;
+  color: var(--black); line-height: 1.5;
+}
+.doc-card .dc-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin-top: 14px;
+  font-family: var(--mono); font-size: 10.5px; font-weight: 500;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 5px 9px; border-radius: 6px;
+  background: var(--surface-2); color: var(--grey-3);
+  border: 1px solid var(--line);
+}
+.doc-card .dc-tag svg { width: 11px; height: 11px; }
+.doc-card .dc-tag.flag {
+  background: var(--black); color: var(--white); border-color: var(--black);
+}
+.doc-card.dc-3 {
+  border: 1.5px solid var(--black);
+  box-shadow: 0 26px 52px -16px rgba(26, 26, 26, 0.30);
+}
+.doc-card.dc-3 .dc-head { color: var(--black); }
+.doc-stack.in .doc-card { opacity: 1; }
+.doc-stack.in .dc-1 { transform: translateY(0) rotate(-5deg); z-index: 1; }
+.doc-stack.in .dc-2 { transform: translate(10px, 74px) rotate(3.5deg); z-index: 2; transition-delay: 110ms; }
+.doc-stack.in .dc-3 { transform: translateY(158px) rotate(-1.5deg); z-index: 3; transition-delay: 220ms; }
+
+/* ============================================================
+   How it works — minimal
+   ============================================================ */
+.how {
+  padding: var(--gap-section) 0;
+  background: var(--surface-2);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.section-eyebrow {
+  display: flex; align-items: center; gap: 10px;
+  justify-content: center;
+  font-size: var(--fs-eyebrow);
+  font-weight: 500;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--grey);
+  margin-bottom: clamp(48px, 5vw, 80px);
+}
+.section-eyebrow::before, .section-eyebrow::after {
+  content: ""; width: 32px; height: 1px; background: var(--grey-2);
+}
+/* Roadmap timeline */
+.roadmap-track {
+  max-width: 540px; margin: 0 auto;
+  position: relative;
+  display: flex; flex-direction: column;
+  gap: clamp(34px, 5vw, 54px);
+}
+.roadmap-line {
+  position: absolute;
+  left: clamp(27px, 3.5vw, 32px);
+  top: clamp(27px, 3.5vw, 32px);
+  bottom: clamp(27px, 3.5vw, 32px);
+  width: 2px;
+  background: var(--line);
+  z-index: 0;
+}
+.roadmap-fill {
+  position: absolute; left: 0; top: 0;
+  width: 100%; height: 0;
+  background: var(--green);
+  transition: height 450ms var(--ease-out);
+}
+.roadmap-step {
+  position: relative; z-index: 1;
+  display: grid;
+  grid-template-columns: clamp(54px, 7vw, 64px) 1fr;
+  gap: clamp(16px, 3vw, 26px);
+  align-items: start;
+}
+.roadmap-marker {
+  width: clamp(54px, 7vw, 64px); height: clamp(54px, 7vw, 64px);
+  border-radius: 20px;
+  background: var(--white);
+  border: 1.5px solid var(--line);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--grey-2);
+  transition: background 400ms var(--ease-out),
+              border-color 400ms var(--ease-out),
+              color 400ms var(--ease-out),
+              box-shadow 400ms var(--ease-out);
+}
+.roadmap-marker svg { width: 44%; height: 44%; }
+.roadmap-step.in .roadmap-marker {
+  background: var(--green-tint);
+  border-color: var(--green);
+  color: var(--green);
+  box-shadow: 0 16px 32px -18px rgba(45, 106, 79, 0.55);
+}
+.roadmap-body { padding-top: clamp(2px, 1vw, 8px); }
+.roadmap-num {
+  font-family: var(--mono); font-weight: 500;
+  font-size: 12px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--green-2);
+}
+.roadmap-title {
+  margin: 5px 0 7px;
+  font-weight: 700;
+  font-size: clamp(19px, 1vw + 15px, 25px);
+  line-height: 1.2; letter-spacing: -0.02em;
+  color: var(--black);
+}
+.roadmap-desc {
+  margin: 0;
+  font-size: clamp(14px, 0.3vw + 13px, 15.5px);
+  color: var(--grey); line-height: 1.6;
+}
+
+/* ============================================================
+   Proof — research carousel
+   ============================================================ */
+.proof { padding: var(--gap-section) 0; }
+.proof-head { text-align: center; margin-bottom: clamp(38px, 5vw, 56px); }
+.proof-head .section-eyebrow { margin-bottom: 16px; }
+.proof-head h2 {
+  margin: 0 auto;
+  font-weight: 700;
+  font-size: var(--fs-h2);
+  line-height: 1.12; letter-spacing: -0.03em;
+  color: var(--black); text-wrap: balance;
+  max-width: 18ch;
+}
+.proof-carousel { max-width: 620px; margin: 0 auto; }
+.proof-viewport { overflow: hidden; padding: 14px 16px 34px; }
+.proof-track { position: relative; min-height: 340px; }
+.proof-track.switching { transition: height 460ms var(--ease-out); }
+.proof-card {
+  position: absolute; top: 0; left: 0; right: 0;
+  box-sizing: border-box;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: clamp(24px, 3.4vw, 36px);
+  box-shadow: 0 22px 46px -24px rgba(26, 26, 26, 0.26);
+  text-align: left;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(20px) scale(0.96);
+  transition: opacity 460ms var(--ease-out),
+              transform 560ms var(--ease-out),
+              border-color 200ms var(--ease-out);
+  pointer-events: none;
+}
+.proof-card.is-active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+.proof-card:hover { border-color: var(--green); }
+.proof-card:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; }
+.proof-toggle {
+  position: absolute;
+  top: clamp(22px, 3.2vw, 30px); right: clamp(22px, 3.2vw, 30px);
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--surface-2); border: 1px solid var(--line);
+  color: var(--grey-3);
+  display: flex; align-items: center; justify-content: center;
+  transition: transform 340ms var(--ease-out), background 200ms, color 200ms, border-color 200ms;
+}
+.proof-toggle svg { width: 14px; height: 14px; }
+.proof-card.expanded .proof-toggle {
+  transform: rotate(180deg);
+  background: var(--green); color: var(--white); border-color: var(--green);
+}
+.proof-geo {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--mono); font-size: 11px;
+  letter-spacing: 0.07em; text-transform: uppercase;
+  color: var(--green); background: var(--green-tint);
+  padding: 5px 11px; border-radius: 999px;
+  margin-bottom: 18px;
+}
+.proof-geo svg { width: 11px; height: 11px; }
+.proof-stat {
+  margin: 0;
+  font-weight: 700;
+  font-size: clamp(21px, 1.3vw + 14px, 30px);
+  line-height: 1.22; letter-spacing: -0.02em;
+  color: var(--black); text-wrap: balance;
+}
+.proof-stat .hl { color: var(--green); }
+.proof-context {
+  margin: 13px 0 0;
+  font-size: 15px; color: var(--grey); line-height: 1.55;
+}
+.proof-more {
+  display: grid; grid-template-rows: 0fr;
+  transition: grid-template-rows 440ms var(--ease-out);
+}
+.proof-card.expanded .proof-more { grid-template-rows: 1fr; }
+.proof-more-inner { overflow: hidden; }
+.proof-more-inner p {
+  margin: 14px 0 0;
+  font-size: 14.5px; color: var(--grey-3); line-height: 1.6;
+}
+.proof-link {
+  display: inline-flex; align-items: center; gap: 7px;
+  margin-top: 14px;
+  font-weight: 600; font-size: 14px; color: var(--green);
+}
+.proof-link svg { width: 14px; height: 14px; transition: transform 200ms var(--ease-out); }
+.proof-link:hover svg { transform: translate(3px, -3px); }
+.proof-divider {
+  margin-top: clamp(18px, 2.4vw, 24px);
+  padding-top: clamp(16px, 2vw, 20px);
+  border-top: 1px solid var(--line);
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: 14px; flex-wrap: wrap;
+}
+.proof-publisher { display: flex; flex-direction: column; gap: 6px; }
+.pub-tag {
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--grey-2);
+}
+.pub-logo {
+  font-size: 18px; line-height: 1; font-weight: 700;
+  letter-spacing: -0.02em; white-space: nowrap;
+}
+.pub-logo--authbridge { color: #103B6F; }
+.pub-logo--authbridge b { color: #2F7DD1; font-weight: 700; }
+.pub-logo--eweek { color: #D81E2C; font-weight: 800; letter-spacing: 0; }
+.pub-logo--gartner { color: #0A2A66; text-transform: lowercase; letter-spacing: -0.045em; }
+.pub-logo--accredible { color: #2B2A8E; }
+.pub-logo--harvard {
+  font-family: Georgia, 'Times New Roman', serif;
+  color: #A41034; font-size: 16px; letter-spacing: 0;
+}
+.pub-report {
+  font-family: var(--mono); font-size: 11px;
+  color: var(--grey-2); letter-spacing: 0.02em;
+  text-align: right; white-space: nowrap;
+}
+.proof-dots { display: flex; justify-content: center; gap: 9px; margin-top: 22px; }
+.proof-dot {
+  width: 8px; height: 8px; border-radius: 999px;
+  background: var(--line); border: 0; padding: 0; cursor: pointer;
+  transition: background 240ms var(--ease-out), width 240ms var(--ease-out);
+}
+.proof-dot.is-active { background: var(--green); width: 24px; }
+
+/* ============================================================
+   Trust strip
+   ============================================================ */
+.trust {
+  padding: clamp(56px, 6vw, 88px) 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.trust-inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(28px, 3vw, 40px);
+  align-items: center;
+}
+.trust-label {
+  font-size: clamp(13px, 0.3vw + 12px, 14px);
+  font-weight: 500;
+  color: var(--grey);
+  line-height: 1.5;
+}
+.trust-logos {
+  display: flex; flex-wrap: wrap;
+  gap: clamp(20px, 3vw, 44px);
+  justify-content: flex-start;
+  align-items: center;
+}
+.trust-logos span {
+  font-weight: 700;
+  font-size: clamp(14px, 0.6vw + 12px, 20px);
+  letter-spacing: 0.12em;
+  color: var(--black);
+  opacity: 0.7;
+}
+
+/* ============================================================
+   Final CTA
+   ============================================================ */
+.final {
+  padding: var(--gap-section) 0;
+  text-align: center;
+  background: var(--black);
+  color: var(--white);
+  position: relative;
+  overflow: hidden;
+}
+.final::before {
+  content: "";
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at top, rgba(45, 106, 79, 0.20), transparent 60%);
+  pointer-events: none;
+}
+.final-inner { position: relative; z-index: 1; }
+.final h2 {
+  font-weight: 700;
+  font-size: clamp(36px, 5vw + 16px, 80px);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  margin: 0 auto;
+  max-width: 16ch;
+  color: var(--white);
+  text-wrap: balance;
+}
+.final h2 .reg { font-weight: 400; color: var(--grey-2); }
+.final p {
+  margin: clamp(20px, 2vw, 28px) auto 0;
+  max-width: 38ch;
+  font-size: var(--fs-lede);
+  color: var(--grey-2);
+  line-height: 1.55;
+}
+.final .waitlist {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+.final .waitlist input { color: var(--white); }
+.final .waitlist input::placeholder { color: var(--grey-2); }
+.final .waitlist button { background: var(--green); }
+.final .waitlist button:hover { background: var(--green-2); }
+.final .waitlist-meta { color: var(--grey-2); }
+.final .waitlist.success .success-text { color: var(--white); }
+
+/* ============================================================
+   Footer
+   ============================================================ */
+.foot {
+  padding: clamp(56px, 6vw, 96px) 0 clamp(24px, 2.5vw, 40px);
+  background: var(--black);
+  color: var(--grey-2);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+.foot-inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(40px, 4vw, 72px);
+  padding-bottom: clamp(40px, 4vw, 64px);
+}
+.foot-brand {
+  display: flex; flex-direction: column; gap: 14px;
+  max-width: 360px;
+}
+.foot-wordmark {
+  display: inline-flex;
+  align-items: center;
+  font-weight: 700;
+  font-size: clamp(17px, 0.5vw + 14px, 20px);
+  letter-spacing: -0.015em;
+  color: var(--white);
+}
+.foot-wordmark .work { font-weight: 400; color: var(--grey-2); }
+.foot-wordmark .check {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--green); margin: 0 2px;
+  flex-shrink: 0;
+}
+.foot-wordmark .check svg { width: 8px; height: 8px; }
+.foot-tagline {
+  margin: 0;
+  font-size: clamp(13px, 0.3vw + 12px, 15px);
+  color: var(--grey-2);
+  line-height: 1.5;
+}
+.foot-cols {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(28px, 3vw, 48px);
+}
+.foot-col h4 {
+  margin: 0 0 16px;
+  font-size: var(--fs-eyebrow);
+  font-weight: 500;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--grey-2);
+}
+.foot-col ul {
+  list-style: none; margin: 0; padding: 0;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.foot-col a {
+  color: var(--white);
+  text-decoration: none;
+  font-size: clamp(13px, 0.3vw + 12px, 15px);
+  display: inline-flex; align-items: center; gap: 8px;
+  transition: color 150ms;
+}
+.foot-col a:hover { color: var(--green-2); }
+.foot-col svg { flex-shrink: 0; opacity: 0.85; }
+
+.foot-bottom {
+  padding-top: clamp(20px, 2vw, 28px);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 12px;
+  font-size: 13px;
+  color: var(--grey-2);
+}
+
+/* ============================================================
+   Breakpoints
+   ============================================================ */
+
+/* Laptop + */
+@media (min-width: 760px) {
+  .foot-inner { grid-template-columns: 1.2fr 2fr; }
+}
+
+/* Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 1ms !important;
+    transition-duration: 1ms !important;
+  }
+  .reveal { opacity: 1; transform: none; }
+}
 </style>
 </head>
 <body>
-<div id="root"></div>
 
-<template id="__bundler_thumbnail">
-<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-  <rect width="100" height="100" rx="22" fill="#1A1A1A"/>
-  <path d="M28 36 L42 64 L50 50 L58 64 L74 32" stroke="#fff" stroke-width="7" fill="none" stroke-linecap="round"/>
-  <circle cx="74" cy="34" r="9" fill="#2D6A4F"/>
-  <path d="M70 34 l3 3 l6 -7" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
-</template>
-
-<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
-
-<script type="text/babel" data-presets="react">
-
-/* ===== ios-frame.jsx ===== */
-// @ds-adherence-ignore -- omelette starter scaffold (raw elements/hex/px by design)
-
-/* BEGIN USAGE */
-// iOS.jsx — Simplified iOS 26 (Liquid Glass) device frame
-// Based on the iOS 26 UI Kit + Figma status bar spec. No assets, no deps.
-// Exports (to window): IOSDevice, IOSStatusBar, IOSNavBar, IOSGlassPill, IOSList, IOSListRow, IOSKeyboard
-//
-// Usage — wrap your screen content in <IOSDevice> to get the bezel, status bar
-// and home indicator (props: title, dark, keyboard):
-//
-//   <IOSDevice title="Settings">
-//     ...your screen content...
-//   </IOSDevice>
-//   <IOSDevice dark title="Search" keyboard>…</IOSDevice>
-/* END USAGE */
-
-// ─────────────────────────────────────────────────────────────
-// Status bar
-// ─────────────────────────────────────────────────────────────
-function IOSStatusBar({ dark = false, time = '9:41' }) {
-  const c = dark ? '#fff' : '#000';
-  return (
-    <div style={{
-      display: 'flex', gap: 154, alignItems: 'center', justifyContent: 'center',
-      padding: '21px 24px 19px', boxSizing: 'border-box',
-      position: 'relative', zIndex: 20, width: '100%',
-    }}>
-      <div style={{ flex: 1, height: 22, display: 'flex', alignItems: 'center', justifyContent: 'center', paddingTop: 1.5 }}>
-        <span style={{
-          fontFamily: '-apple-system, "SF Pro", system-ui', fontWeight: 590,
-          fontSize: 17, lineHeight: '22px', color: c,
-        }}>{time}</span>
+<!-- =========================================================
+     NAV
+     ========================================================= -->
+<nav class="nav" id="nav">
+  <div class="container inner">
+    <a class="nav-mark" href="#top" aria-label="verified.work">
+      <span>verified</span>
+      <span class="check" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+      </span>
+      <span class="work">work</span>
+    </a>
+    <div class="nav-right">
+      <button class="nav-menu-btn" id="nav-menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="nav-menu" aria-haspopup="true">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-menu" id="nav-menu" role="menu">
+        <a href="/" role="menuitem">Home</a>
+        <a href="app.html" role="menuitem">Open the app</a>
+        <a href="app.html#/validate" role="menuitem">Validator demo</a>
+        <a href="blog/" role="menuitem">Blog</a>
+        <a href="careers.html" role="menuitem">Careers</a>
+        <a href="privacy.html" role="menuitem">Privacy</a>
+        <a href="terms.html" role="menuitem">Terms</a>
       </div>
-      <div style={{ flex: 1, height: 22, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7, paddingTop: 1, paddingRight: 1 }}>
-        <svg width="19" height="12" viewBox="0 0 19 12">
-          <rect x="0" y="7.5" width="3.2" height="4.5" rx="0.7" fill={c}/>
-          <rect x="4.8" y="5" width="3.2" height="7" rx="0.7" fill={c}/>
-          <rect x="9.6" y="2.5" width="3.2" height="9.5" rx="0.7" fill={c}/>
-          <rect x="14.4" y="0" width="3.2" height="12" rx="0.7" fill={c}/>
-        </svg>
-        <svg width="17" height="12" viewBox="0 0 17 12">
-          <path d="M8.5 3.2C10.8 3.2 12.9 4.1 14.4 5.6L15.5 4.5C13.7 2.7 11.2 1.5 8.5 1.5C5.8 1.5 3.3 2.7 1.5 4.5L2.6 5.6C4.1 4.1 6.2 3.2 8.5 3.2Z" fill={c}/>
-          <path d="M8.5 6.8C9.9 6.8 11.1 7.3 12 8.2L13.1 7.1C11.8 5.9 10.2 5.1 8.5 5.1C6.8 5.1 5.2 5.9 3.9 7.1L5 8.2C5.9 7.3 7.1 6.8 8.5 6.8Z" fill={c}/>
-          <circle cx="8.5" cy="10.5" r="1.5" fill={c}/>
-        </svg>
-        <svg width="27" height="13" viewBox="0 0 27 13">
-          <rect x="0.5" y="0.5" width="23" height="12" rx="3.5" stroke={c} strokeOpacity="0.35" fill="none"/>
-          <rect x="2" y="2" width="20" height="9" rx="2" fill={c}/>
-          <path d="M25 4.5V8.5C25.8 8.2 26.5 7.2 26.5 6.5C26.5 5.8 25.8 4.8 25 4.5Z" fill={c} fillOpacity="0.4"/>
-        </svg>
-      </div>
+      <a class="nav-signin" href="app.html">Sign in</a>
+      <button class="nav-cta" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">Join the Waitlist</button>
     </div>
-  );
-}
+  </div>
+</nav>
 
-// ─────────────────────────────────────────────────────────────
-// Liquid glass pill — blur + tint + shine
-// ─────────────────────────────────────────────────────────────
-function IOSGlassPill({ children, dark = false, style = {} }) {
-  return (
-    <div style={{
-      height: 44, minWidth: 44, borderRadius: 9999,
-      position: 'relative', overflow: 'hidden',
-      display: 'flex', alignItems: 'center', justifyContent: 'center',
-      boxShadow: dark
-        ? '0 2px 6px rgba(0,0,0,0.35), 0 6px 16px rgba(0,0,0,0.2)'
-        : '0 1px 3px rgba(0,0,0,0.07), 0 3px 10px rgba(0,0,0,0.06)',
-      ...style,
-    }}>
-      {/* blur + tint */}
-      <div style={{
-        position: 'absolute', inset: 0, borderRadius: 9999,
-        backdropFilter: 'blur(12px) saturate(180%)',
-        WebkitBackdropFilter: 'blur(12px) saturate(180%)',
-        background: dark ? 'rgba(120,120,128,0.28)' : 'rgba(255,255,255,0.5)',
-      }} />
-      {/* shine */}
-      <div style={{
-        position: 'absolute', inset: 0, borderRadius: 9999,
-        boxShadow: dark
-          ? 'inset 1.5px 1.5px 1px rgba(255,255,255,0.15), inset -1px -1px 1px rgba(255,255,255,0.08)'
-          : 'inset 1.5px 1.5px 1px rgba(255,255,255,0.7), inset -1px -1px 1px rgba(255,255,255,0.4)',
-        border: dark ? '0.5px solid rgba(255,255,255,0.15)' : '0.5px solid rgba(0,0,0,0.06)',
-      }} />
-      <div style={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', padding: '0 4px' }}>
-        {children}
-      </div>
-    </div>
-  );
-}
-
-// ─────────────────────────────────────────────────────────────
-// Navigation bar — glass pills + large title
-// ─────────────────────────────────────────────────────────────
-function IOSNavBar({ title = 'Title', dark = false, trailingIcon = true }) {
-  const muted = dark ? 'rgba(255,255,255,0.6)' : '#404040';
-  const text = dark ? '#fff' : '#000';
-  const pillIcon = (content) => (
-    <IOSGlassPill dark={dark}>
-      <div style={{ width: 36, height: 36, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        {content}
-      </div>
-    </IOSGlassPill>
-  );
-  return (
-    <div style={{
-      display: 'flex', flexDirection: 'column', gap: 10,
-      paddingTop: 62, paddingBottom: 10, position: 'relative', zIndex: 5,
-    }}>
-      <div style={{
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: '0 16px',
-      }}>
-        {/* back chevron */}
-        {pillIcon(
-          <svg width="12" height="20" viewBox="0 0 12 20" fill="none" style={{ marginLeft: -1 }}>
-            <path d="M10 2L2 10l8 8" stroke={muted} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        )}
-        {/* trailing ellipsis */}
-        {trailingIcon && pillIcon(
-          <svg width="22" height="6" viewBox="0 0 22 6">
-            <circle cx="3" cy="3" r="2.5" fill={muted}/>
-            <circle cx="11" cy="3" r="2.5" fill={muted}/>
-            <circle cx="19" cy="3" r="2.5" fill={muted}/>
-          </svg>
-        )}
-      </div>
-      {/* large title */}
-      <div style={{
-        padding: '0 16px',
-        fontFamily: '-apple-system, system-ui',
-        fontSize: 34, fontWeight: 700, lineHeight: '41px',
-        color: text, letterSpacing: 0.4,
-      }}>{title}</div>
-    </div>
-  );
-}
-
-// ─────────────────────────────────────────────────────────────
-// Grouped list (inset card, r:26) + row (52px)
-// ─────────────────────────────────────────────────────────────
-function IOSListRow({ title, detail, icon, chevron = true, isLast = false, dark = false }) {
-  const text = dark ? '#fff' : '#000';
-  const sec = dark ? 'rgba(235,235,245,0.6)' : 'rgba(60,60,67,0.6)';
-  const ter = dark ? 'rgba(235,235,245,0.3)' : 'rgba(60,60,67,0.3)';
-  const sep = dark ? 'rgba(84,84,88,0.65)' : 'rgba(60,60,67,0.12)';
-  return (
-    <div style={{
-      display: 'flex', alignItems: 'center', minHeight: 52,
-      padding: '0 16px', position: 'relative',
-      fontFamily: '-apple-system, system-ui', fontSize: 17,
-      letterSpacing: -0.43,
-    }}>
-      {icon && (
-        <div style={{
-          width: 30, height: 30, borderRadius: 7, background: icon,
-          marginRight: 12, flexShrink: 0,
-        }} />
-      )}
-      <div style={{ flex: 1, color: text }}>{title}</div>
-      {detail && <span style={{ color: sec, marginRight: 6 }}>{detail}</span>}
-      {chevron && (
-        <svg width="8" height="14" viewBox="0 0 8 14" style={{ flexShrink: 0 }}>
-          <path d="M1 1l6 6-6 6" stroke={ter} strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      )}
-      {!isLast && (
-        <div style={{
-          position: 'absolute', bottom: 0, right: 0,
-          left: icon ? 58 : 16, height: 0.5, background: sep,
-        }} />
-      )}
-    </div>
-  );
-}
-
-function IOSList({ header, children, dark = false }) {
-  const hc = dark ? 'rgba(235,235,245,0.6)' : 'rgba(60,60,67,0.6)';
-  const bg = dark ? '#1C1C1E' : '#fff';
-  return (
-    <div>
-      {header && (
-        <div style={{
-          fontFamily: '-apple-system, system-ui', fontSize: 13,
-          color: hc, textTransform: 'uppercase',
-          padding: '8px 36px 6px', letterSpacing: -0.08,
-        }}>{header}</div>
-      )}
-      <div style={{
-        background: bg, borderRadius: 26,
-        margin: '0 16px', overflow: 'hidden',
-      }}>{children}</div>
-    </div>
-  );
-}
-
-// ─────────────────────────────────────────────────────────────
-// Device frame
-// ─────────────────────────────────────────────────────────────
-function IOSDevice({
-  children, width = 402, height = 874, dark = false,
-  title, keyboard = false,
-}) {
-  return (
-    <div style={{
-      width, height, borderRadius: 48, overflow: 'hidden',
-      position: 'relative', background: dark ? '#000' : '#F2F2F7',
-      boxShadow: '0 40px 80px rgba(0,0,0,0.18), 0 0 0 1px rgba(0,0,0,0.12)',
-      fontFamily: '-apple-system, system-ui, sans-serif',
-      WebkitFontSmoothing: 'antialiased',
-    }}>
-      {/* dynamic island */}
-      <div style={{
-        position: 'absolute', top: 11, left: '50%', transform: 'translateX(-50%)',
-        width: 126, height: 37, borderRadius: 24, background: '#000', zIndex: 50,
-      }} />
-      {/* status bar (absolute) */}
-      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 10 }}>
-        <IOSStatusBar dark={dark} />
-      </div>
-      {/* nav + content */}
-      <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-        {title !== undefined && <IOSNavBar title={title} dark={dark} />}
-        <div style={{ flex: 1, overflow: 'auto' }}>{children}</div>
-        {keyboard && <IOSKeyboard dark={dark} />}
-      </div>
-      {/* home indicator — always on top */}
-      <div style={{
-        position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 60,
-        height: 34, display: 'flex', justifyContent: 'center', alignItems: 'flex-end',
-        paddingBottom: 8, pointerEvents: 'none',
-      }}>
-        <div style={{
-          width: 139, height: 5, borderRadius: 100,
-          background: dark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.25)',
-        }} />
-      </div>
-    </div>
-  );
-}
-
-// ─────────────────────────────────────────────────────────────
-// Keyboard — iOS 26 liquid glass
-// ─────────────────────────────────────────────────────────────
-function IOSKeyboard({ dark = false }) {
-  const glyph = dark ? 'rgba(255,255,255,0.7)' : '#595959';
-  const sugg = dark ? 'rgba(255,255,255,0.6)' : '#333';
-  const keyBg = dark ? 'rgba(255,255,255,0.22)' : 'rgba(255,255,255,0.85)';
-
-  // special-key icons
-  const icons = {
-    shift: <svg width="19" height="17" viewBox="0 0 19 17"><path d="M9.5 1L1 9.5h4.5V16h8V9.5H18L9.5 1z" fill={glyph}/></svg>,
-    del: <svg width="23" height="17" viewBox="0 0 23 17"><path d="M7 1h13a2 2 0 012 2v11a2 2 0 01-2 2H7l-6-7.5L7 1z" fill="none" stroke={glyph} strokeWidth="1.6" strokeLinejoin="round"/><path d="M10 5l7 7M17 5l-7 7" stroke={glyph} strokeWidth="1.6" strokeLinecap="round"/></svg>,
-    ret: <svg width="20" height="14" viewBox="0 0 20 14"><path d="M18 1v6H4m0 0l4-4M4 7l4 4" fill="none" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>,
-  };
-
-  const key = (content, { w, flex, ret, fs = 25, k } = {}) => (
-    <div key={k} style={{
-      height: 42, borderRadius: 8.5,
-      flex: flex ? 1 : undefined, width: w, minWidth: 0,
-      background: ret ? '#08f' : keyBg,
-      boxShadow: '0 1px 0 rgba(0,0,0,0.075)',
-      display: 'flex', alignItems: 'center', justifyContent: 'center',
-      fontFamily: '-apple-system, "SF Compact", system-ui',
-      fontSize: fs, fontWeight: 458, color: ret ? '#fff' : glyph,
-    }}>{content}</div>
-  );
-
-  const row = (keys, pad = 0) => (
-    <div style={{ display: 'flex', gap: 6.5, justifyContent: 'center', padding: `0 ${pad}px` }}>
-      {keys.map(l => key(l, { flex: true, k: l }))}
-    </div>
-  );
-
-  return (
-    <div style={{
-      position: 'relative', zIndex: 15, borderRadius: 27, overflow: 'hidden',
-      padding: '11px 0 2px',
-      display: 'flex', flexDirection: 'column', alignItems: 'center',
-      boxShadow: dark
-        ? '0 -2px 20px rgba(0,0,0,0.09)'
-        : '0 -1px 6px rgba(0,0,0,0.018), 0 -3px 20px rgba(0,0,0,0.012)',
-    }}>
-      {/* liquid glass bg — same recipe as nav pills */}
-      <div style={{
-        position: 'absolute', inset: 0, borderRadius: 27,
-        backdropFilter: 'blur(12px) saturate(180%)',
-        WebkitBackdropFilter: 'blur(12px) saturate(180%)',
-        background: dark ? 'rgba(120,120,128,0.14)' : 'rgba(255,255,255,0.25)',
-      }} />
-      <div style={{
-        position: 'absolute', inset: 0, borderRadius: 27,
-        boxShadow: dark
-          ? 'inset 1.5px 1.5px 1px rgba(255,255,255,0.15)'
-          : 'inset 1.5px 1.5px 1px rgba(255,255,255,0.7), inset -1px -1px 1px rgba(255,255,255,0.4)',
-        border: dark ? '0.5px solid rgba(255,255,255,0.15)' : '0.5px solid rgba(0,0,0,0.06)',
-        pointerEvents: 'none',
-      }} />
-
-      {/* autocorrect bar */}
-      <div style={{
-        display: 'flex', gap: 20, alignItems: 'center',
-        padding: '8px 22px 13px', width: '100%', boxSizing: 'border-box',
-        position: 'relative',
-      }}>
-        {['"The"', 'the', 'to'].map((w, i) => (
-          <React.Fragment key={i}>
-            {i > 0 && <div style={{ width: 1, height: 25, background: '#ccc', opacity: 0.3 }} />}
-            <div style={{
-              flex: 1, textAlign: 'center',
-              fontFamily: '-apple-system, system-ui', fontSize: 17,
-              color: sugg, letterSpacing: -0.43, lineHeight: '22px',
-            }}>{w}</div>
-          </React.Fragment>
-        ))}
-      </div>
-
-      {/* key layout */}
-      <div style={{
-        display: 'flex', flexDirection: 'column', gap: 13,
-        padding: '0 6.5px', width: '100%', boxSizing: 'border-box',
-        position: 'relative',
-      }}>
-        {row(['q','w','e','r','t','y','u','i','o','p'])}
-        {row(['a','s','d','f','g','h','j','k','l'], 20)}
-        <div style={{ display: 'flex', gap: 14.25, alignItems: 'center' }}>
-          {key(icons.shift, { w: 45, k: 'shift' })}
-          <div style={{ display: 'flex', gap: 6.5, flex: 1 }}>
-            {['z','x','c','v','b','n','m'].map(l => key(l, { flex: true, k: l }))}
-          </div>
-          {key(icons.del, { w: 45, k: 'del' })}
-        </div>
-        <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
-          {key('ABC', { w: 92.25, fs: 18, k: 'abc' })}
-          {key('', { flex: true, k: 'space' })}
-          {key(icons.ret, { w: 92.25, ret: true, k: 'ret' })}
-        </div>
-      </div>
-
-      {/* bottom spacer (emoji+mic area, icons omitted) */}
-      <div style={{ height: 56, width: '100%', position: 'relative' }} />
-    </div>
-  );
-}
-
-Object.assign(window, {
-  IOSDevice, IOSStatusBar, IOSNavBar, IOSGlassPill, IOSList, IOSListRow, IOSKeyboard,
-});
-
-
-/* ===== tweaks-panel.jsx ===== */
-// @ds-adherence-ignore -- omelette starter scaffold (raw elements/hex/px by design)
-
-/* BEGIN USAGE */
-// tweaks-panel.jsx
-// Reusable Tweaks shell + form-control helpers.
-// Exports (to window): useTweaks, TweaksPanel, TweakSection, TweakRow, TweakSlider,
-//   TweakToggle, TweakRadio, TweakSelect, TweakText, TweakNumber, TweakColor, TweakButton.
-//
-// Owns the host protocol (listens for __activate_edit_mode / __deactivate_edit_mode,
-// posts __edit_mode_available / __edit_mode_set_keys / __edit_mode_dismissed) so
-// individual prototypes don't re-roll it. Ships a consistent set of controls so you
-// don't hand-draw <input type="range">, segmented radios, steppers, etc.
-//
-// Usage (in an HTML file that loads React + Babel):
-//
-//   const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-//     "primaryColor": "#D97757",
-//     "palette": ["#D97757", "#29261b", "#f6f4ef"],
-//     "fontSize": 16,
-//     "density": "regular",
-//     "dark": false
-//   }/*EDITMODE-END*/;
-//
-//   function App() {
-//     const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
-//     return (
-//       <div style={{ fontSize: t.fontSize, color: t.primaryColor }}>
-//         Hello
-//         <TweaksPanel>
-//           <TweakSection label="Typography" />
-//           <TweakSlider label="Font size" value={t.fontSize} min={10} max={32} unit="px"
-//                        onChange={(v) => setTweak('fontSize', v)} />
-//           <TweakRadio  label="Density" value={t.density}
-//                        options={['compact', 'regular', 'comfy']}
-//                        onChange={(v) => setTweak('density', v)} />
-//           <TweakSection label="Theme" />
-//           <TweakColor  label="Primary" value={t.primaryColor}
-//                        options={['#D97757', '#2A6FDB', '#1F8A5B', '#7A5AE0']}
-//                        onChange={(v) => setTweak('primaryColor', v)} />
-//           <TweakColor  label="Palette" value={t.palette}
-//                        options={[['#D97757', '#29261b', '#f6f4ef'],
-//                                  ['#475569', '#0f172a', '#f1f5f9']]}
-//                        onChange={(v) => setTweak('palette', v)} />
-//           <TweakToggle label="Dark mode" value={t.dark}
-//                        onChange={(v) => setTweak('dark', v)} />
-//         </TweaksPanel>
-//       </div>
-//     );
-//   }
-//
-// TweakRadio is the segmented control for 2–3 short options (auto-falls-back to
-// TweakSelect past ~16/~10 chars per label); reach for TweakSelect directly when
-// options are many or long. For color tweaks always curate 3-4 options rather than
-// a free picker; an option can also be a whole 2–5 color palette (the stored value
-// is the array). The Tweak* controls are a floor, not a ceiling — build custom
-// controls inside the panel if a tweak calls for UI they don't cover.
-/* END USAGE */
-// ─────────────────────────────────────────────────────────────────────────────
-
-const __TWEAKS_STYLE = `
-  .twk-panel{position:fixed;right:16px;bottom:16px;z-index:2147483646;width:280px;
-    max-height:calc(100vh - 32px);display:flex;flex-direction:column;
-    transform:scale(var(--dc-inv-zoom,1));transform-origin:bottom right;
-    background:rgba(250,249,247,.78);color:#29261b;
-    -webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);
-    border:.5px solid rgba(255,255,255,.6);border-radius:14px;
-    box-shadow:0 1px 0 rgba(255,255,255,.5) inset,0 12px 40px rgba(0,0,0,.18);
-    font:11.5px/1.4 ui-sans-serif,system-ui,-apple-system,sans-serif;overflow:hidden}
-  .twk-hd{display:flex;align-items:center;justify-content:space-between;
-    padding:10px 8px 10px 14px;cursor:move;user-select:none}
-  .twk-hd b{font-size:12px;font-weight:600;letter-spacing:.01em}
-  .twk-x{appearance:none;border:0;background:transparent;color:rgba(41,38,27,.55);
-    width:22px;height:22px;border-radius:6px;cursor:default;font-size:13px;line-height:1}
-  .twk-x:hover{background:rgba(0,0,0,.06);color:#29261b}
-  .twk-body{padding:2px 14px 14px;display:flex;flex-direction:column;gap:10px;
-    overflow-y:auto;overflow-x:hidden;min-height:0;
-    scrollbar-width:thin;scrollbar-color:rgba(0,0,0,.15) transparent}
-  .twk-body::-webkit-scrollbar{width:8px}
-  .twk-body::-webkit-scrollbar-track{background:transparent;margin:2px}
-  .twk-body::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:4px;
-    border:2px solid transparent;background-clip:content-box}
-  .twk-body::-webkit-scrollbar-thumb:hover{background:rgba(0,0,0,.25);
-    border:2px solid transparent;background-clip:content-box}
-  .twk-row{display:flex;flex-direction:column;gap:5px}
-  .twk-row-h{flex-direction:row;align-items:center;justify-content:space-between;gap:10px}
-  .twk-lbl{display:flex;justify-content:space-between;align-items:baseline;
-    color:rgba(41,38,27,.72)}
-  .twk-lbl>span:first-child{font-weight:500}
-  .twk-val{color:rgba(41,38,27,.5);font-variant-numeric:tabular-nums}
-
-  .twk-sect{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
-    color:rgba(41,38,27,.45);padding:10px 0 0}
-  .twk-sect:first-child{padding-top:0}
-
-  .twk-field{appearance:none;box-sizing:border-box;width:100%;min-width:0;height:26px;padding:0 8px;
-    border:.5px solid rgba(0,0,0,.1);border-radius:7px;
-    background:rgba(255,255,255,.6);color:inherit;font:inherit;outline:none}
-  .twk-field:focus{border-color:rgba(0,0,0,.25);background:rgba(255,255,255,.85)}
-  select.twk-field{padding-right:22px;
-    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path fill='rgba(0,0,0,.5)' d='M0 0h10L5 6z'/></svg>");
-    background-repeat:no-repeat;background-position:right 8px center}
-
-  .twk-slider{appearance:none;-webkit-appearance:none;width:100%;height:4px;margin:6px 0;
-    border-radius:999px;background:rgba(0,0,0,.12);outline:none}
-  .twk-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
-    width:14px;height:14px;border-radius:50%;background:#fff;
-    border:.5px solid rgba(0,0,0,.12);box-shadow:0 1px 3px rgba(0,0,0,.2);cursor:default}
-  .twk-slider::-moz-range-thumb{width:14px;height:14px;border-radius:50%;
-    background:#fff;border:.5px solid rgba(0,0,0,.12);box-shadow:0 1px 3px rgba(0,0,0,.2);cursor:default}
-
-  .twk-seg{position:relative;display:flex;padding:2px;border-radius:8px;
-    background:rgba(0,0,0,.06);user-select:none}
-  .twk-seg-thumb{position:absolute;top:2px;bottom:2px;border-radius:6px;
-    background:rgba(255,255,255,.9);box-shadow:0 1px 2px rgba(0,0,0,.12);
-    transition:left .15s cubic-bezier(.3,.7,.4,1),width .15s}
-  .twk-seg.dragging .twk-seg-thumb{transition:none}
-  .twk-seg button{appearance:none;position:relative;z-index:1;flex:1;border:0;
-    background:transparent;color:inherit;font:inherit;font-weight:500;min-height:22px;
-    border-radius:6px;cursor:default;padding:4px 6px;line-height:1.2;
-    overflow-wrap:anywhere}
-
-  .twk-toggle{position:relative;width:32px;height:18px;border:0;border-radius:999px;
-    background:rgba(0,0,0,.15);transition:background .15s;cursor:default;padding:0}
-  .twk-toggle[data-on="1"]{background:#34c759}
-  .twk-toggle i{position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;
-    background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .15s}
-  .twk-toggle[data-on="1"] i{transform:translateX(14px)}
-
-  .twk-num{display:flex;align-items:center;box-sizing:border-box;min-width:0;height:26px;padding:0 0 0 8px;
-    border:.5px solid rgba(0,0,0,.1);border-radius:7px;background:rgba(255,255,255,.6)}
-  .twk-num-lbl{font-weight:500;color:rgba(41,38,27,.6);cursor:ew-resize;
-    user-select:none;padding-right:8px}
-  .twk-num input{flex:1;min-width:0;height:100%;border:0;background:transparent;
-    font:inherit;font-variant-numeric:tabular-nums;text-align:right;padding:0 8px 0 0;
-    outline:none;color:inherit;-moz-appearance:textfield}
-  .twk-num input::-webkit-inner-spin-button,.twk-num input::-webkit-outer-spin-button{
-    -webkit-appearance:none;margin:0}
-  .twk-num-unit{padding-right:8px;color:rgba(41,38,27,.45)}
-
-  .twk-btn{appearance:none;height:26px;padding:0 12px;border:0;border-radius:7px;
-    background:rgba(0,0,0,.78);color:#fff;font:inherit;font-weight:500;cursor:default}
-  .twk-btn:hover{background:rgba(0,0,0,.88)}
-  .twk-btn.secondary{background:rgba(0,0,0,.06);color:inherit}
-  .twk-btn.secondary:hover{background:rgba(0,0,0,.1)}
-
-  .twk-swatch{appearance:none;-webkit-appearance:none;width:56px;height:22px;
-    border:.5px solid rgba(0,0,0,.1);border-radius:6px;padding:0;cursor:default;
-    background:transparent;flex-shrink:0}
-  .twk-swatch::-webkit-color-swatch-wrapper{padding:0}
-  .twk-swatch::-webkit-color-swatch{border:0;border-radius:5.5px}
-  .twk-swatch::-moz-color-swatch{border:0;border-radius:5.5px}
-
-  .twk-chips{display:flex;gap:6px}
-  .twk-chip{position:relative;appearance:none;flex:1;min-width:0;height:46px;
-    padding:0;border:0;border-radius:6px;overflow:hidden;cursor:default;
-    box-shadow:0 0 0 .5px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.06);
-    transition:transform .12s cubic-bezier(.3,.7,.4,1),box-shadow .12s}
-  .twk-chip:hover{transform:translateY(-1px);
-    box-shadow:0 0 0 .5px rgba(0,0,0,.18),0 4px 10px rgba(0,0,0,.12)}
-  .twk-chip[data-on="1"]{box-shadow:0 0 0 1.5px rgba(0,0,0,.85),
-    0 2px 6px rgba(0,0,0,.15)}
-  .twk-chip>span{position:absolute;top:0;bottom:0;right:0;width:34%;
-    display:flex;flex-direction:column;box-shadow:-1px 0 0 rgba(0,0,0,.1)}
-  .twk-chip>span>i{flex:1;box-shadow:0 -1px 0 rgba(0,0,0,.1)}
-  .twk-chip>span>i:first-child{box-shadow:none}
-  .twk-chip svg{position:absolute;top:6px;left:6px;width:13px;height:13px;
-    filter:drop-shadow(0 1px 1px rgba(0,0,0,.3))}
-`;
-
-// ── useTweaks ───────────────────────────────────────────────────────────────
-// Single source of truth for tweak values. setTweak persists via the host
-// (__edit_mode_set_keys → host rewrites the EDITMODE block on disk).
-function useTweaks(defaults) {
-  const [values, setValues] = React.useState(defaults);
-  // Accepts either setTweak('key', value) or setTweak({ key: value, ... }) so a
-  // useState-style call doesn't write a "[object Object]" key into the persisted
-  // JSON block.
-  const setTweak = React.useCallback((keyOrEdits, val) => {
-    const edits = typeof keyOrEdits === 'object' && keyOrEdits !== null
-      ? keyOrEdits : { [keyOrEdits]: val };
-    setValues((prev) => ({ ...prev, ...edits }));
-    window.parent.postMessage({ type: '__edit_mode_set_keys', edits }, '*');
-    // Same-window signal so in-page listeners (deck-stage rail thumbnails)
-    // can react — the parent message only reaches the host, not peers.
-    window.dispatchEvent(new CustomEvent('tweakchange', { detail: edits }));
-  }, []);
-  return [values, setTweak];
-}
-
-// ── TweaksPanel ─────────────────────────────────────────────────────────────
-// Floating shell. Registers the protocol listener BEFORE announcing
-// availability — if the announce ran first, the host's activate could land
-// before our handler exists and the toolbar toggle would silently no-op.
-// The close button posts __edit_mode_dismissed so the host's toolbar toggle
-// flips off in lockstep; the host echoes __deactivate_edit_mode back which
-// is what actually hides the panel.
-function TweaksPanel({ title = 'Tweaks', children }) {
-  const [open, setOpen] = React.useState(false);
-  const dragRef = React.useRef(null);
-  const offsetRef = React.useRef({ x: 16, y: 16 });
-  const PAD = 16;
-
-  const clampToViewport = React.useCallback(() => {
-    const panel = dragRef.current;
-    if (!panel) return;
-    const w = panel.offsetWidth, h = panel.offsetHeight;
-    const maxRight = Math.max(PAD, window.innerWidth - w - PAD);
-    const maxBottom = Math.max(PAD, window.innerHeight - h - PAD);
-    offsetRef.current = {
-      x: Math.min(maxRight, Math.max(PAD, offsetRef.current.x)),
-      y: Math.min(maxBottom, Math.max(PAD, offsetRef.current.y)),
-    };
-    panel.style.right = offsetRef.current.x + 'px';
-    panel.style.bottom = offsetRef.current.y + 'px';
-  }, []);
-
-  React.useEffect(() => {
-    if (!open) return;
-    clampToViewport();
-    if (typeof ResizeObserver === 'undefined') {
-      window.addEventListener('resize', clampToViewport);
-      return () => window.removeEventListener('resize', clampToViewport);
-    }
-    const ro = new ResizeObserver(clampToViewport);
-    ro.observe(document.documentElement);
-    return () => ro.disconnect();
-  }, [open, clampToViewport]);
-
-  React.useEffect(() => {
-    const onMsg = (e) => {
-      const t = e?.data?.type;
-      if (t === '__activate_edit_mode') setOpen(true);
-      else if (t === '__deactivate_edit_mode') setOpen(false);
-    };
-    window.addEventListener('message', onMsg);
-    window.parent.postMessage({ type: '__edit_mode_available' }, '*');
-    return () => window.removeEventListener('message', onMsg);
-  }, []);
-
-  const dismiss = () => {
-    setOpen(false);
-    window.parent.postMessage({ type: '__edit_mode_dismissed' }, '*');
-  };
-
-  const onDragStart = (e) => {
-    const panel = dragRef.current;
-    if (!panel) return;
-    const r = panel.getBoundingClientRect();
-    const sx = e.clientX, sy = e.clientY;
-    const startRight = window.innerWidth - r.right;
-    const startBottom = window.innerHeight - r.bottom;
-    const move = (ev) => {
-      offsetRef.current = {
-        x: startRight - (ev.clientX - sx),
-        y: startBottom - (ev.clientY - sy),
-      };
-      clampToViewport();
-    };
-    const up = () => {
-      window.removeEventListener('mousemove', move);
-      window.removeEventListener('mouseup', up);
-    };
-    window.addEventListener('mousemove', move);
-    window.addEventListener('mouseup', up);
-  };
-
-  if (!open) return null;
-  return (
-    <>
-      <style>{__TWEAKS_STYLE}</style>
-      <div ref={dragRef} className="twk-panel" data-omelette-chrome=""
-           style={{ right: offsetRef.current.x, bottom: offsetRef.current.y }}>
-        <div className="twk-hd" onMouseDown={onDragStart}>
-          <b>{title}</b>
-          <button className="twk-x" aria-label="Close tweaks"
-                  onMouseDown={(e) => e.stopPropagation()}
-                  onClick={dismiss}>✕</button>
-        </div>
-        <div className="twk-body">
-          {children}
-        </div>
-      </div>
-    </>
-  );
-}
-
-// ── Layout helpers ──────────────────────────────────────────────────────────
-
-function TweakSection({ label, children }) {
-  return (
-    <>
-      <div className="twk-sect">{label}</div>
-      {children}
-    </>
-  );
-}
-
-function TweakRow({ label, value, children, inline = false }) {
-  return (
-    <div className={inline ? 'twk-row twk-row-h' : 'twk-row'}>
-      <div className="twk-lbl">
-        <span>{label}</span>
-        {value != null && <span className="twk-val">{value}</span>}
-      </div>
-      {children}
-    </div>
-  );
-}
-
-// ── Controls ────────────────────────────────────────────────────────────────
-
-function TweakSlider({ label, value, min = 0, max = 100, step = 1, unit = '', onChange }) {
-  return (
-    <TweakRow label={label} value={`${value}${unit}`}>
-      <input type="range" className="twk-slider" min={min} max={max} step={step}
-             value={value} onChange={(e) => onChange(Number(e.target.value))} />
-    </TweakRow>
-  );
-}
-
-function TweakToggle({ label, value, onChange }) {
-  return (
-    <div className="twk-row twk-row-h">
-      <div className="twk-lbl"><span>{label}</span></div>
-      <button type="button" className="twk-toggle" data-on={value ? '1' : '0'}
-              role="switch" aria-checked={!!value}
-              onClick={() => onChange(!value)}><i /></button>
-    </div>
-  );
-}
-
-function TweakRadio({ label, value, options, onChange }) {
-  const trackRef = React.useRef(null);
-  const [dragging, setDragging] = React.useState(false);
-  // The active value is read by pointer-move handlers attached for the lifetime
-  // of a drag — ref it so a stale closure doesn't fire onChange for every move.
-  const valueRef = React.useRef(value);
-  valueRef.current = value;
-
-  // Segments wrap mid-word once per-segment width runs out. The track is
-  // ~248px (280 panel − 28 body pad − 4 seg pad), each button loses 12px
-  // to its own padding, and 11.5px system-ui averages ~6.3px/char — so 2
-  // options fit ~16 chars each, 3 fit ~10. Past that (or >3 options), fall
-  // back to a dropdown rather than wrap.
-  const labelLen = (o) => String(typeof o === 'object' ? o.label : o).length;
-  const maxLen = options.reduce((m, o) => Math.max(m, labelLen(o)), 0);
-  const fitsAsSegments = maxLen <= ({ 2: 16, 3: 10 }[options.length] ?? 0);
-  if (!fitsAsSegments) {
-    // <select> emits strings — map back to the original option value so the
-    // fallback stays type-preserving (numbers, booleans) like the segment path.
-    const resolve = (s) => {
-      const m = options.find((o) => String(typeof o === 'object' ? o.value : o) === s);
-      return m === undefined ? s : typeof m === 'object' ? m.value : m;
-    };
-    return <TweakSelect label={label} value={value} options={options}
-                        onChange={(s) => onChange(resolve(s))} />;
-  }
-  const opts = options.map((o) => (typeof o === 'object' ? o : { value: o, label: o }));
-  const idx = Math.max(0, opts.findIndex((o) => o.value === value));
-  const n = opts.length;
-
-  const segAt = (clientX) => {
-    const r = trackRef.current.getBoundingClientRect();
-    const inner = r.width - 4;
-    const i = Math.floor(((clientX - r.left - 2) / inner) * n);
-    return opts[Math.max(0, Math.min(n - 1, i))].value;
-  };
-
-  const onPointerDown = (e) => {
-    setDragging(true);
-    const v0 = segAt(e.clientX);
-    if (v0 !== valueRef.current) onChange(v0);
-    const move = (ev) => {
-      if (!trackRef.current) return;
-      const v = segAt(ev.clientX);
-      if (v !== valueRef.current) onChange(v);
-    };
-    const up = () => {
-      setDragging(false);
-      window.removeEventListener('pointermove', move);
-      window.removeEventListener('pointerup', up);
-    };
-    window.addEventListener('pointermove', move);
-    window.addEventListener('pointerup', up);
-  };
-
-  return (
-    <TweakRow label={label}>
-      <div ref={trackRef} role="radiogroup" onPointerDown={onPointerDown}
-           className={dragging ? 'twk-seg dragging' : 'twk-seg'}>
-        <div className="twk-seg-thumb"
-             style={{ left: `calc(2px + ${idx} * (100% - 4px) / ${n})`,
-                      width: `calc((100% - 4px) / ${n})` }} />
-        {opts.map((o) => (
-          <button key={o.value} type="button" role="radio" aria-checked={o.value === value}>
-            {o.label}
-          </button>
-        ))}
-      </div>
-    </TweakRow>
-  );
-}
-
-function TweakSelect({ label, value, options, onChange }) {
-  return (
-    <TweakRow label={label}>
-      <select className="twk-field" value={value} onChange={(e) => onChange(e.target.value)}>
-        {options.map((o) => {
-          const v = typeof o === 'object' ? o.value : o;
-          const l = typeof o === 'object' ? o.label : o;
-          return <option key={v} value={v}>{l}</option>;
-        })}
-      </select>
-    </TweakRow>
-  );
-}
-
-function TweakText({ label, value, placeholder, onChange }) {
-  return (
-    <TweakRow label={label}>
-      <input className="twk-field" type="text" value={value} placeholder={placeholder}
-             onChange={(e) => onChange(e.target.value)} />
-    </TweakRow>
-  );
-}
-
-function TweakNumber({ label, value, min, max, step = 1, unit = '', onChange }) {
-  const clamp = (n) => {
-    if (min != null && n < min) return min;
-    if (max != null && n > max) return max;
-    return n;
-  };
-  const startRef = React.useRef({ x: 0, val: 0 });
-  const onScrubStart = (e) => {
-    e.preventDefault();
-    startRef.current = { x: e.clientX, val: value };
-    const decimals = (String(step).split('.')[1] || '').length;
-    const move = (ev) => {
-      const dx = ev.clientX - startRef.current.x;
-      const raw = startRef.current.val + dx * step;
-      const snapped = Math.round(raw / step) * step;
-      onChange(clamp(Number(snapped.toFixed(decimals))));
-    };
-    const up = () => {
-      window.removeEventListener('pointermove', move);
-      window.removeEventListener('pointerup', up);
-    };
-    window.addEventListener('pointermove', move);
-    window.addEventListener('pointerup', up);
-  };
-  return (
-    <div className="twk-num">
-      <span className="twk-num-lbl" onPointerDown={onScrubStart}>{label}</span>
-      <input type="number" value={value} min={min} max={max} step={step}
-             onChange={(e) => onChange(clamp(Number(e.target.value)))} />
-      {unit && <span className="twk-num-unit">{unit}</span>}
-    </div>
-  );
-}
-
-// Relative-luminance contrast pick — checkmarks drawn over a swatch need to
-// read on both #111 and #fafafa without per-option configuration. Hex input
-// only (#rgb / #rrggbb); named or rgb()/hsl() colors fall through to "light".
-function __twkIsLight(hex) {
-  const h = String(hex).replace('#', '');
-  const x = h.length === 3 ? h.replace(/./g, (c) => c + c) : h.padEnd(6, '0');
-  const n = parseInt(x.slice(0, 6), 16);
-  if (Number.isNaN(n)) return true;
-  const r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255;
-  return r * 299 + g * 587 + b * 114 > 148000;
-}
-
-const __TwkCheck = ({ light }) => (
-  <svg viewBox="0 0 14 14" aria-hidden="true">
-    <path d="M3 7.2 5.8 10 11 4.2" fill="none" strokeWidth="2.2"
-          strokeLinecap="round" strokeLinejoin="round"
-          stroke={light ? 'rgba(0,0,0,.78)' : '#fff'} />
-  </svg>
-);
-
-// TweakColor — curated color/palette picker. Each option is either a single
-// hex string or an array of 1-5 hex strings; the card adapts — a lone color
-// renders solid, a palette renders colors[0] as the hero (left ~2/3) with the
-// rest stacked in a sharp column on the right. onChange emits the
-// option in the shape it was passed (string stays string, array stays array).
-// Without options it falls back to the native color input for back-compat.
-function TweakColor({ label, value, options, onChange }) {
-  if (!options || !options.length) {
-    return (
-      <div className="twk-row twk-row-h">
-        <div className="twk-lbl"><span>{label}</span></div>
-        <input type="color" className="twk-swatch" value={value}
-               onChange={(e) => onChange(e.target.value)} />
-      </div>
-    );
-  }
-  // Native <input type=color> emits lowercase hex per the HTML spec, so
-  // compare case-insensitively. String() guards JSON.stringify(undefined),
-  // which returns the primitive undefined (no .toLowerCase).
-  const key = (o) => String(JSON.stringify(o)).toLowerCase();
-  const cur = key(value);
-  return (
-    <TweakRow label={label}>
-      <div className="twk-chips" role="radiogroup">
-        {options.map((o, i) => {
-          const colors = Array.isArray(o) ? o : [o];
-          const [hero, ...rest] = colors;
-          const sup = rest.slice(0, 4);
-          const on = key(o) === cur;
-          return (
-            <button key={i} type="button" className="twk-chip" role="radio"
-                    aria-checked={on} data-on={on ? '1' : '0'}
-                    aria-label={colors.join(', ')} title={colors.join(' · ')}
-                    style={{ background: hero }}
-                    onClick={() => onChange(o)}>
-              {sup.length > 0 && (
-                <span>
-                  {sup.map((c, j) => <i key={j} style={{ background: c }} />)}
-                </span>
-              )}
-              {on && <__TwkCheck light={__twkIsLight(hero)} />}
-            </button>
-          );
-        })}
-      </div>
-    </TweakRow>
-  );
-}
-
-function TweakButton({ label, onClick, secondary = false }) {
-  return (
-    <button type="button" className={secondary ? 'twk-btn secondary' : 'twk-btn'}
-            onClick={onClick}>{label}</button>
-  );
-}
-
-Object.assign(window, {
-  useTweaks, TweaksPanel, TweakSection, TweakRow,
-  TweakSlider, TweakToggle, TweakRadio, TweakSelect,
-  TweakText, TweakNumber, TweakColor, TweakButton,
-});
-
-
-/* ===== app/primitives.jsx ===== */
-// primitives.jsx — verified.work shared UI atoms
-// Exports to window: Wordmark, Ic, CheckDot, Stamp, ProgressDots, Avatar, StatusPill,
-//   ContribBadge, ScreenHeader
-
-// ── Lucide-style inline icons (1.5px stroke, round caps) ───────────────────
-function Ic({ name, size = 20, color = 'currentColor', strokeWidth = 1.5, style = {} }) {
-  const P = {
-    fill: 'none', stroke: color, strokeWidth,
-    strokeLinecap: 'round', strokeLinejoin: 'round',
-  };
-  const paths = {
-    check: <polyline points="20 6 9 17 4 12" {...P} />,
-    arrowLeft: <><line x1="19" y1="12" x2="5" y2="12" {...P} /><polyline points="12 19 5 12 12 5" {...P} /></>,
-    arrowRight: <><line x1="5" y1="12" x2="19" y2="12" {...P} /><polyline points="12 5 19 12 12 19" {...P} /></>,
-    x: <><line x1="18" y1="6" x2="6" y2="18" {...P} /><line x1="6" y1="6" x2="18" y2="18" {...P} /></>,
-    user: <><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" {...P} /><circle cx="12" cy="7" r="4" {...P} /></>,
-    users: <><path d="M17 21v-2a4 4 0 0 0-3-3.87" {...P} /><path d="M9 21v-2a4 4 0 0 1 3-3.87" {...P} /><circle cx="9" cy="7" r="4" {...P} /><path d="M16 3.13a4 4 0 0 1 0 7.75" {...P} /></>,
-    crown: <path d="M3 8l4 4 5-7 5 7 4-4-2 11H5L3 8z" {...P} />,
-    layers: <><polygon points="12 2 2 7 12 12 22 7 12 2" {...P} /><polyline points="2 17 12 22 22 17" {...P} /><polyline points="2 12 12 17 22 12" {...P} /></>,
-    handshake: <><path d="m11 17 2 2a1 1 0 1 0 3-3" {...P} /><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4" {...P} /><path d="m21 3 1 11h-2" {...P} /><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3" {...P} /><path d="M3 4h8" {...P} /></>,
-    link: <><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" {...P} /><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" {...P} /></>,
-    info: <><circle cx="12" cy="12" r="10" {...P} /><line x1="12" y1="16" x2="12" y2="12" {...P} /><line x1="12" y1="8" x2="12.01" y2="8" {...P} /></>,
-    plus: <><line x1="12" y1="5" x2="12" y2="19" {...P} /><line x1="5" y1="12" x2="19" y2="12" {...P} /></>,
-    quote: <path d="M10 11H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v7c0 2-1 3-3 4M20 11h-4a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v7c0 2-1 3-3 4" {...P} />,
-    refresh: <><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" {...P} /><path d="M21 3v5h-5" {...P} /><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" {...P} /><path d="M8 16H3v5" {...P} /></>,
-    inbox: <><polyline points="22 12 16 12 14 15 10 15 8 12 2 12" {...P} /><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" {...P} /></>,
-    share: <><circle cx="18" cy="5" r="3" {...P} /><circle cx="6" cy="12" r="3" {...P} /><circle cx="18" cy="19" r="3" {...P} /><line x1="8.59" y1="13.51" x2="15.42" y2="17.49" {...P} /><line x1="15.41" y1="6.51" x2="8.59" y2="10.49" {...P} /></>,
-    moreH: <><circle cx="12" cy="12" r="1" fill={color} stroke="none" /><circle cx="19" cy="12" r="1" fill={color} stroke="none" /><circle cx="5" cy="12" r="1" fill={color} stroke="none" /></>,
-  };
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" style={{ display: 'block', flexShrink: 0, ...style }} aria-hidden="true">
-      {paths[name]}
-    </svg>
-  );
-}
-
-// ── Wordmark: verified · work ──────────────────────────────────────────────
-function Wordmark({ size = 22, dot = true }) {
-  const dotSize = Math.round(size * 0.66);
-  return (
-    <span className="wm" style={{ fontSize: size }}>
-      <span className="v">verified</span>
-      {dot && <CheckDot size={dotSize} />}
-      <span className="w">work</span>
+<!-- =========================================================
+     HERO
+     ========================================================= -->
+<header class="hero" id="top">
+  <div class="container">
+    <span class="hero-pill p-1" aria-hidden="true">
+      <span class="hero-pill-body">
+        <span class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+        Identity verified
+      </span>
     </span>
-  );
-}
-
-// ── The verification check dot (green disc + white check) ──────────────────
-function CheckDot({ size = 18, className = '' }) {
-  return (
-    <span className={className} style={{
-      width: size, height: size, borderRadius: '50%', background: 'var(--vw-green)',
-      display: 'inline-flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-    }}>
-      <Ic name="check" size={size * 0.62} color="#fff" strokeWidth={2.6} />
+    <span class="hero-pill p-2" aria-hidden="true">
+      <span class="hero-pill-body">
+        <span class="pi dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z"/></svg></span>
+        Real outcome logged
+      </span>
     </span>
-  );
-}
-
-// ── The stamp — scales 0.6 → 1.08 → 1.0, with a ring pulse ─────────────────
-function Stamp({ size = 96, go = true }) {
-  return (
-    <div className={'stamp' + (go ? ' go' : '')} style={{ position: 'relative', width: size, height: size }}>
-      <span className="stamp-ring" style={{ width: size, height: size, left: 0, top: 0 }} />
-      <svg width={size} height={size} viewBox="0 0 96 96">
-        <circle cx="48" cy="48" r="48" fill="var(--vw-green)" />
-        <polyline points="29 49 42 62 67 34" fill="none" stroke="#fff" strokeWidth="7"
-          strokeLinecap="round" strokeLinejoin="round" />
+    <span class="hero-pill p-3" aria-hidden="true">
+      <span class="hero-pill-body">
+        <span class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21a8 8 0 1 0-16 0"/><circle cx="12" cy="8" r="4"/></svg></span>
+        Endorsed by a manager
+      </span>
+    </span>
+    <div class="hero-icon-wrap" id="hero-icon" aria-hidden="true">
+      <svg viewBox="0 0 100 100">
+        <!-- Continuous W (option C — chiseled, bevel joins) -->
+        <path class="v-path" d="M 12 30 L 31 77 L 50 53"/>
+        <path class="w-path" d="M 50 53 L 69 77 L 88 23"/>
       </svg>
     </div>
-  );
-}
 
-// ── Progress dots ──────────────────────────────────────────────────────────
-function ProgressDots({ step, total = 4 }) {
-  return (
-    <div className="prog">
-      <div className="prog-dots">
-        {Array.from({ length: total }).map((_, i) => (
-          <i key={i} className={i < step ? 'on' : ''} />
-        ))}
-      </div>
-      <span className="prog-lbl">{step} of {total}</span>
+    <div class="hero-eyebrow">
+      <span class="dot">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+      </span>
+      Private beta · waitlist open
     </div>
-  );
-}
 
-// ── Avatar (initials or image) ─────────────────────────────────────────────
-function Avatar({ name = '', src, size = 56 }) {
-  const initials = name.trim().split(/\s+/).map((p) => p[0]).slice(0, 2).join('').toUpperCase();
-  return (
-    <span className="avi" style={{
-      width: size, height: size, fontSize: size * 0.36,
-      background: src ? 'transparent' : 'var(--vw-black)',
-    }}>
-      {src ? <img src={src} alt={name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : initials}
-    </span>
-  );
-}
+    <h1 class="hero-title">
+      <span class="line">Stop being filtered.</span>
+      <span class="line">Start being</span>
+      <span class="line cycle-line"><span class="cycle" aria-live="polite"><span class="cycle-word">found.</span></span></span>
+    </h1>
 
-// ── Status pill (mono) ─────────────────────────────────────────────────────
-function StatusPill({ kind }) {
-  const map = {
-    verified: ['verified', 'Verified'],
-    pending: ['pending', 'Pending'],
-    draft: ['draft', 'Draft'],
-    expired: ['expired', 'Expired'],
-  };
-  const [cls, label] = map[kind] || map.draft;
-  return (
-    <span className={'spill ' + cls}>
-      {kind === 'verified' && <CheckDot size={13} />}
-      {label}
-    </span>
-  );
-}
+    <p class="hero-sub">Hiring based on what you've done. Not what your CV says.</p>
 
-// ── Contribution badge (profile) ───────────────────────────────────────────
-function ContribBadge({ label, verified = true }) {
-  return (
-    <span className="contrib">
-      {verified && <CheckDot size={15} />}
-      {label}
-    </span>
-  );
-}
-
-// ── Screen header with optional back button ────────────────────────────────
-function ScreenHeader({ title, onBack, right }) {
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 4 }}>
-      {onBack && (
-        <button className="btn btn-secondary" onClick={onBack} aria-label="Back"
-          style={{ width: 40, height: 40, minHeight: 40, padding: 0, borderRadius: 11, flexShrink: 0 }}>
-          <Ic name="arrowLeft" size={19} />
-        </button>
-      )}
-      {title && <h1 style={{ margin: 0, fontSize: 19, fontWeight: 700, letterSpacing: '-.01em', color: 'var(--vw-black)', flex: 1 }}>{title}</h1>}
-      {right}
+    <div class="waitlist-mount" style="max-width:480px;margin:clamp(28px,3vw,40px) auto 0;opacity:0;transform:translateY(12px);animation:rise 700ms var(--ease-out) 1100ms forwards;">
+      <div class="launchlist-widget" data-key-id="05NuEp"></div>
     </div>
-  );
-}
 
-Object.assign(window, {
-  Ic, Wordmark, CheckDot, Stamp, ProgressDots, Avatar, StatusPill, ContribBadge, ScreenHeader,
-});
+    <div class="waitlist-meta">
+      <span>No spam. Just early access.</span>
+    </div>
 
+    <div class="hero-preview">
+      <a href="app.html">Preview the product
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+</header>
 
-/* ===== app/validator.jsx ===== */
-// validator.jsx — the 4-screen validator flow + stamp success
-// Frank Docent's project: brand identity redesign at Studio Nord
-// Exports to window: ValidatorFlow
-
-function Option({ label, sub, icon, selected, onClick }) {
-  return (
-    <button className={'opt' + (icon ? ' is-icon' : '') + (selected ? ' is-sel' : '')} onClick={onClick}>
-      <div className="opt-row">
-        {icon && <span className="opt-ic"><Ic name={icon} size={20} /></span>}
-        <span className="opt-main">
-          <span className="opt-label">{label}</span>
-          {sub && <span className="opt-sub">{sub}</span>}
-        </span>
+<!-- =========================================================
+     PROBLEM
+     ========================================================= -->
+<section class="problem" id="problem">
+  <div class="container">
+    <div class="problem-grid">
+      <div class="problem-copy reveal">
+        <span class="eyebrow">The reality</span>
+        <h2>Resumes are dead.</h2>
+        <p class="lede">
+          AI writes them. AI screens them. Nobody checks if any of it was real.
+          <span class="emph">verified.work</span> puts the human layer back.
+        </p>
       </div>
-      <span className="opt-tick"><Ic name="check" size={20} color="#fff" strokeWidth={2.4} /></span>
-    </button>
-  );
-}
+      <div class="doc-stack reveal reveal-delay-2" aria-hidden="true">
+        <article class="doc-card dc-1">
+          <div class="dc-head">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z"/></svg>
+            resume_final_v3.pdf
+          </div>
+          <p class="dc-text">"Led a team of 15 engineers and scaled infrastructure by 400%."</p>
+          <span class="dc-tag">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg>
+            AI-generated
+          </span>
+        </article>
+        <article class="doc-card dc-2">
+          <div class="dc-head">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 9h8M8 13h5"/></svg>
+            ats-screening.log
+          </div>
+          <p class="dc-text">Candidate match: 98%, keyword optimization passed.</p>
+          <span class="dc-tag">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg>
+            AI-screened
+          </span>
+        </article>
+        <article class="doc-card dc-3">
+          <div class="dc-head">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>
+            the missing step
+          </div>
+          <p class="dc-text">"Did they actually build it, or just sit in the meetings?"</p>
+          <span class="dc-tag flag">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4M5 4h13l-3 4 3 4H5"/></svg>
+            Unverified
+          </span>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
 
-const CONTRIB = [
-  { key: 'owner',    label: 'Owner',    sub: 'End-to-end ownership', icon: 'crown' },
-  { key: 'executor', label: 'Executor', sub: "Tasks under someone's direction", icon: 'layers' },
-  { key: 'partner',  label: 'Partner',  sub: 'Owned a specific area in a cross-functional project', icon: 'handshake' },
-];
-
-function ValidatorFlow({ tweaks, onComplete }) {
-  const NAME    = tweaks.subjectName   || 'Frank Docent';
-  const FIRST   = NAME.split(' ')[0];
-  const PROJECT = tweaks.projectTitle  || 'brand identity redesign';
-  const COMPANY = tweaks.projectCompany|| 'Studio Nord';
-  const QUOTE   = tweaks.outcomeClaim  || 'Increased client retention by 40% in six months';
-
-  const [step, setStep]       = React.useState(1);
-  const [ans, setAns]         = React.useState({});
-  const [sentence, setSentence] = React.useState('');
-  const [again, setAgain]     = React.useState(null);
-  const [stamping, setStamping] = React.useState(false);
-  const scrollRef = React.useRef(null);
-
-  const set = (k, v) => setAns(a => ({ ...a, [k]: v }));
-  const advance = () => {
-    setStep(s => s + 1);
-    if (scrollRef.current) scrollRef.current.scrollTop = 0;
-  };
-  const back = () => {
-    setStep(s => Math.max(1, s - 1));
-    if (scrollRef.current) scrollRef.current.scrollTop = 0;
-  };
-  const pickAndGo = (k, v) => { set(k, v); setTimeout(advance, 220); };
-
-  const submit = () => {
-    setStamping(true);
-    setTimeout(() => onComplete && onComplete(), 1800);
-  };
-
-  // ── Stamp success ─────────────────────────────────────────────────────
-  if (stamping) {
-    return (
-      <div className="scr vw-pad" style={{ height: '100%', display: 'flex', flexDirection: 'column',
-        alignItems: 'center', justifyContent: 'center', textAlign: 'center', gap: 24 }}>
-        <Stamp size={104} go />
-        <div>
-          <h1 style={{ margin: '0 0 8px', fontSize: 24, fontWeight: 700, letterSpacing: '-.02em', color: 'var(--vw-black)' }}>
-            Endorsement published.
-          </h1>
-          <p className="lede" style={{ maxWidth: 280, margin: '0 auto' }}>
-            Thanks — your verification of {FIRST}'s work is now part of his record.
-          </p>
+<!-- =========================================================
+     HOW IT WORKS  (simplified, visual)
+     ========================================================= -->
+<section class="how" id="how">
+  <div class="container">
+    <div class="section-eyebrow">How it works</div>
+    <div class="roadmap-track" id="roadmap">
+      <div class="roadmap-line" aria-hidden="true"><div class="roadmap-fill" id="roadmap-fill"></div></div>
+      <article class="roadmap-step reveal">
+        <div class="roadmap-marker" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z"/><path d="M12 11v6"/><path d="M9 14h6"/></svg>
         </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="scr" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      {/* top bar */}
-      <div style={{ padding: '54px 24px 14px', display: 'flex', flexDirection: 'column', gap: 16,
-        borderBottom: '1px solid var(--vw-line-faint)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Wordmark size={16} />
-          {step > 1 && (
-            <button className="btn btn-ghost btn-secondary" onClick={back}
-              style={{ width: 'auto', minHeight: 36, padding: '0 12px', fontSize: 14, gap: 5, borderRadius: 9 }}>
-              <Ic name="arrowLeft" size={15} /> Back
-            </button>
-          )}
+        <div class="roadmap-body">
+          <span class="roadmap-num">Step 01</span>
+          <h3 class="roadmap-title">Show your work</h3>
+          <p class="roadmap-desc">Add a project and the outcome it actually drove.</p>
         </div>
-        <ProgressDots step={step} total={4} />
-      </div>
+      </article>
+      <article class="roadmap-step reveal reveal-delay-1">
+        <div class="roadmap-marker" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.6-3 8.7-7 10-4-1.3-7-5.4-7-10V6l7-3Z"/><path d="M9 12l2 2 4-4"/></svg>
+        </div>
+        <div class="roadmap-body">
+          <span class="roadmap-num">Step 02</span>
+          <h3 class="roadmap-title">Get endorsed</h3>
+          <p class="roadmap-desc">Someone who was there confirms it in 90 seconds.</p>
+        </div>
+      </article>
+      <article class="roadmap-step reveal reveal-delay-2">
+        <div class="roadmap-marker" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M3 12h18"/></svg>
+        </div>
+        <div class="roadmap-body">
+          <span class="roadmap-num">Step 03</span>
+          <h3 class="roadmap-title">Get hired</h3>
+          <p class="roadmap-desc">Share one link recruiters can actually trust.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
 
-      <div ref={scrollRef} className="vw-scroll" style={{ flex: 1, padding: '20px 24px 24px' }}>
-        {step === 1 && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-            <p className="q">
-              {FIRST} says you worked together on the <b>{PROJECT}</b> at {COMPANY}. Is that right?
-            </p>
-            <div className="opts">
-              <Option label="Yes, I can speak to his work" selected={ans.rel === 'yes'}  onClick={() => pickAndGo('rel', 'yes')} />
-              <Option label="We were peers"                selected={ans.rel === 'peer'} onClick={() => pickAndGo('rel', 'peer')} />
-              <Option label="I'm not the right person"    selected={ans.rel === 'no'}   onClick={() => pickAndGo('rel', 'no')} />
-            </div>
-          </div>
-        )}
+<!-- =========================================================
+     PROOF — research carousel
+     ========================================================= -->
+<section class="proof" id="proof">
+  <div class="container">
+    <div class="proof-head reveal">
+      <div class="section-eyebrow">Backed by research</div>
+      <h2>Hiring is broken. The data proves it.</h2>
+    </div>
 
-        {step === 2 && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-            <p className="q">What was {FIRST}'s involvement?</p>
-            <div className="opts">
-              {CONTRIB.map(c => (
-                <Option key={c.key} label={c.label} sub={c.sub} icon={c.icon}
-                  selected={ans.contrib === c.key} onClick={() => pickAndGo('contrib', c.key)} />
-              ))}
-            </div>
-          </div>
-        )}
+    <div class="proof-carousel reveal reveal-delay-1">
+      <div class="proof-viewport">
+        <div class="proof-track" id="proof-track">
 
-        {step === 3 && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 22 }}>
-            <p className="lede" style={{ marginBottom: -4 }}>{FIRST} described the outcome as:</p>
-            <div className="quotebox">
-              <span className="qm">&ldquo;</span>
-              <p>{QUOTE}</p>
-            </div>
-            <p className="q" style={{ fontSize: 21 }}>Does this reflect what you saw?</p>
-            <div className="opts">
-              <Option label="Yes, that's accurate" selected={ans.outcome === 'accurate'} onClick={() => pickAndGo('outcome', 'accurate')} />
-              <Option label="Roughly right"        selected={ans.outcome === 'rough'}    onClick={() => pickAndGo('outcome', 'rough')} />
-              <Option label="Can't confirm this"   selected={ans.outcome === 'cant'}     onClick={() => pickAndGo('outcome', 'cant')} />
-            </div>
-          </div>
-        )}
-
-        {step === 4 && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-            <p className="q">In your own words — what would you want someone hiring {FIRST} to know?</p>
-            <div className="field">
-              <textarea className="textarea" value={sentence}
-                onChange={e => setSentence(e.target.value)}
-                placeholder="He's the person I'd want on the hardest problem in the room…"
-                maxLength={280} />
-              <span className="field-lbl" style={{ color: 'var(--vw-grey)' }}>One sentence is enough.</span>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              <span className="field-lbl mono">Would you work with him again?</span>
-              <div className="pills">
-                {['Yes', 'Depends', 'No'].map(p => (
-                  <button key={p} className={'pill' + (again === p ? ' is-sel' : '')} onClick={() => setAgain(p)}>{p}</button>
-                ))}
+          <article class="proof-card is-active" data-proof-card tabindex="0" role="button" aria-expanded="false">
+            <span class="proof-toggle" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+            </span>
+            <span class="proof-geo">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6-7-11a7 7 0 1 1 14 0c0 5-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+              India
+            </span>
+            <p class="proof-stat"><span class="hl">1 in 6</span> Indian white-collar resumes don't match the candidate's real credentials.</p>
+            <p class="proof-context">AuthBridge screened millions of background checks between October 2024 and March 2025.</p>
+            <div class="proof-more">
+              <div class="proof-more-inner">
+                <p>Discrepancies ran highest in pharma at 16%, banking at 11.7% and telecom at 11.3%. A polished resume routinely outruns the truth.</p>
               </div>
             </div>
-          </div>
-        )}
-      </div>
+            <a class="proof-link" href="https://authbridge.com/newsroom/authbridge-exposes-indias-hiring-red-flags/" target="_blank" rel="noopener noreferrer">
+              Read the full story
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M8 7h9v9"/></svg>
+            </a>
+            <div class="proof-divider">
+              <span class="proof-publisher">
+                <span class="pub-tag">Source</span>
+                <span class="pub-logo pub-logo--authbridge">Auth<b>Bridge</b></span>
+              </span>
+              <span class="pub-report">Workforce Fraud Files 2025</span>
+            </div>
+          </article>
 
-      {step === 4 && (
-        <div style={{ padding: '12px 24px 40px', borderTop: '1px solid var(--vw-line-faint)' }}>
-          <button className="btn btn-primary" disabled={!sentence.trim()} onClick={submit}>
-            Submit endorsement
-          </button>
-        </div>
-      )}
-    </div>
-  );
-}
-
-Object.assign(window, { ValidatorFlow, ValidatorOption: Option });
-
-
-/* ===== app/profile.jsx ===== */
-// profile.jsx — Frank Docent's public verified profile + 3 hero-card variants
-
-const FRANK_VERIFICATIONS = [
-  {
-    title: 'Brand identity redesign', meta: 'Studio Nord · 2024', contrib: 'Partner',
-    outcome: 'confirmed',
-    quote: 'Frank has a rare ability to translate business goals into visual systems that actually hold up. The rebrand is still the best decision we made that year.',
-    by: 'Jordan M.', role: 'Creative Director', artifact: true,
-  },
-  {
-    title: 'Campaign identity', meta: 'Bloom Agency · 2023', contrib: 'Owner',
-    outcome: 'confirmed',
-    quote: 'He built the entire visual language from scratch and shipped under a tight deadline without compromising on quality.',
-    by: 'Priya S.', role: 'Producer', artifact: false,
-  },
-];
-
-// ── Card A — classic record ─────────────────────────────────────────────
-function CardClassic({ v, dim }) {
-  return (
-    <div className="vcard" style={dim ? { opacity: .54 } : undefined}>
-      <div className="vc-pad" style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12 }}>
-          <div>
-            <h3 style={{ margin: '0 0 3px', fontSize: 17, fontWeight: 700, letterSpacing: '-.01em' }}>{v.title}</h3>
-            <span className="mono" style={{ fontSize: 12, color: 'var(--vw-grey)' }}>{v.meta}</span>
-          </div>
-          <ContribBadge label={v.contrib} />
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
-          <span className="eyebrow" style={{ fontSize: 10.5 }}>Outcome</span>
-          <span style={{ fontWeight: 600, fontSize: 13, color: 'var(--vw-green)', display: 'inline-flex', alignItems: 'center', gap: 5 }}>
-            <Ic name="check" size={13} color="var(--vw-green)" strokeWidth={2.4} /> Confirmed
-          </span>
-        </div>
-        <p className="vc-quote">{v.quote}</p>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
-          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 13, color: 'var(--vw-ink-2)', fontWeight: 500 }}>
-            <CheckDot size={14} />— {v.by}, {v.role}
-          </span>
-          {v.artifact && <a className="tlink" href="#" onClick={e => e.preventDefault()}>view artifact <Ic name="arrowRight" size={13} /></a>}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ── Card B — quote-led ──────────────────────────────────────────────────
-function CardQuoteLed({ v, dim }) {
-  return (
-    <div className="vcard" style={dim ? { opacity: .54 } : undefined}>
-      <div className="vc-pad" style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-        <Ic name="quote" size={22} color="var(--vw-line-strong)" />
-        <p style={{ margin: 0, fontSize: 17, lineHeight: 1.44, fontWeight: 500, color: 'var(--vw-black)',
-          letterSpacing: '-.005em', textWrap: 'pretty' }}>
-          {v.quote}
-        </p>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 7, fontSize: 13, color: 'var(--vw-ink-2)', fontWeight: 500 }}>
-          <CheckDot size={14} />— {v.by}, {v.role}
-        </div>
-      </div>
-      <div className="divider" />
-      <div className="vc-pad" style={{ paddingTop: 14, paddingBottom: 14, display: 'flex',
-        alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
-        <div>
-          <div style={{ fontSize: 14, fontWeight: 700 }}>{v.title}</div>
-          <span className="mono" style={{ fontSize: 11.5, color: 'var(--vw-grey)' }}>{v.meta}</span>
-        </div>
-        <ContribBadge label={v.contrib} />
-      </div>
-    </div>
-  );
-}
-
-// ── Card C — receipt ────────────────────────────────────────────────────
-function CardReceipt({ v, dim }) {
-  const Row = ({ k, children }) => (
-    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline',
-      gap: 12, padding: '9px 0' }}>
-      <span className="mono" style={{ fontSize: 10.5, letterSpacing: '.06em', textTransform: 'uppercase', color: 'var(--vw-grey)' }}>{k}</span>
-      <span style={{ fontSize: 13.5, fontWeight: 600, textAlign: 'right' }}>{children}</span>
-    </div>
-  );
-  return (
-    <div className="vcard" style={dim ? { opacity: .54 } : undefined}>
-      <div className="vc-pad" style={{ paddingTop: 16, paddingBottom: 6 }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <h3 style={{ margin: 0, fontSize: 17, fontWeight: 700, letterSpacing: '-.01em' }}>{v.title}</h3>
-          <StatusPill kind="verified" />
-        </div>
-        <div className="divider" style={{ margin: '13px 0 2px' }} />
-        <Row k="Company">{v.meta}</Row>
-        <div className="divider" />
-        <Row k="Contribution"><span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><CheckDot size={13} />{v.contrib}</span></Row>
-        <div className="divider" />
-        <Row k="Outcome"><span style={{ color: 'var(--vw-green)' }}>Confirmed</span></Row>
-      </div>
-      <div style={{ background: 'var(--vw-surface-2)', padding: '14px 22px', borderTop: '1px solid var(--vw-line)' }}>
-        <p style={{ margin: '0 0 10px', fontSize: 14.5, lineHeight: 1.46, fontWeight: 500, color: 'var(--vw-black)', textWrap: 'pretty' }}>
-          {v.quote}
-        </p>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 12.5, color: 'var(--vw-ink-2)', fontWeight: 500 }}>
-            <CheckDot size={13} />{v.by}, {v.role}
-          </span>
-          {v.artifact && <a className="tlink" href="#" onClick={e => e.preventDefault()} style={{ fontSize: 12.5 }}>view artifact <Ic name="arrowRight" size={12} /></a>}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function ProfileScreen({ tweaks, onRestart }) {
-  const NAME  = tweaks.subjectName || 'Frank Docent';
-  const FIRST = NAME.split(' ')[0];
-  const handle = FIRST.toLowerCase().replace(/[^a-z]/g, '');
-  const Card = tweaks.cardVariant === 'quote'   ? CardQuoteLed
-             : tweaks.cardVariant === 'receipt' ? CardReceipt : CardClassic;
-
-  return (
-    <div className="scr" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      {/* nav */}
-      <div style={{ padding: '54px 20px 12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <Wordmark size={15} />
-        <button className="btn btn-secondary" style={{ width: 38, height: 38, minHeight: 38, padding: 0, borderRadius: 10 }} aria-label="Share">
-          <Ic name="share" size={16} />
-        </button>
-      </div>
-
-      <div className="vw-scroll" style={{ flex: 1, padding: '8px 20px 40px' }}>
-        {/* identity */}
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center',
-          gap: 12, padding: '10px 0 22px' }}>
-          <Avatar name={NAME} size={72} />
-          <div>
-            <h1 style={{ margin: '0 0 4px', fontSize: 23, fontWeight: 700, letterSpacing: '-.02em' }}>{NAME}</h1>
-            <p style={{ margin: '0 0 6px', fontSize: 14.5, color: 'var(--vw-grey)' }}>Creative direction &amp; brand</p>
-            <span className="mono" style={{ fontSize: 12, color: 'var(--vw-grey)' }}>verified.work/{handle}</span>
-          </div>
-        </div>
-
-        {/* section header */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, margin: '4px 0 16px' }}>
-          <span className="eyebrow" style={{ fontSize: 10.5 }}>Verified work</span>
-          <span className="mono" style={{ fontSize: 11, color: 'var(--vw-grey-2)' }}>2</span>
-          <div className="divider" style={{ flex: 1 }} />
-        </div>
-
-        {/* cards */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-          <Card v={FRANK_VERIFICATIONS[0]} />
-          <Card v={FRANK_VERIFICATIONS[1]} dim />
-        </div>
-
-        <button className="btn btn-ghost" onClick={onRestart}
-          style={{ width: '100%', marginTop: 24, justifyContent: 'center', gap: 7, color: 'var(--vw-grey)' }}>
-          <Ic name="refresh" size={14} /> Start over
-        </button>
-      </div>
-    </div>
-  );
-}
-
-Object.assign(window, { ProfileScreen, CardClassic, CardQuoteLed, CardReceipt });
-
-
-/* ===== app/states.jsx ===== */
-// states.jsx — system states: loading, empty, inline error, link used, system error
-// Exports to window: LoadingState, EmptyState, InlineErrorState, LinkUsedState, SystemErrorState, CenteredState
-
-function CenteredState({ icon, title, body, children }) {
-  return (
-    <div className="scr vw-pad" style={{ height: '100%', display: 'flex', flexDirection: 'column',
-      alignItems: 'center', justifyContent: 'center', textAlign: 'center', gap: 18 }}>
-      {icon && (
-        <span style={{ width: 56, height: 56, borderRadius: 16, background: 'var(--vw-surface-3)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--vw-grey-3)' }}>
-          <Ic name={icon} size={26} />
-        </span>
-      )}
-      <div>
-        <h1 style={{ margin: '0 0 8px', fontSize: 22, fontWeight: 700, letterSpacing: '-.01em', color: 'var(--vw-black)' }}>{title}</h1>
-        {body && <p className="lede" style={{ maxWidth: 290, margin: '0 auto' }}>{body}</p>}
-      </div>
-      {children}
-    </div>
-  );
-}
-
-// 1 — Loading skeleton
-function LoadingState() {
-  const Sk = ({ h, w, r = 8, mt = 0 }) => <div className="sk" style={{ height: h, width: w, borderRadius: r, marginTop: mt }} />;
-  return (
-    <div className="scr vw-pad" style={{ height: '100%' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 }}>
-        <Sk h={26} w={120} />
-        <Sk h={36} w={70} r={10} />
-      </div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-        {[0, 1, 2].map((i) => (
-          <div key={i} style={{ border: '1px solid var(--vw-line)', borderRadius: 14, padding: 18 }}>
-            <Sk h={16} w="62%" />
-            <Sk h={13} w="40%" mt={10} />
-            <Sk h={22} w={110} r={999} mt={16} />
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-// 2 — Empty dashboard
-function EmptyState({ onAdd }) {
-  return (
-    <CenteredState icon="inbox" title="Add your first piece of work"
-      body="Showcase what you actually built — then ask someone who was there to verify it.">
-      <button className="btn btn-primary" onClick={onAdd} style={{ width: 'auto', padding: '0 24px' }}>
-        <Ic name="plus" size={18} color="#fff" /> Add work
-      </button>
-    </CenteredState>
-  );
-}
-
-// 3 — Inline validation error
-function InlineErrorState() {
-  const [val, setVal] = React.useState('ravi@@dtc');
-  const valid = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(val);
-  return (
-    <div className="scr vw-pad" style={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 24 }}>
-      <div>
-        <h1 style={{ margin: '0 0 8px', fontSize: 22, fontWeight: 700, letterSpacing: '-.01em' }}>What's your email?</h1>
-        <p className="lede">We'll send a magic link — no password needed.</p>
-      </div>
-      <div className="field">
-        <label className="field-lbl mono">Email</label>
-        <input className={'input' + (!valid ? ' err' : '')} value={val} onChange={(e) => setVal(e.target.value)}
-          placeholder="your@email.com" inputMode="email" autoComplete="off" />
-        {!valid && <span className="field-err">Enter a valid email</span>}
-      </div>
-      <button className="btn btn-primary" disabled={!valid}>Send magic link</button>
-    </div>
-  );
-}
-
-// 4 — Validator link already used
-function LinkUsedState() {
-  return (
-    <CenteredState title="This verification link has already been used."
-      body="Each link works once, to keep every endorsement tied to one person.">
-      <div style={{ marginTop: 4 }}><Wordmark size={15} /></div>
-    </CenteredState>
-  );
-}
-
-// 5 — System error
-function SystemErrorState({ onRetry }) {
-  return (
-    <CenteredState title="Something went wrong on our end."
-      body="Please try again. If it keeps happening, give it a minute and come back.">
-      <button className="btn btn-secondary" onClick={onRetry} style={{ width: 'auto', padding: '0 22px' }}>
-        <Ic name="refresh" size={16} /> Try again
-      </button>
-    </CenteredState>
-  );
-}
-
-Object.assign(window, { CenteredState, LoadingState, EmptyState, InlineErrorState, LinkUsedState, SystemErrorState });
-
-
-/* ===== app/app.jsx ===== */
-// app.jsx — full end-to-end flow: splash → signup → onboarding → dashboard
-//           → add-work → invite → invited → validator → profile
-// All new screens live here. ValidatorFlow + ProfileScreen imported from other files.
-
-// ═══ SPLASH ═══════════════════════════════════════════════════════════════
-function SplashScreen({ onNext }) {
-  return (
-    <div style={{ height: '100%', display: 'flex', flexDirection: 'column',
-      alignItems: 'center', justifyContent: 'center', padding: '24px 32px', gap: 56 }}>
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 22 }}>
-        <img src={window.__resources && window.__resources.logoIcon || 'assets/logo-icon.svg'} alt="verified.work" width={70} height={70}
-          style={{ borderRadius: '22%', animation: 'splashIcon .55s cubic-bezier(.2,.8,.3,1) .08s both' }} />
-        <div style={{ animation: 'splashFade .4s ease-out .42s both' }}>
-          <Wordmark size={27} />
-        </div>
-        <p style={{ margin: 0, fontSize: 15.5, color: 'var(--vw-grey)', textAlign: 'center',
-          lineHeight: 1.55, maxWidth: 226, animation: 'splashFade .4s ease-out .68s both' }}>
-          Human validation in an AI world.
-        </p>
-      </div>
-      <button className="btn btn-primary" onClick={onNext}
-        style={{ animation: 'splashFade .4s ease-out .92s both', maxWidth: 320 }}>
-        Get started
-      </button>
-    </div>
-  );
-}
-
-// ═══ SIGN UP ═══════════════════════════════════════════════════════════════
-function SignupScreen({ onNext }) {
-  const [email, setEmail] = React.useState('');
-  const valid = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
-  return (
-    <div className="scr" style={{ height: '100%', display: 'flex', flexDirection: 'column',
-      justifyContent: 'center', padding: '64px 28px 48px', gap: 36 }}>
-      <div>
-        <div style={{ marginBottom: 28 }}><Wordmark size={16} /></div>
-        <h1 style={{ margin: '0 0 10px', fontSize: 30, fontWeight: 800, letterSpacing: '-.028em',
-          color: 'var(--vw-black)', lineHeight: 1.15 }}>
-          What's your<br />email?
-        </h1>
-        <p style={{ margin: 0, fontSize: 15, color: 'var(--vw-grey)', lineHeight: 1.5 }}>
-          No password — we'll send a magic link.
-        </p>
-      </div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-        <input className="input" type="email" value={email}
-          onChange={e => setEmail(e.target.value)}
-          placeholder="you@company.com" inputMode="email" autoComplete="email"
-          onKeyDown={e => e.key === 'Enter' && valid && onNext(email)} />
-        <button className="btn btn-primary" disabled={!valid} onClick={() => onNext(email)}>
-          Send magic link
-        </button>
-      </div>
-    </div>
-  );
-}
-
-// ═══ LINK SENT ═══════════════════════════════════════════════════════════
-function LinkSentScreen({ email, onNext }) {
-  return (
-    <div className="scr" style={{ height: '100%', display: 'flex', flexDirection: 'column',
-      alignItems: 'center', justifyContent: 'center', padding: '64px 28px 48px',
-      textAlign: 'center', gap: 28 }}>
-      <div style={{ width: 72, height: 72, borderRadius: 20, background: 'var(--vw-surface-2)',
-        border: '1px solid var(--vw-line)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <Ic name="inbox" size={30} color="var(--vw-black)" />
-      </div>
-      <div>
-        <h1 style={{ margin: '0 0 10px', fontSize: 24, fontWeight: 700, letterSpacing: '-.02em' }}>
-          Check your inbox.
-        </h1>
-        <p style={{ margin: '0 0 8px', fontSize: 15, color: 'var(--vw-grey)', lineHeight: 1.5 }}>
-          We sent a magic link to
-        </p>
-        <span className="mono" style={{ fontSize: 14, color: 'var(--vw-black)', fontWeight: 500 }}>
-          {email || 'frank@example.com'}
-        </span>
-        <p style={{ margin: '14px 0 0', fontSize: 14, color: 'var(--vw-grey)', lineHeight: 1.5 }}>
-          It expires in 15 minutes.
-        </p>
-      </div>
-      <button className="btn btn-ghost" onClick={onNext}
-        style={{ color: 'var(--vw-grey-3)', fontSize: 14, marginTop: 4 }}>
-        Simulate clicking the link →
-      </button>
-    </div>
-  );
-}
-
-// ═══ ONBOARDING ═══════════════════════════════════════════════════════════
-const OB_ROLES = [
-  'Creative director', 'Product designer', 'Product manager',
-  'Software engineer', 'Freelancer / consultant', 'Other',
-];
-
-function OnboardingScreen({ onNext }) {
-  const [step, setStep] = React.useState(0);
-  const [name, setName] = React.useState('Frank Docent');
-  const [role, setRole] = React.useState('');
-  const inputRef = React.useRef(null);
-
-  React.useEffect(() => { if (inputRef.current) inputRef.current.focus(); }, [step]);
-
-  if (step === 0) {
-    return (
-      <div className="scr" style={{ height: '100%', display: 'flex', flexDirection: 'column',
-        justifyContent: 'center', padding: '64px 28px 48px', gap: 28 }}>
-        <div>
-          <h1 style={{ margin: '0 0 10px', fontSize: 27, fontWeight: 800, letterSpacing: '-.022em', lineHeight: 1.2 }}>
-            What's your name?
-          </h1>
-          <p style={{ margin: 0, fontSize: 15, color: 'var(--vw-grey)' }}>
-            This is how you'll appear on your verified profile.
-          </p>
-        </div>
-        <input ref={inputRef} className="input" value={name} onChange={e => setName(e.target.value)}
-          placeholder="Your full name" autoComplete="name"
-          style={{ fontSize: 19, fontWeight: 600, letterSpacing: '-.01em' }}
-          onKeyDown={e => e.key === 'Enter' && name.trim() && setStep(1)} />
-        <button className="btn btn-primary" disabled={!name.trim()} onClick={() => setStep(1)}>
-          Continue
-        </button>
-      </div>
-    );
-  }
-
-  return (
-    <div className="scr" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ padding: '64px 28px 20px' }}>
-        <h1 style={{ margin: '0 0 8px', fontSize: 27, fontWeight: 800, letterSpacing: '-.022em', lineHeight: 1.2 }}>
-          What do you do?
-        </h1>
-        <p style={{ margin: 0, fontSize: 15, color: 'var(--vw-grey)' }}>
-          Pick the closest fit — you can update it later.
-        </p>
-      </div>
-      <div className="vw-scroll" style={{ flex: 1, padding: '4px 28px 16px' }}>
-        <div className="opts">
-          {OB_ROLES.map(r => (
-            <button key={r} className={'opt' + (role === r ? ' is-sel' : '')} onClick={() => setRole(r)}>
-              <div className="opt-row">
-                <span className="opt-main"><span className="opt-label">{r}</span></span>
+          <article class="proof-card" data-proof-card tabindex="0" role="button" aria-expanded="false">
+            <span class="proof-toggle" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+            </span>
+            <span class="proof-geo">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"/></svg>
+              Global
+            </span>
+            <p class="proof-stat">LinkedIn now sees <span class="hl">11,000</span> job applications every minute, up 45% in a year.</p>
+            <p class="proof-context">AI-written applications have flooded hiring to a scale no human can read.</p>
+            <div class="proof-more">
+              <div class="proof-more-inner">
+                <p>Recruiters now face hundreds of near-identical, machine-written resumes per role. Genuine, verified experience is almost impossible to spot.</p>
               </div>
-              <span className="opt-tick"><Ic name="check" size={18} color="#fff" strokeWidth={2.4} /></span>
-            </button>
-          ))}
+            </div>
+            <a class="proof-link" href="https://www.eweek.com/news/ai-job-applications-linkedin/" target="_blank" rel="noopener noreferrer">
+              Read the full story
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M8 7h9v9"/></svg>
+            </a>
+            <div class="proof-divider">
+              <span class="proof-publisher">
+                <span class="pub-tag">Source</span>
+                <span class="pub-logo pub-logo--eweek">eWEEK</span>
+              </span>
+              <span class="pub-report">AI in hiring 2025</span>
+            </div>
+          </article>
+
+          <article class="proof-card" data-proof-card tabindex="0" role="button" aria-expanded="false">
+            <span class="proof-toggle" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+            </span>
+            <span class="proof-geo">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"/></svg>
+              Global
+            </span>
+            <p class="proof-stat"><span class="hl">88%</span> of employers admit their own screening software rejects qualified candidates.</p>
+            <p class="proof-context">Automated filters quietly reject people who can do the job but miss the keywords.</p>
+            <div class="proof-more">
+              <div class="proof-more-inner">
+                <p>Harvard Business School and Accenture surveyed thousands of executives and workers. They estimate more than 27 million capable workers sit hidden behind these systems.</p>
+              </div>
+            </div>
+            <a class="proof-link" href="https://www.hbs.edu/managing-the-future-of-work/research/Pages/hidden-workers-untapped-talent.aspx" target="_blank" rel="noopener noreferrer">
+              Read the full story
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M8 7h9v9"/></svg>
+            </a>
+            <div class="proof-divider">
+              <span class="proof-publisher">
+                <span class="pub-tag">Source</span>
+                <span class="pub-logo pub-logo--harvard">Harvard Business School</span>
+              </span>
+              <span class="pub-report">Hidden Workers 2021</span>
+            </div>
+          </article>
+
+          <article class="proof-card" data-proof-card tabindex="0" role="button" aria-expanded="false">
+            <span class="proof-toggle" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+            </span>
+            <span class="proof-geo">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"/></svg>
+              Global
+            </span>
+            <p class="proof-stat">Just <span class="hl">26%</span> of job seekers trust AI to evaluate them fairly.</p>
+            <p class="proof-context">Another 32% fear an algorithm will reject them before a human ever looks.</p>
+            <div class="proof-more">
+              <div class="proof-more-inner">
+                <p>Gartner surveyed 2,918 candidates in early 2025. Trust collapses exactly where hiring now leans on automation the most.</p>
+              </div>
+            </div>
+            <a class="proof-link" href="https://www.gartner.com/en/newsroom/press-releases/2025-07-31-gartner-survey-shows-just-26-percent-of-job-applicants-trust-ai-will-fairly-evaluate-them" target="_blank" rel="noopener noreferrer">
+              Read the full story
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M8 7h9v9"/></svg>
+            </a>
+            <div class="proof-divider">
+              <span class="proof-publisher">
+                <span class="pub-tag">Source</span>
+                <span class="pub-logo pub-logo--gartner">Gartner</span>
+              </span>
+              <span class="pub-report">Candidate Trust Survey 2025</span>
+            </div>
+          </article>
+
+          <article class="proof-card" data-proof-card tabindex="0" role="button" aria-expanded="false">
+            <span class="proof-toggle" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+            </span>
+            <span class="proof-geo">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"/></svg>
+              Global
+            </span>
+            <p class="proof-stat"><span class="hl">91%</span> of HR leaders look for verified credentials. Only <span class="hl">46%</span> can find them.</p>
+            <p class="proof-context">The demand for proof is already here. The supply is not.</p>
+            <div class="proof-more">
+              <div class="proof-more-inner">
+                <p>Accredible surveyed 502 HR and recruiting leaders in 2025. Verified work is exactly the gap verified.work was built to close.</p>
+              </div>
+            </div>
+            <a class="proof-link" href="https://www.accredible.com/reports/2025-state-of-credentialing-report" target="_blank" rel="noopener noreferrer">
+              Read the full story
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M8 7h9v9"/></svg>
+            </a>
+            <div class="proof-divider">
+              <span class="proof-publisher">
+                <span class="pub-tag">Source</span>
+                <span class="pub-logo pub-logo--accredible">Accredible</span>
+              </span>
+              <span class="pub-report">State of Credentialing 2025</span>
+            </div>
+          </article>
+
         </div>
       </div>
-      <div style={{ padding: '12px 28px 40px', borderTop: '1px solid var(--vw-line-faint)' }}>
-        <button className="btn btn-primary" disabled={!role} onClick={() => onNext({ name, role })}>
-          Continue
-        </button>
+      <div class="proof-dots" id="proof-dots">
+        <button class="proof-dot is-active" type="button" aria-label="Show research card 1"></button>
+        <button class="proof-dot" type="button" aria-label="Show research card 2"></button>
+        <button class="proof-dot" type="button" aria-label="Show research card 3"></button>
+        <button class="proof-dot" type="button" aria-label="Show research card 4"></button>
+        <button class="proof-dot" type="button" aria-label="Show research card 5"></button>
       </div>
     </div>
-  );
-}
+  </div>
+</section>
 
-// ═══ DASHBOARD (empty state) ═══════════════════════════════════════════════
-function DashboardScreen({ user, onAddWork }) {
-  const first = (user.name || 'Frank').split(' ')[0];
-  return (
-    <div className="scr" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ padding: '54px 22px 14px', display: 'flex', alignItems: 'center',
-        justifyContent: 'space-between', borderBottom: '1px solid var(--vw-line-faint)' }}>
-        <Wordmark size={16} />
-        <Avatar name={user.name} size={34} />
-      </div>
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column',
-        alignItems: 'center', justifyContent: 'center', padding: '24px 28px', textAlign: 'center', gap: 22 }}>
-        <div style={{ width: 60, height: 60, borderRadius: 16, background: 'var(--vw-surface-2)',
-          border: '1px solid var(--vw-line)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <Ic name="layers" size={26} color="var(--vw-grey-3)" />
-        </div>
-        <div>
-          <h1 style={{ margin: '0 0 8px', fontSize: 22, fontWeight: 700, letterSpacing: '-.01em' }}>
-            Hi, {first}.
-          </h1>
-          <p style={{ margin: 0, fontSize: 15, color: 'var(--vw-grey)', lineHeight: 1.55, maxWidth: 260 }}>
-            No verified work yet. Add a project — then invite someone who was there to verify it.
-          </p>
-        </div>
-        <button className="btn btn-primary" style={{ maxWidth: 280 }} onClick={onAddWork}>
-          Add your first project
-        </button>
-      </div>
+<!-- =========================================================
+     FINAL CTA
+     ========================================================= -->
+<section class="final" id="cta">
+  <div class="container final-inner">
+    <h2 class="reveal">Your work deserves proof.</h2>
+    <p class="reveal reveal-delay-1">Join the waitlist and be first to build your verified profile.</p>
+    <div class="waitlist-mount reveal reveal-delay-2" style="max-width:480px;margin:clamp(28px,3vw,40px) auto 0;">
+      <div class="launchlist-widget" data-key-id="05NuEp"></div>
     </div>
-  );
-}
-
-// ═══ ADD WORK ══════════════════════════════════════════════════════════════
-function AddWorkScreen({ onNext, onBack }) {
-  const [form, setForm] = React.useState({
-    title: 'Brand identity redesign',
-    company: 'Studio Nord',
-    contrib: 'Partner',
-    outcome: 'Increased client retention by 40% in six months',
-  });
-  const set = k => e => setForm(p => ({ ...p, [k]: e.target.value }));
-  const valid = form.title.trim() && form.company.trim() && form.outcome.trim();
-
-  return (
-    <div className="scr" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ padding: '54px 22px 14px', display: 'flex', alignItems: 'center', gap: 12,
-        borderBottom: '1px solid var(--vw-line-faint)' }}>
-        <button className="btn btn-secondary" onClick={onBack} aria-label="Back"
-          style={{ width: 40, height: 40, minHeight: 40, padding: 0, borderRadius: 11, flexShrink: 0 }}>
-          <Ic name="arrowLeft" size={18} />
-        </button>
-        <h1 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>Add project</h1>
-      </div>
-      <div className="vw-scroll" style={{ flex: 1, padding: '20px 22px 20px', display: 'flex', flexDirection: 'column', gap: 20 }}>
-        <div className="field">
-          <label className="field-lbl mono">Project name</label>
-          <input className="input" value={form.title} onChange={set('title')} placeholder="What did you work on?" />
-        </div>
-        <div className="field">
-          <label className="field-lbl mono">Company / client</label>
-          <input className="input" value={form.company} onChange={set('company')} placeholder="Where?" />
-        </div>
-        <div className="field">
-          <label className="field-lbl mono">Your contribution</label>
-          <div className="pills">
-            {['Owner', 'Partner', 'Executor'].map(c => (
-              <button key={c} className={'pill' + (form.contrib === c ? ' is-sel' : '')}
-                onClick={() => setForm(p => ({ ...p, contrib: c }))}>
-                {c}
-              </button>
-            ))}
-          </div>
-        </div>
-        <div className="field">
-          <label className="field-lbl mono">Outcome claim</label>
-          <textarea className="textarea" value={form.outcome} onChange={set('outcome')}
-            placeholder="What changed because of this work?" style={{ minHeight: 88 }} />
-          <span className="field-lbl" style={{ color: 'var(--vw-grey)' }}>
-            Your validator will be asked to confirm this.
-          </span>
-        </div>
-      </div>
-      <div style={{ padding: '12px 22px 40px', borderTop: '1px solid var(--vw-line-faint)' }}>
-        <button className="btn btn-primary" disabled={!valid} onClick={() => onNext(form)}>
-          Next — invite validator
-        </button>
-      </div>
+    <div class="waitlist-meta reveal reveal-delay-3">
+      <span>Free to join. No credit card.</span>
     </div>
-  );
-}
+  </div>
+</section>
 
-// ═══ INVITE VALIDATOR ══════════════════════════════════════════════════════
-function InviteScreen({ onNext, onBack }) {
-  const [name, setName] = React.useState('Jordan M.');
-  const [email, setEmail] = React.useState('jordan@studionord.co');
-  const valid = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email) && name.trim();
+<!-- =========================================================
+     TRUST STRIP — removed
+     ========================================================= -->
 
-  return (
-    <div className="scr" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ padding: '54px 22px 14px', display: 'flex', alignItems: 'center', gap: 12,
-        borderBottom: '1px solid var(--vw-line-faint)' }}>
-        <button className="btn btn-secondary" onClick={onBack} aria-label="Back"
-          style={{ width: 40, height: 40, minHeight: 40, padding: 0, borderRadius: 11, flexShrink: 0 }}>
-          <Ic name="arrowLeft" size={18} />
-        </button>
-        <h1 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>Invite validator</h1>
-      </div>
-      <div className="vw-scroll" style={{ flex: 1, padding: '20px 22px 20px', display: 'flex', flexDirection: 'column', gap: 22 }}>
-        <div className="callout">
-          <Ic name="info" size={16} color="var(--vw-green)" />
-          <p>Pick someone who was directly involved — a manager, client, or collaborator. They get a 2-minute form. No account needed.</p>
-        </div>
-        <div className="field">
-          <label className="field-lbl mono">Their name</label>
-          <input className="input" value={name} onChange={e => setName(e.target.value)} placeholder="Who are you inviting?" />
-        </div>
-        <div className="field">
-          <label className="field-lbl mono">Their email</label>
-          <input className="input" type="email" value={email} onChange={e => setEmail(e.target.value)}
-            placeholder="their@email.com" inputMode="email" />
-        </div>
-      </div>
-      <div style={{ padding: '12px 22px 40px', borderTop: '1px solid var(--vw-line-faint)' }}>
-        <button className="btn btn-primary" disabled={!valid} onClick={() => onNext(email)}>
-          Send verification request
-        </button>
-      </div>
-    </div>
-  );
-}
-
-// ═══ EMAIL SENT TO VALIDATOR ════════════════════════════════════════════════
-function InvitedScreen({ validatorEmail, onPreview }) {
-  return (
-    <div className="scr" style={{ height: '100%', display: 'flex', flexDirection: 'column',
-      alignItems: 'center', justifyContent: 'center', padding: '64px 28px 48px',
-      textAlign: 'center', gap: 28 }}>
-      <div style={{ position: 'relative', width: 72, height: 72 }}>
-        <div style={{ width: 72, height: 72, borderRadius: 20, background: 'var(--vw-surface-2)',
-          border: '1px solid var(--vw-line)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <Ic name="share" size={28} color="var(--vw-black)" />
-        </div>
-        <span style={{ position: 'absolute', bottom: -6, right: -6 }}>
-          <CheckDot size={24} />
+<!-- =========================================================
+     FOOTER
+     ========================================================= -->
+<footer class="foot">
+  <div class="container foot-inner">
+    <div class="foot-brand">
+      <div class="foot-wordmark">
+        <span>verified</span>
+        <span class="check" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
         </span>
+        <span class="work">work</span>
       </div>
-      <div>
-        <h1 style={{ margin: '0 0 12px', fontSize: 22, fontWeight: 700, letterSpacing: '-.015em' }}>
-          Email sent to your validator.
-        </h1>
-        <p style={{ margin: '0 0 8px', fontSize: 15, color: 'var(--vw-grey)', lineHeight: 1.55, maxWidth: 290 }}>
-          We've sent a verification request to
-        </p>
-        <span className="mono" style={{ fontSize: 13.5, color: 'var(--vw-black)', fontWeight: 500 }}>
-          {validatorEmail}
-        </span>
-        <p style={{ margin: '14px 0 0', fontSize: 14, color: 'var(--vw-grey)', lineHeight: 1.5, maxWidth: 280 }}>
-          They'll confirm their role and share what they saw. You'll be notified when it's done.
-        </p>
-      </div>
-      <button className="btn btn-primary" onClick={onPreview} style={{ maxWidth: 300 }}>
-        Preview what they see
-      </button>
+      <p class="foot-tagline">Human validation in an AI world.</p>
     </div>
-  );
-}
 
-// ═══ ROOT APP ══════════════════════════════════════════════════════════════
-const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{"cardVariant":"classic"}/*EDITMODE-END*/;
+    <nav class="foot-cols" aria-label="Footer">
+      <div class="foot-col">
+        <h4>Social</h4>
+        <ul>
+          <li><a href="https://www.linkedin.com/company/verified-work/" target="_blank" rel="noopener noreferrer" aria-label="verified.work on LinkedIn">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M20.5 2h-17A1.5 1.5 0 0 0 2 3.5v17A1.5 1.5 0 0 0 3.5 22h17a1.5 1.5 0 0 0 1.5-1.5v-17A1.5 1.5 0 0 0 20.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 1 1 8.3 6.5a1.78 1.78 0 0 1-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0 0 13 14.19a.66.66 0 0 0 0 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 0 1 2.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg>
+            LinkedIn</a></li>
+          <li><a href="https://www.reddit.com/user/verifiedwork/" target="_blank" rel="noopener noreferrer" aria-label="verified.work on Reddit">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 0a12 12 0 1 0 12 12A12.014 12.014 0 0 0 12 0Zm6.66 13.21a2.31 2.31 0 0 1 .03.4c0 2.42-2.82 4.38-6.29 4.38s-6.29-1.96-6.29-4.38a2.31 2.31 0 0 1 .03-.4 1.5 1.5 0 0 1-.96-1.4 1.49 1.49 0 0 1 2.54-1.06 7.36 7.36 0 0 1 3.94-1.22l.75-3.53a.31.31 0 0 1 .37-.24l2.46.52a1.04 1.04 0 1 1 .04.6L13.05 7.4l.66 3.12a7.4 7.4 0 0 1 3.93 1.22 1.49 1.49 0 0 1 2.54 1.06 1.5 1.5 0 0 1-.96 1.4Zm-9.65-.34a1.05 1.05 0 1 0 1.05-1.05 1.05 1.05 0 0 0-1.05 1.05Zm5.92 0a1.05 1.05 0 1 0-1.05 1.05 1.05 1.05 0 0 0 1.05-1.05Zm-.32 2.43a.31.31 0 0 0-.44 0 2.83 2.83 0 0 1-2.07.66 2.83 2.83 0 0 1-2.06-.66.31.31 0 1 0-.44.45 3.36 3.36 0 0 0 2.5.83 3.36 3.36 0 0 0 2.5-.83.31.31 0 0 0 0-.45Z"/></svg>
+            Reddit</a></li>
+          <li><a href="#" target="_blank" rel="noopener noreferrer" aria-label="verified.work on Substack">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M4 5h16v2H4V5Zm0 4h16v2H4V9Zm0 4h16v8.5L12 17l-8 4.5V13Z"/></svg>
+            Substack</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:admin@verifiedwork.co">admin@verifiedwork.co</a></li>
+          <li><a href="careers.html">Careers</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="privacy.html">Privacy policy</a></li>
+          <li><a href="terms.html">Terms of service</a></li>
+          <li><a href="privacy.html#cookies">Cookies</a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
 
-const FRANK_CONTEXT = {
-  subjectName: 'Frank Docent',
-  outcomeClaim: 'Increased client retention by 40% in six months',
-  projectTitle: 'brand identity redesign',
-  projectCompany: 'Studio Nord',
-};
+  <div class="container foot-bottom">
+    <span>© 2026 verified.work</span>
+    <span>Made by people. Endorsed by people.</span>
+  </div>
+</footer>
 
-function App() {
-  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
-  const [screen, setScreen] = React.useState('splash');
-  const [email, setEmail] = React.useState('frank@docent.co');
-  const [user, setUser] = React.useState({ name: 'Frank Docent', role: 'Creative director' });
-  const [validatorEmail, setValidatorEmail] = React.useState('jordan@studionord.co');
-  const [flowKey, setFlowKey] = React.useState(0);
-
-  const go = s => setScreen(s);
-  const frankTweaks = { ...t, ...FRANK_CONTEXT };
-
-  const renderScreen = () => {
-    switch (screen) {
-      case 'splash':    return <SplashScreen onNext={() => go('signup')} />;
-      case 'signup':    return <SignupScreen onNext={e => { setEmail(e); go('link-sent'); }} />;
-      case 'link-sent': return <LinkSentScreen email={email} onNext={() => go('onboarding')} />;
-      case 'onboarding':return <OnboardingScreen onNext={u => { setUser(u); go('dashboard'); }} />;
-      case 'dashboard': return <DashboardScreen user={user} onAddWork={() => go('add-work')} />;
-      case 'add-work':  return <AddWorkScreen onNext={() => go('invite')} onBack={() => go('dashboard')} />;
-      case 'invite':    return <InviteScreen onNext={e => { setValidatorEmail(e); go('invited'); }} onBack={() => go('add-work')} />;
-      case 'invited':   return <InvitedScreen validatorEmail={validatorEmail} onPreview={() => go('validator')} />;
-      case 'validator': return <ValidatorFlow key={flowKey} tweaks={frankTweaks} onComplete={() => setTimeout(() => go('profile'), 120)} />;
-      case 'profile':   return <ProfileScreen tweaks={frankTweaks} onRestart={() => { setFlowKey(k => k + 1); go('splash'); }} />;
-      default: return null;
+<script>
+/* ============================================================
+   Open at the top — the waitlist widget can autofocus its input
+   and pull the page down to the footer signup on load.
+   ============================================================ */
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+(function () {
+  let settling = true;
+  setTimeout(() => { settling = false; }, 1500);
+  document.addEventListener('focusin', (e) => {
+    if (settling && e.target.closest && e.target.closest('.launchlist-widget')) {
+      e.target.blur();
+      window.scrollTo(0, 0);
     }
+  }, true);
+  window.addEventListener('load', () => window.scrollTo(0, 0));
+})();
+
+/* ============================================================
+   Nav dropdown menu
+   ============================================================ */
+(function () {
+  const btn = document.getElementById('nav-menu-btn');
+  const menu = document.getElementById('nav-menu');
+  if (!btn || !menu) return;
+  const setOpen = (open) => {
+    menu.classList.toggle('is-open', open);
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
   };
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    setOpen(!menu.classList.contains('is-open'));
+  });
+  document.addEventListener('click', (e) => {
+    if (!menu.contains(e.target) && e.target !== btn && !btn.contains(e.target)) setOpen(false);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') setOpen(false);
+  });
+})();
 
-  return (
-    <div className="stage">
-      <div className="stage-cap">
-        <span>verified</span><span className="dot" /><span>work · prototype</span>
-      </div>
+/* ============================================================
+   Hero word cycle: "found" → "verified" → "hired"
+   ============================================================ */
+const cycleEl = document.querySelector('.cycle-word');
+const cycleWrap = document.querySelector('.cycle');
+const cycleWords = ['found.', 'verified.', 'hired.'];
+let cycleIdx = 0;
 
-      <IOSDevice width={390} height={844}>
-        <div className="vw-app">{renderScreen()}</div>
-      </IOSDevice>
-
-      <p className="stage-hint">
-        Full flow: <b>signup → onboarding → dashboard → add work → invite → validator → profile.</b><br />
-        Open <b>Tweaks</b> to swap profile card styles.
-      </p>
-
-      <TweaksPanel title="Tweaks">
-        <TweakSection label="Profile card style" />
-        <TweakSelect label="Style" value={t.cardVariant}
-          options={[
-            { value: 'classic', label: 'Classic record' },
-            { value: 'quote', label: 'Quote-led' },
-            { value: 'receipt', label: 'Receipt' },
-          ]}
-          onChange={v => setTweak('cardVariant', v)} />
-      </TweaksPanel>
-    </div>
-  );
+// Measure a word's rendered width.
+function measureWord(text) {
+  const probe = document.createElement('span');
+  const cs = getComputedStyle(cycleEl);
+  probe.style.cssText =
+    'position:absolute;left:-9999px;top:-9999px;white-space:nowrap;' +
+    'font-family:' + cs.fontFamily + ';font-size:' + cs.fontSize + ';' +
+    'font-weight:' + cs.fontWeight + ';letter-spacing:' + cs.letterSpacing + ';';
+  probe.textContent = text;
+  document.body.appendChild(probe);
+  const w = probe.getBoundingClientRect().width;
+  probe.remove();
+  return Math.ceil(w);
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+// Lock the slot to the widest word so the heading never changes size
+// as the word cycles — otherwise the whole page shifts up and down.
+function lockCycleWidth() {
+  let max = 0;
+  cycleWords.forEach((w) => { max = Math.max(max, measureWord(w)); });
+  cycleWrap.style.width = (max + 2) + 'px';
+  cycleEl.classList.add('ready');
+}
+if (document.fonts && document.fonts.ready) {
+  document.fonts.ready.then(lockCycleWidth);
+} else {
+  lockCycleWidth();
+}
+window.addEventListener('resize', lockCycleWidth, { passive: true });
 
+function cycleNext() {
+  const nextIdx = (cycleIdx + 1) % cycleWords.length;
+  // Slide the current word up, fade and blur it out.
+  cycleEl.classList.add('out');
+  setTimeout(() => {
+    // Reposition below the slot with NO transition, so the new word doesn't
+    // visibly travel down from the "out" position — this kills the glitch.
+    cycleEl.style.transition = 'none';
+    cycleEl.textContent = cycleWords[nextIdx];
+    cycleEl.classList.remove('out');
+    cycleEl.classList.add('in-up');
+    void cycleEl.offsetWidth; // force reflow so the jump applies instantly
+    cycleEl.style.transition = ''; // restore transitions
+    cycleEl.classList.remove('in-up'); // glide smoothly into place
+    cycleIdx = nextIdx;
+  }, 380);
+}
+// Start cycling after the hero entrance animation settles.
+setTimeout(() => {
+  setInterval(cycleNext, 2600);
+}, 2400);
+const nav = document.getElementById('nav');
+const onScroll = () => {
+  if (window.scrollY > 8) nav.classList.add('scrolled');
+  else nav.classList.remove('scrolled');
+};
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
 
+/* ============================================================
+   Hero icon: scroll-driven shrink + fade
+   The icon scales down a bit as the user scrolls past the hero.
+   Applied to an inner element so the entrance animation on
+   .hero-icon-wrap isn't overridden by inline styles.
+   ============================================================ */
+const heroIcon = document.getElementById('hero-icon');
+let ticking = false;
+let entranceDone = false;
+// only apply scroll-transform after the entrance animation finishes (~1100ms)
+setTimeout(() => { entranceDone = true; }, 1200);
+const updateHero = () => {
+  if (!entranceDone) { ticking = false; return; }
+  const y = window.scrollY;
+  const viewportH = window.innerHeight;
+  const t = Math.min(1, Math.max(0, y / (viewportH * 0.7)));
+  const scale = 1 - t * 0.15;
+  const ty = -t * 20;
+  heroIcon.style.transform = `translateY(${ty}px) scale(${scale})`;
+  ticking = false;
+};
+window.addEventListener('scroll', () => {
+  if (!ticking) {
+    requestAnimationFrame(updateHero);
+    ticking = true;
+  }
+}, { passive: true });
+
+/* ============================================================
+   Hero pills: gentle parallax that follows the pointer
+   ============================================================ */
+const heroSection = document.getElementById('top');
+const heroPills = document.querySelectorAll('.hero-pill');
+const canParallax = window.matchMedia('(min-width: 1120px)').matches &&
+  !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if (heroSection && heroPills.length && canParallax) {
+  heroSection.addEventListener('mousemove', (e) => {
+    const dx = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
+    const dy = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
+    heroPills.forEach((pill, i) => {
+      const depth = (i % 2 === 0 ? 1 : -1) * (12 + i * 5);
+      pill.style.transform = 'translate(' + (dx * depth) + 'px,' + (dy * depth) + 'px)';
+    });
+  });
+  heroSection.addEventListener('mouseleave', () => {
+    heroPills.forEach((pill) => { pill.style.transform = ''; });
+  });
+}
+
+/* ============================================================
+   Roadmap timeline: fill the connecting line as you scroll
+   ============================================================ */
+const roadmapTrack = document.getElementById('roadmap');
+const roadmapFill = document.getElementById('roadmap-fill');
+if (roadmapTrack && roadmapFill) {
+  let rmTicking = false;
+  const updateRoadmap = () => {
+    const rect = roadmapTrack.getBoundingClientRect();
+    const p = (window.innerHeight * 0.62 - rect.top) / rect.height;
+    roadmapFill.style.height = Math.max(0, Math.min(1, p)) * 100 + '%';
+    rmTicking = false;
+  };
+  window.addEventListener('scroll', () => {
+    if (!rmTicking) { requestAnimationFrame(updateRoadmap); rmTicking = true; }
+  }, { passive: true });
+  updateRoadmap();
+}
+
+/* ============================================================
+   Reveal on scroll
+   ============================================================ */
+const io = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((e) => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  },
+  { threshold: 0.18, rootMargin: '0px 0px -60px 0px' }
+);
+document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+
+/* ============================================================
+   Proof carousel: auto-rotating research cards
+   ============================================================ */
+(function () {
+  const track = document.getElementById('proof-track');
+  const dotsWrap = document.getElementById('proof-dots');
+  if (!track || !dotsWrap) return;
+  const cards = Array.from(track.querySelectorAll('[data-proof-card]'));
+  const dots = Array.from(dotsWrap.querySelectorAll('.proof-dot'));
+  let index = 0;
+  let timer = null;
+  const DELAY = 4000;
+
+  // Keep the track tall enough for whichever card is showing.
+  const syncHeight = () => {
+    if (cards[index]) track.style.height = cards[index].offsetHeight + 'px';
+  };
+  // Equalise every card to the tallest one so the carousel keeps a
+  // constant height while it rotates and never shifts the page below it.
+  const equalize = () => {
+    cards.forEach((c) => { c.style.minHeight = '0px'; });
+    let maxH = 0;
+    cards.forEach((c) => { maxH = Math.max(maxH, c.offsetHeight); });
+    cards.forEach((c) => { c.style.minHeight = maxH + 'px'; });
+    syncHeight();
+  };
+  const render = () => {
+    cards.forEach((c, i) => c.classList.toggle('is-active', i === index));
+    dots.forEach((d, i) => d.classList.toggle('is-active', i === index));
+    track.classList.add('switching');
+    syncHeight();
+    setTimeout(() => track.classList.remove('switching'), 500);
+  };
+  const go = (i) => {
+    cards.forEach((c) => {
+      c.classList.remove('expanded');
+      c.setAttribute('aria-expanded', 'false');
+    });
+    index = (i + cards.length) % cards.length;
+    render();
+  };
+  const stopAuto = () => { if (timer) { clearInterval(timer); timer = null; } };
+  const startAuto = () => {
+    stopAuto();
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    timer = setInterval(() => go(index + 1), DELAY);
+  };
+  const toggleCard = (card) => {
+    const open = card.classList.toggle('expanded');
+    card.setAttribute('aria-expanded', open ? 'true' : 'false');
+    stopAuto();
+    syncHeight();
+  };
+
+  cards.forEach((card) => {
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('.proof-link')) return;
+      toggleCard(card);
+    });
+    card.addEventListener('keydown', (e) => {
+      if (e.target.closest('.proof-link')) return;
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleCard(card);
+      }
+    });
+  });
+  dots.forEach((dot, i) => {
+    dot.addEventListener('click', () => { go(i); stopAuto(); });
+  });
+
+  // Track the active card's size so expand animations stay smooth.
+  if ('ResizeObserver' in window) {
+    const ro = new ResizeObserver(() => syncHeight());
+    cards.forEach((c) => ro.observe(c));
+  }
+  window.addEventListener('resize', equalize, { passive: true });
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(equalize);
+  }
+
+  equalize();
+  startAuto();
+})();
 </script>
+
 </body>
 </html>
