@@ -9,8 +9,8 @@ a verified professional profile platform built on intent-based hiring.
 
 | File | What it is |
 |---|---|
-| `index.html` | **Landing / waitlist page.** Fluid responsive marketing site with the full animation layer — hero icon draw-in, word-cycling headline, scroll-reveal, parallax pills, a self-filling roadmap timeline, and the expandable + auto-rotating research carousel. Leads into the app via **Sign in** / **Preview the product**. |
-| `app.html` | **The product prototype.** A responsive web app (no device frame) built in the landing page's design language. |
+| `index.html` | **The sign-up page** (front door). An animated, motion-graphic sign-up — drifting aurora background, a live **trust-graph canvas** (nodes connecting and getting verified in real time), floating verified-work chips with stamp pops, a word-cycling headline, count-up stats, a password strength meter, and a **Try verifiedwork for free** CTA. PRD-compliant fields (first name, email, password — no social login). On submit it hands off to the app's onboarding. |
+| `app.html` | **The product prototype.** A responsive web app (no device frame) built in the same design language. |
 | `careers.html`, `privacy.html`, `terms.html`, `blog/` | Supporting pages. |
 | `favicon.*`, `og-image.*`, `apple-touch-icon.png` | Brand + social assets. |
 | `assets/` | The V/W app icon and the standalone verification check mark. |

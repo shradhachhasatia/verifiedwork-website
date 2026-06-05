@@ -168,6 +168,13 @@ a{color:inherit;}
 .input:focus,.textarea:focus{border-color:var(--green);box-shadow:0 0 0 3px var(--green-ring);}
 .input.err{border-color:var(--danger);}
 .field-err{font-family:var(--mono);font-size:12px;color:var(--danger);}
+.row2{display:grid;grid-template-columns:1fr;gap:20px;}
+@media(min-width:560px){.row2{grid-template-columns:1fr 1fr;}}
+.select{appearance:none;-webkit-appearance:none;cursor:pointer;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path fill='none' stroke='%236B7280' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' d='M1 1.5 6 6.5l5-5'/></svg>");
+  background-repeat:no-repeat;background-position:right 16px center;padding-right:40px;}
+.tier-preview{display:inline-flex;align-items:center;gap:10px;flex-wrap:wrap;
+  animation:rise .4s var(--ease-out) both;}
 
 .pills{display:flex;gap:8px;flex-wrap:wrap;}
 .pill{appearance:none;flex:1;min-width:84px;background:var(--white);border:1px solid var(--line-strong);
@@ -848,22 +855,70 @@ function AddWork({ go, onAdd }) {
 /* ============================================================
    INVITE VALIDATOR  +  SENT
    ============================================================ */
-function Invite({ go, onSent }) {
+// PRD tiered badge system — the verifier's email domain decides the badge.
+const FREE_MAIL = ['gmail.com','yahoo.com','outlook.com','hotmail.com','icloud.com','proton.me','protonmail.com','live.com','aol.com'];
+function badgeTier(email) {
+  const at = email.indexOf('@');
+  if (at < 0 || !/\.[^@\s]+$/.test(email)) return null;
+  const domain = email.slice(at+1).toLowerCase();
+  if (/(\.edu|\.ac\.[a-z]{2,}|\.edu\.[a-z]{2,})$/.test(domain)) return { kind:'academic', label:'Academic verified' };
+  if (FREE_MAIL.includes(domain)) return { kind:'peer', label:'Peer verified' };
+  return { kind:'company', label:'Company verified' };
+}
+
+const REL_OPTIONS = ['Manager','Founder','Client','Professor','Colleague / peer','Other'];
+
+function Invite({ go, onSent, selfEmail }) {
   const [name, setName] = useState('Jordan M.');
+  const [rel, setRel] = useState('Manager');
+  const [role, setRole] = useState('Creative Director');
   const [email, setEmail] = useState('jordan@studionord.co');
-  const valid = name.trim() && /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
+  const [linkedin, setLinkedin] = useState('');
+  const [note, setNote] = useState('');
+  const emailOk = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
+  const isSelf = emailOk && selfEmail && email.trim().toLowerCase() === selfEmail.toLowerCase();
+  const tier = emailOk && !isSelf ? badgeTier(email) : null;
+  const valid = name.trim() && role.trim() && emailOk && !isSelf;
+
   return (
     <div className="screen"><div className="wrap wrap-md" style={{paddingTop:'clamp(28px,5vw,48px)',paddingBottom:48}}>
       <button className="btn btn-ghost btn-sm" style={{paddingLeft:0}} onClick={()=>go('#/add')}><Ic name="arrowLeft" size={16}/> Back</button>
       <h1 className="h2" style={{margin:'14px 0 6px'}}>Invite a validator</h1>
-      <p className="lede" style={{marginBottom:24}}>Pick someone who was directly involved.</p>
+      <p className="lede" style={{marginBottom:24}}>Someone who was directly involved confirms your work — in under 90 seconds, no account needed.</p>
       <div style={{display:'flex',flexDirection:'column',gap:20}}>
-        <div className="callout"><Ic name="info" size={18}/><p>A manager, client, or collaborator who saw the work. They get a 2-minute form — <b>no account needed.</b></p></div>
-        <div className="field"><label className="field-lbl">Their name</label>
-          <input className="input" value={name} onChange={e=>setName(e.target.value)} placeholder="Who are you inviting?"/></div>
+        <div className="callout"><Ic name="info" size={18}/><p>Any email works — Gmail, university, or corporate. The badge on your profile is <b>honest about how it was verified.</b></p></div>
+
+        <div className="row2">
+          <div className="field"><label className="field-lbl">Their name</label>
+            <input className="input" value={name} onChange={e=>setName(e.target.value)} placeholder="Who are you inviting?"/></div>
+          <div className="field"><label className="field-lbl">How you worked together</label>
+            <select className="input select" value={rel} onChange={e=>setRel(e.target.value)}>
+              {REL_OPTIONS.map(o=><option key={o} value={o}>{o}</option>)}
+            </select></div>
+        </div>
+
+        <div className="field"><label className="field-lbl">Their role / title at the time</label>
+          <input className="input" value={role} onChange={e=>setRole(e.target.value)} placeholder="e.g. Creative Director, Founder, Professor"/>
+          <span className="muted" style={{fontSize:13}}>Shown publicly next to their endorsement.</span></div>
+
         <div className="field"><label className="field-lbl">Their email</label>
-          <input className="input" type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="their@email.com"/></div>
-        <button className="btn btn-primary block" disabled={!valid} onClick={()=>onSent(email)}>Send verification request</button>
+          <input className={'input'+(isSelf?' err':'')} type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="their@email.com"/>
+          {isSelf
+            ? <span className="field-err">You can't verify your own work — use the email of someone who saw it.</span>
+            : tier && <span className="tier-preview"><span className={'status '+(tier.kind==='peer'?'pending':'verified')}>{tier.kind!=='peer'&&<CheckDot size={13}/>}{tier.label}</span><span className="muted" style={{fontSize:13}}>This is the badge your entry will earn.</span></span>}
+        </div>
+
+        <div className="field"><label className="field-lbl">Their LinkedIn URL <span style={{color:'var(--green)',textTransform:'none',letterSpacing:0}}>· recommended</span></label>
+          <input className="input" value={linkedin} onChange={e=>setLinkedin(e.target.value)} placeholder="linkedin.com/in/…"/>
+          <span className="muted" style={{fontSize:13}}>Adds a real face to the verification — shown publicly on your badge.</span></div>
+
+        <div className="field"><label className="field-lbl">Add a personal note <span style={{textTransform:'none',letterSpacing:0,color:'var(--grey-2)'}}>· optional</span></label>
+          <textarea className="textarea" value={note} maxLength={240} onChange={e=>setNote(e.target.value)}
+            placeholder="Hey Jordan — could you confirm the Studio Nord rebrand? Takes ~90 seconds. Thanks!" style={{minHeight:90}}/></div>
+
+        <button className="btn btn-primary block" disabled={!valid} onClick={()=>onSent(email)}>
+          <Ic name="send" size={17} color="#fff"/> Send verification request
+        </button>
       </div>
     </div></div>
   );
@@ -913,6 +968,8 @@ function Validator({ go }) {
   const [ans, setAns] = useState({});
   const [text, setText] = useState('');
   const [again, setAgain] = useState(null);
+  const [vName, setVName] = useState('Jordan M.');
+  const [vLink, setVLink] = useState('');
   const first = SUBJECT.name.split(' ')[0];
   const topRef = useRef(null);
   const set = (k,v) => setAns(a=>({...a,[k]:v}));
@@ -954,7 +1011,7 @@ function Validator({ go }) {
         {stage === 'done' && (
           <div style={{display:'flex',gap:10,flexWrap:'wrap',justifyContent:'center'}}>
             <button className="btn btn-secondary" onClick={()=>go('#/profile')}>See his profile</button>
-            <button className="btn btn-ghost" onClick={()=>{setStage('intro');setAns({});setText('');setAgain(null);}}>Run it again</button>
+            <button className="btn btn-ghost" onClick={()=>{setStage('intro');setAns({});setText('');setAgain(null);setVLink('');}}>Run it again</button>
           </div>
         )}
       </div></div>
@@ -1000,9 +1057,9 @@ function Validator({ go }) {
       {step===4 && (<div style={{display:'flex',flexDirection:'column',gap:20}}>
         <h2 className="h2" style={{fontSize:'clamp(21px,2vw,27px)'}}>In your own words — what should someone hiring {first} know?</h2>
         <div className="field">
-          <textarea className="textarea" value={text} maxLength={280} onChange={e=>setText(e.target.value)}
+          <textarea className="textarea" value={text} maxLength={100} onChange={e=>setText(e.target.value)}
             placeholder="He's the person I'd want on the hardest problem in the room…"/>
-          <span className="muted" style={{fontSize:13}}>One sentence is enough.</span>
+          <span className="muted" style={{fontSize:13}}>One sentence is enough · {100 - text.length} left</span>
         </div>
         <div style={{display:'flex',flexDirection:'column',gap:10}}>
           <span className="field-lbl">Would you work with him again?</span>
@@ -1010,7 +1067,14 @@ function Validator({ go }) {
             <button key={p} className={'pill'+(again===p?' sel':'')} onClick={()=>setAgain(p)}>{p}</button>
           ))}</div>
         </div>
-        <button className="btn btn-primary block" disabled={!text.trim()} onClick={submit}>Submit endorsement</button>
+        <div className="row2">
+          <div className="field"><label className="field-lbl">Your name</label>
+            <input className="input" value={vName} onChange={e=>setVName(e.target.value)} placeholder="Shown publicly"/></div>
+          <div className="field"><label className="field-lbl">Your LinkedIn <span style={{color:'var(--green)',textTransform:'none',letterSpacing:0}}>· builds trust</span></label>
+            <input className="input" value={vLink} onChange={e=>setVLink(e.target.value)} placeholder="linkedin.com/in/…"/></div>
+        </div>
+        <p className="muted" style={{fontSize:12.5,margin:0}}>Your name{vLink.trim()?' and LinkedIn':''} appear on {first}'s public badge — verifications are never anonymous.</p>
+        <button className="btn btn-primary block" disabled={!text.trim()||!vName.trim()} onClick={submit}>Submit endorsement</button>
       </div>)}
     </div></div>
   );
@@ -1174,19 +1238,31 @@ function Profile({ user, projects, setUser, go }) {
    ============================================================ */
 function getRoute() { return (location.hash || '#/auth').replace(/^#/, ''); }
 
+// Handoff from the sign-up page (index.html stores name + email here).
+function readPending() {
+  try { const raw = localStorage.getItem('vw_pending'); return raw ? JSON.parse(raw) : null; }
+  catch (_) { return null; }
+}
+
 function App() {
+  const pendingRef = useRef(undefined);
+  if (pendingRef.current === undefined) pendingRef.current = readPending();
+  const pending = pendingRef.current;
+
   const [route, setRoute] = useState(getRoute());
-  const [authed, setAuthed] = useState(false);
+  const [authed, setAuthed] = useState(!!pending);
   const [user, setUser] = useState(SEED_USER);
   const [projects, setProjects] = useState(SEED_PROJECTS);
-  const [email, setEmail] = useState('frank@docent.co');
+  const [signupName, setSignupName] = useState(pending ? pending.name : '');
+  const [email, setEmail] = useState(pending ? pending.email : 'frank@docent.co');
   const [validatorEmail, setValidatorEmail] = useState('jordan@studionord.co');
   const [gmodal, setGmodal] = useState(false);
 
   useEffect(() => {
     const onHash = () => { setRoute(getRoute()); window.scrollTo(0,0); };
     window.addEventListener('hashchange', onHash);
-    if (!location.hash) location.hash = '#/auth';
+    if (pending) { try { localStorage.removeItem('vw_pending'); } catch (_) {} }
+    else if (!location.hash) location.hash = '#/auth';
     return () => window.removeEventListener('hashchange', onHash);
   }, []);
 
@@ -1205,10 +1281,10 @@ function App() {
   switch (route) {
     case '/auth':      screen = <AuthScreen onGoogle={()=>setGmodal(true)} onEmail={onEmail}/>; break;
     case '/link-sent': screen = <LinkSent email={email} onContinue={()=>go('#/onboarding')}/>; break;
-    case '/onboarding':screen = <Onboarding user={{name:'',role:''}} onDone={(u)=>{setUser({...SEED_USER,...u});go('#/dashboard');}}/>; break;
+    case '/onboarding':screen = <Onboarding user={{name:signupName,role:''}} email={email} onDone={(u)=>{setUser({...SEED_USER,...u});go('#/dashboard');}}/>; break;
     case '/dashboard': screen = <Dashboard user={user} projects={projects} go={go}/>; break;
     case '/add':       screen = <AddWork go={go} onAdd={()=>go('#/invite')}/>; break;
-    case '/invite':    screen = <Invite go={go} onSent={(e)=>{setValidatorEmail(e);go('#/sent');}}/>; break;
+    case '/invite':    screen = <Invite go={go} selfEmail={email} onSent={(e)=>{setValidatorEmail(e);go('#/sent');}}/>; break;
     case '/sent':      screen = <Sent email={validatorEmail} go={go}/>; break;
     case '/validate':  screen = <Validator go={go}/>; break;
     case '/profile':   screen = <Profile user={user} projects={projects} setUser={setUser} go={go}/>; break;
