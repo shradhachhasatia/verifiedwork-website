@@ -9,8 +9,8 @@ a verified professional profile platform built on intent-based hiring.
 
 | File | What it is |
 |---|---|
-| `index.html` | **The sign-up page** (front door). An animated, motion-graphic sign-up — drifting aurora background, a live **trust-graph canvas** (nodes connecting and getting verified in real time), floating verified-work chips with stamp pops, a word-cycling headline, count-up stats, a password strength meter, and a **Try verifiedwork for free** CTA. PRD-compliant fields (first name, email, password — no social login). On submit it hands off to the app's onboarding. |
-| `app.html` | **The product prototype.** A responsive web app (no device frame) built in the same design language. |
+| `index.html` | **The landing page** (front door). One marketing page — no waitlist. Hero with a self-verifying **profile motion graphic** (work entries slide in and get stamped *Verified* on a loop), a word-cycling headline, a **"How verified.work helps you"** section, a 3-step how-it-works, a **product screenshots** showcase (browser-framed mockups of the profile, validator flow and add-work), the **research articles** (expandable stat cards), and **Try verifiedwork for free** CTAs into the app. |
+| `app.html` | **The product prototype.** A responsive web app (no device frame) built in the same design language. Starts **blank** — your real data, no mock projects. |
 | `careers.html`, `privacy.html`, `terms.html`, `blog/` | Supporting pages. |
 | `favicon.*`, `og-image.*`, `apple-touch-icon.png` | Brand + social assets. |
 | `assets/` | The V/W app icon and the standalone verification check mark. |
@@ -33,17 +33,27 @@ inline **edit mode**, stat strip, contribution badges, **expandable verified-wor
 cards** (full quote, endorser, outcome receipt, artifact link), and an endorsements
 wall.
 
+**Onboarding & adding work** are now multi-step wizards with a **progress bar**
+and only a few fields per screen (less fatigue). Adding a project captures a
+**date range** ("how long"), an **artifact** (link, image, or file you can open),
+and a verifier with a live **tiered trust-badge** preview (Company / Academic /
+Peer). The **validator flow** groups its questions onto two screens with a
+progress bar, and an owner can **edit their profile** or **delete their account**
+(with a confirm dialog).
+
 ### Design language
 
-Inherited from the landing page: pure white surfaces, `#1A1A1A` ink, `#6B7280` grey,
-a single green accent `#2D6A4F` reserved for verification (the stamp, check dots,
-verified badges). **Black-pill CTAs** that turn green on hover. Inter + JetBrains
-Mono. Fluid `clamp()` type, scroll-reveal animations, and the verification stamp
-(`scale 0.6 → 1.08 → 1.0`). Respects `prefers-reduced-motion`.
+Pure white surfaces, `#1A1A1A` ink, `#6B7280` grey, a single green accent
+`#2D6A4F` reserved for verification (the stamp, check dots, verified badges).
+**Black-pill CTAs** that turn green on hover. Typeface pairing: **Inter** for
+everything, **Space Grotesk** for labels/eyebrows (replacing the previous
+monospace). Fluid `clamp()` type, scroll-reveal animations, and the verification
+stamp (`scale 0.6 → 1.08 → 1.0`). Respects `prefers-reduced-motion`.
 
-> The Google sign-in is a **prototype simulation** — no real Google account or
-> backend is involved. Wiring real Google Identity Services later needs an OAuth
-> Client ID and a backend to verify tokens.
+> The Google sign-in is a **prototype simulation** (one click → a brief
+> "Connecting to Google…" → you're in) — no real Google account or backend is
+> involved. Real Google Identity Services later needs an OAuth Client ID and a
+> backend to verify tokens.
 
 ## Running
 

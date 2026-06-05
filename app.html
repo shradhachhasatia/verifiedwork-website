@@ -4,84 +4,62 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
 <title>verified.work — the app</title>
-<meta name="description" content="Your verified professional profile — endorsed by the people who'd know. Human validation in an AI world.">
+<meta name="description" content="Your verified professional profile — endorsed by the people who were there.">
 <link rel="icon" href="/favicon.ico" sizes="32x32">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* ============================================================
-   Tokens — inherited from the verified.work landing page
-   ============================================================ */
 :root{
   --green:#2D6A4F; --green-2:#40916C; --green-tint:#D8F3DC; --green-deep:#1F4A37;
   --green-ring:rgba(45,106,79,.22);
   --black:#1A1A1A; --white:#FFFFFF;
-  --grey:#6B7280; --grey-2:#9CA3AF; --grey-3:#4B5563;
-  --ink-2:#374151;
+  --grey:#6B7280; --grey-2:#9CA3AF; --grey-3:#4B5563; --ink-2:#374151;
   --line:#E5E7EB; --line-strong:#D1D5DB; --line-faint:#F3F4F6;
   --surface-2:#F9FAFB; --surface-3:#F3F4F6;
   --warning:#B5800B; --warning-tint:#FEF3C7;
   --danger:#B91C1C; --danger-tint:#FEE2E2;
-
   --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
-
+  --label:'Space Grotesk','Inter',sans-serif;   /* label / accent font — pairs with Inter, not monospace */
   --ease-out:cubic-bezier(0.16,1,0.3,1);
   --ease-stamp:cubic-bezier(0.2,1.3,0.4,1);
-
-  --fs-eyebrow:clamp(10px,0.7vw + 8px,13px);
   --fs-body:clamp(15px,0.3vw + 13px,17px);
   --fs-lede:clamp(16px,0.7vw + 13px,20px);
   --fs-h3:clamp(19px,0.9vw + 15px,25px);
   --fs-h2:clamp(26px,2vw + 16px,42px);
-  --fs-h1:clamp(32px,3.4vw + 16px,56px);
-
+  --fs-h1:clamp(30px,3vw + 16px,48px);
   --nav-h:64px;
   --shadow-sm:0 1px 2px rgba(17,24,39,.05);
   --shadow-md:0 18px 40px -16px rgba(26,26,26,.18);
   --shadow-lg:0 26px 52px -16px rgba(26,26,26,.28);
 }
-
 *,*::before,*::after{box-sizing:border-box;}
 html{-webkit-text-size-adjust:100%;}
-body{
-  margin:0; font-family:var(--font); font-size:var(--fs-body); line-height:1.5;
-  color:var(--black); background:var(--white);
-  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
-}
+body{margin:0;font-family:var(--font);font-size:var(--fs-body);line-height:1.5;color:var(--black);
+  background:var(--white);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
 img,svg{display:block;max-width:100%;}
 button{font-family:inherit;cursor:pointer;}
 input,textarea,select{font-family:inherit;}
 ::selection{background:var(--green-tint);color:var(--green-deep);}
 a{color:inherit;}
 
-/* ============================================================
-   App shell
-   ============================================================ */
+/* shell */
 #root{min-height:100vh;}
 .app{min-height:100vh;display:flex;flex-direction:column;}
-
-.app-nav{
-  position:fixed;top:0;left:0;right:0;z-index:100;height:var(--nav-h);
-  background:rgba(255,255,255,.82);
-  backdrop-filter:saturate(180%) blur(12px);-webkit-backdrop-filter:saturate(180%) blur(12px);
-  border-bottom:1px solid transparent;transition:border-color 200ms var(--ease-out);
-}
+.app-nav{position:fixed;top:0;left:0;right:0;z-index:100;height:var(--nav-h);
+  background:rgba(255,255,255,.82);backdrop-filter:saturate(180%) blur(12px);-webkit-backdrop-filter:saturate(180%) blur(12px);
+  border-bottom:1px solid transparent;transition:border-color 200ms var(--ease-out);}
 .app-nav.scrolled{border-color:var(--line);}
-.app-nav .inner{
-  height:100%;max-width:1180px;margin:0 auto;padding:0 clamp(18px,3vw,40px);
-  display:flex;align-items:center;justify-content:space-between;gap:16px;
-}
+.app-nav .inner{height:100%;max-width:1180px;margin:0 auto;padding:0 clamp(18px,3vw,40px);
+  display:flex;align-items:center;justify-content:space-between;gap:16px;}
 .wm{display:inline-flex;align-items:center;text-decoration:none;color:var(--black);
   font-weight:700;font-size:clamp(16px,0.5vw + 14px,19px);letter-spacing:-.015em;line-height:1;}
 .wm .work{font-weight:400;color:var(--grey);}
 .wm .check{display:inline-flex;align-items:center;justify-content:center;width:12px;height:12px;
   border-radius:50%;background:var(--green);margin:0 2px;flex-shrink:0;}
 .wm .check svg{width:8px;height:8px;}
-
 .nav-actions{display:inline-flex;align-items:center;gap:10px;position:relative;}
 .nav-menu-btn{width:38px;height:38px;border-radius:50%;background:transparent;border:1px solid var(--line);
   display:inline-flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;padding:0;
@@ -92,103 +70,133 @@ a{color:inherit;}
 .nav-menu-btn.open span:nth-child(1){transform:translateY(6px) rotate(45deg);}
 .nav-menu-btn.open span:nth-child(2){opacity:0;}
 .nav-menu-btn.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg);}
-.nav-menu{position:absolute;top:calc(100% + 12px);right:0;min-width:232px;background:var(--white);
+.nav-menu{position:absolute;top:calc(100% + 12px);right:0;min-width:236px;background:var(--white);
   border:1px solid var(--line);border-radius:14px;padding:6px;box-shadow:var(--shadow-md);
   opacity:0;transform:translateY(-8px) scale(.96);transform-origin:top right;
   transition:opacity 180ms var(--ease-out),transform 220ms var(--ease-out);pointer-events:none;z-index:110;}
 .nav-menu.open{opacity:1;transform:none;pointer-events:auto;}
 .nav-menu .mi{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:10px 12px;border:0;
   background:transparent;border-radius:9px;font-size:14px;font-weight:500;color:var(--black);text-decoration:none;
-  transition:background 150ms,color 150ms;}
+  transition:background 150ms,color 150ms;cursor:pointer;}
 .nav-menu .mi:hover{background:var(--surface-2);color:var(--green);}
 .nav-menu .mi.active{color:var(--green);background:var(--green-tint);}
 .nav-menu .mi svg{width:16px;height:16px;color:var(--grey);flex-shrink:0;}
 .nav-menu .mi:hover svg,.nav-menu .mi.active svg{color:var(--green);}
+.nav-menu .mi.danger{color:var(--danger);} .nav-menu .mi.danger svg{color:var(--danger);}
+.nav-menu .mi.danger:hover{background:var(--danger-tint);color:var(--danger);}
 .nav-menu .sep{height:1px;background:var(--line);margin:6px 8px;}
-.nav-menu .mlabel{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+.nav-menu .mlabel{font-family:var(--label);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
   color:var(--grey-2);padding:8px 12px 4px;}
 
 .app-main{flex:1;padding-top:var(--nav-h);display:flex;flex-direction:column;}
 .screen{flex:1;width:100%;animation:scr-in .42s var(--ease-out) both;}
 @keyframes scr-in{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
-@media (prefers-reduced-motion:reduce){.screen{animation:none;}}
-
 .wrap{width:100%;margin:0 auto;padding-left:clamp(20px,4vw,40px);padding-right:clamp(20px,4vw,40px);}
-.wrap-sm{max-width:520px;}
-.wrap-md{max-width:760px;}
-.wrap-lg{max-width:1040px;}
+.wrap-sm{max-width:560px;} .wrap-md{max-width:760px;} .wrap-lg{max-width:1040px;}
 
-/* ============================================================
-   Type helpers
-   ============================================================ */
-.eyebrow{display:inline-flex;align-items:center;gap:9px;font-family:var(--mono);font-size:11.5px;
+/* type */
+.eyebrow{display:inline-flex;align-items:center;gap:9px;font-family:var(--label);font-size:12px;font-weight:600;
   letter-spacing:.08em;text-transform:uppercase;color:var(--green);}
 .eyebrow::before{content:"";width:24px;height:1px;background:var(--green);}
-.mono{font-family:var(--mono);letter-spacing:.01em;}
+.lblf{font-family:var(--label);letter-spacing:.01em;}
 .h1{font-weight:700;font-size:var(--fs-h1);line-height:1.06;letter-spacing:-.03em;margin:0;text-wrap:balance;}
 .h2{font-weight:700;font-size:var(--fs-h2);line-height:1.1;letter-spacing:-.025em;margin:0;text-wrap:balance;}
 .h3{font-weight:700;font-size:var(--fs-h3);line-height:1.2;letter-spacing:-.02em;margin:0;}
 .lede{font-size:var(--fs-lede);color:var(--grey);line-height:1.55;margin:0;}
 .muted{color:var(--grey);}
 
-/* ============================================================
-   Buttons — black pill primary (green on hover), green = verification only
-   ============================================================ */
-.btn{appearance:none;border:1px solid transparent;border-radius:12px;font-weight:600;font-size:15px;
+/* buttons — black pill primary (green hover); green reserved for verification */
+.btn{appearance:none;border:1px solid transparent;border-radius:11px;font-weight:600;font-size:14.5px;
   letter-spacing:-.005em;display:inline-flex;align-items:center;justify-content:center;gap:8px;
-  min-height:50px;padding:0 22px;transition:background 150ms,border-color 150ms,color 150ms,transform 80ms,box-shadow 150ms;}
+  min-height:46px;padding:0 20px;transition:background 150ms,border-color 150ms,color 150ms,transform 80ms,box-shadow 150ms;}
 .btn:active{transform:scale(.985);}
 .btn.block{width:100%;}
 .btn.pill{border-radius:999px;}
+.btn-lg{min-height:52px;font-size:15.5px;padding:0 26px;}
 .btn-primary{background:var(--black);color:var(--white);}
 .btn-primary:hover{background:var(--green);}
 .btn-primary:disabled{background:var(--grey-2);cursor:not-allowed;}
 .btn-secondary{background:var(--white);color:var(--black);border-color:var(--line-strong);}
 .btn-secondary:hover{border-color:var(--black);}
-.btn-ghost{background:transparent;color:var(--grey-3);min-height:44px;}
+.btn-ghost{background:transparent;color:var(--grey-3);min-height:42px;}
 .btn-ghost:hover{color:var(--black);}
 .btn-sm{min-height:40px;padding:0 16px;font-size:14px;border-radius:10px;}
+.btn-danger{background:var(--white);color:var(--danger);border-color:var(--danger-tint);}
+.btn-danger:hover{background:var(--danger-tint);}
 .btn-google{background:var(--white);color:#3c4043;border:1px solid var(--line-strong);font-weight:600;}
 .btn-google:hover{background:var(--surface-2);border-color:var(--grey-2);box-shadow:var(--shadow-sm);}
 .btn-icon{width:42px;height:42px;min-height:42px;padding:0;border-radius:11px;flex-shrink:0;}
-
 .divider-or{display:flex;align-items:center;gap:14px;color:var(--grey-2);font-size:13px;}
 .divider-or::before,.divider-or::after{content:"";flex:1;height:1px;background:var(--line);}
 
-/* ============================================================
-   Forms
-   ============================================================ */
+/* forms */
 .field{display:flex;flex-direction:column;gap:8px;}
-.field-lbl{font-family:var(--mono);font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--grey);}
+.field-lbl{font-family:var(--label);font-size:11.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--grey);}
 .input,.textarea{width:100%;background:var(--white);border:1px solid var(--line-strong);border-radius:12px;
-  padding:14px 16px;font-size:16px;color:var(--black);outline:none;transition:border-color .16s,box-shadow .16s;}
-.input{min-height:52px;}
-.textarea{min-height:120px;resize:none;line-height:1.5;}
+  padding:13px 15px;font-size:16px;color:var(--black);outline:none;transition:border-color .16s,box-shadow .16s;}
+.input{min-height:50px;}
+.textarea{min-height:108px;resize:none;line-height:1.5;}
 .input::placeholder,.textarea::placeholder{color:var(--grey-2);}
 .input:focus,.textarea:focus{border-color:var(--green);box-shadow:0 0 0 3px var(--green-ring);}
 .input.err{border-color:var(--danger);}
-.field-err{font-family:var(--mono);font-size:12px;color:var(--danger);}
-.row2{display:grid;grid-template-columns:1fr;gap:20px;}
+.field-err{font-family:var(--label);font-size:12.5px;color:var(--danger);}
+.row2{display:grid;grid-template-columns:1fr;gap:18px;}
 @media(min-width:560px){.row2{grid-template-columns:1fr 1fr;}}
 .select{appearance:none;-webkit-appearance:none;cursor:pointer;
   background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path fill='none' stroke='%236B7280' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' d='M1 1.5 6 6.5l5-5'/></svg>");
-  background-repeat:no-repeat;background-position:right 16px center;padding-right:40px;}
-.tier-preview{display:inline-flex;align-items:center;gap:10px;flex-wrap:wrap;
-  animation:rise .4s var(--ease-out) both;}
-
+  background-repeat:no-repeat;background-position:right 14px center;padding-right:38px;}
+.tier-preview{display:inline-flex;align-items:center;gap:10px;flex-wrap:wrap;animation:rise .4s var(--ease-out) both;}
 .pills{display:flex;gap:8px;flex-wrap:wrap;}
-.pill{appearance:none;flex:1;min-width:84px;background:var(--white);border:1px solid var(--line-strong);
+.pill{appearance:none;flex:1;min-width:80px;background:var(--white);border:1px solid var(--line-strong);
   border-radius:10px;padding:11px 12px;font-weight:600;font-size:14px;color:var(--black);min-height:46px;
   transition:border-color .16s,background .16s,color .16s;}
 .pill:hover{border-color:var(--black);}
 .pill.sel{background:var(--green);border-color:var(--green);color:#fff;}
+.helper{font-size:13px;color:var(--grey);}
 
-/* ============================================================
-   Cards + expandable
-   ============================================================ */
+/* wizard progress */
+.wiz{margin-bottom:26px;}
+.wiz-top{display:flex;align-items:center;gap:14px;}
+.wiz-back{width:36px;height:36px;border-radius:10px;border:1px solid var(--line-strong);background:#fff;color:var(--ink-2);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:border-color .15s;}
+.wiz-back:hover{border-color:var(--black);}
+.wiz-bar{flex:1;height:6px;border-radius:999px;background:var(--surface-3);overflow:hidden;}
+.wiz-bar i{display:block;height:100%;background:var(--green);border-radius:999px;transition:width .5s var(--ease-out);}
+.wiz-step{font-family:var(--label);font-size:12px;font-weight:600;color:var(--grey);min-width:34px;text-align:right;}
+.qgroup{display:flex;flex-direction:column;gap:10px;}
+.q-lbl{font-weight:600;font-size:16px;letter-spacing:-.01em;}
+
+/* artifact attach */
+.atabs{display:flex;gap:6px;background:var(--surface-2);border:1px solid var(--line);border-radius:11px;padding:4px;}
+.atab{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:7px;border:0;background:transparent;
+  border-radius:8px;padding:9px;font-weight:600;font-size:13.5px;color:var(--grey-3);transition:background .15s,color .15s;}
+.atab svg{width:15px;height:15px;}
+.atab.sel{background:var(--white);color:var(--black);box-shadow:var(--shadow-sm);}
+.drop{border:1.5px dashed var(--line-strong);border-radius:12px;padding:22px;text-align:center;color:var(--grey);
+  display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;transition:border-color .15s,background .15s;}
+.drop:hover{border-color:var(--green);background:var(--surface-2);}
+.drop svg{width:22px;height:22px;color:var(--grey-3);}
+.art-prev{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--white);}
+.art-prev img{width:46px;height:46px;border-radius:8px;object-fit:cover;flex-shrink:0;}
+.art-prev .ic{width:46px;height:46px;border-radius:8px;background:var(--green-tint);color:var(--green);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.art-prev .nm{flex:1;min-width:0;font-weight:600;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.art-prev .rm{width:32px;height:32px;border-radius:8px;border:1px solid var(--line);background:#fff;color:var(--grey);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.art-prev .rm:hover{border-color:var(--danger);color:var(--danger);}
+
+/* photo upload + preview card */
+.photo-up{display:flex;align-items:center;gap:16px;}
+.photo-btn{width:72px;height:72px;border-radius:50%;border:1.5px dashed var(--line-strong);background:var(--surface-2);
+  color:var(--grey-3);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;transition:border-color .15s;}
+.photo-btn:hover{border-color:var(--green);}
+.photo-btn img{width:100%;height:100%;object-fit:cover;}
+.prevcard{background:var(--white);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow-sm);padding:20px;
+  display:flex;align-items:center;gap:16px;}
+
+/* cards + expandable */
 .card{background:var(--white);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow-sm);}
 .card-pad{padding:clamp(18px,2.4vw,24px);}
-
 .xcard{background:var(--white);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow-sm);
   overflow:hidden;transition:border-color .2s var(--ease-out),box-shadow .2s var(--ease-out);}
 .xcard:hover{box-shadow:var(--shadow-md);}
@@ -204,106 +212,83 @@ a{color:inherit;}
 .xcard-more{display:grid;grid-template-rows:0fr;transition:grid-template-rows .44s var(--ease-out);}
 .xcard.open .xcard-more{grid-template-rows:1fr;}
 .xcard-more-inner{overflow:hidden;}
-
-.status{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;font-weight:500;
-  letter-spacing:.03em;padding:5px 10px;border-radius:999px;}
+.status{display:inline-flex;align-items:center;gap:6px;font-family:var(--label);font-size:11.5px;font-weight:600;
+  letter-spacing:.02em;padding:5px 10px;border-radius:999px;}
 .status.verified{background:var(--green-tint);color:#1F4A37;}
 .status.pending{background:var(--warning-tint);color:#7A5708;}
-.status.draft{background:var(--surface-3);color:var(--grey-3);}
+.status.unverified{background:var(--surface-3);color:var(--grey-3);}
 .contrib{display:inline-flex;align-items:center;gap:7px;font-weight:600;font-size:13px;color:var(--black);
   background:var(--surface-2);border:1px solid var(--line);border-radius:999px;padding:5px 12px 5px 10px;}
-
-.receipt-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:10px 0;
-  border-top:1px solid var(--line);}
-.receipt-row .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--grey);}
+.receipt-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:10px 0;border-top:1px solid var(--line);}
+.receipt-row .k{font-family:var(--label);font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--grey);}
 .receipt-row .v{font-size:14px;font-weight:600;text-align:right;}
-
 .quotebox{background:var(--surface-2);border:1px solid var(--line);border-radius:14px;padding:18px 20px;position:relative;}
 .quotebox .qm{position:absolute;top:8px;left:14px;font-size:36px;line-height:1;color:var(--line-strong);font-family:Georgia,serif;}
 .quotebox p{margin:0;padding-left:24px;font-size:16px;line-height:1.5;font-weight:500;color:var(--black);}
-
-.tlink{display:inline-flex;align-items:center;gap:6px;color:var(--green);font-weight:600;font-size:14px;
-  text-decoration:none;}
+.tlink{display:inline-flex;align-items:center;gap:6px;color:var(--green);font-weight:600;font-size:14px;text-decoration:none;}
 .tlink svg{width:14px;height:14px;transition:transform .2s var(--ease-out);}
 .tlink:hover svg{transform:translate(3px,-3px);}
-
 .callout{background:var(--green-tint);border-radius:14px;padding:16px 18px;display:flex;gap:12px;align-items:flex-start;}
 .callout svg{color:var(--green);flex-shrink:0;margin-top:2px;width:18px;height:18px;}
 .callout p{margin:0;font-size:14px;line-height:1.5;color:#23503D;}
 .callout p b{color:#1B3E2E;}
-
-/* avatar */
 .avi{border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-weight:600;
   flex-shrink:0;overflow:hidden;background:var(--black);}
+.avi img{width:100%;height:100%;object-fit:cover;}
 .check-dot{display:inline-flex;align-items:center;justify-content:center;border-radius:50%;background:var(--green);flex-shrink:0;}
 
-/* ============================================================
-   Auth screen
-   ============================================================ */
+/* empty state */
+.empty{display:flex;flex-direction:column;align-items:center;text-align:center;gap:18px;padding:clamp(40px,8vw,90px) 20px;}
+.empty .ic{width:64px;height:64px;border-radius:18px;background:var(--surface-2);border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;color:var(--grey-3);}
+
+/* auth */
 .auth{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;
   padding:clamp(32px,6vw,72px) 20px;text-align:center;min-height:calc(100vh - var(--nav-h));}
-.auth-icon{width:clamp(64px,9vw,88px);height:clamp(64px,9vw,88px);margin:0 auto 22px;
+.auth-icon{width:clamp(64px,9vw,84px);height:clamp(64px,9vw,84px);margin:0 auto 22px;
   opacity:0;transform:scale(.7);animation:stamp-in 800ms var(--ease-stamp) 120ms forwards;}
 .auth-icon svg{width:100%;height:100%;overflow:visible;}
 .auth-icon .vp,.auth-icon .wp{fill:none;stroke-width:14;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:6;
   stroke-dasharray:600;stroke-dashoffset:600;animation:draw 900ms var(--ease-out) 420ms forwards;}
-.auth-icon .vp{stroke:var(--black);}
-.auth-icon .wp{stroke:var(--green-2);animation-delay:620ms;}
-.auth h1{font-weight:700;font-size:clamp(28px,3vw + 14px,42px);line-height:1.08;letter-spacing:-.03em;margin:0 0 14px;
-  display:flex;flex-direction:column;gap:2px;align-items:center;
+.auth-icon .vp{stroke:var(--black);} .auth-icon .wp{stroke:var(--green-2);animation-delay:620ms;}
+.auth h1{font-weight:700;font-size:clamp(26px,3vw + 12px,38px);line-height:1.1;letter-spacing:-.03em;margin:0 0 12px;
   opacity:0;transform:translateY(14px);animation:rise 700ms var(--ease-out) 600ms forwards;}
-.auth .cyc{display:inline-block;position:relative;overflow:hidden;height:1.12em;color:var(--green);vertical-align:bottom;}
-.auth .cyc-w{display:inline-block;transition:transform .42s var(--ease-out),opacity .3s,filter .38s;}
-.auth .cyc-w.out{transform:translateY(-100%);opacity:0;filter:blur(6px);}
 .auth-sub{max-width:34ch;margin:0 auto;color:var(--grey);font-size:var(--fs-lede);
-  opacity:0;transform:translateY(12px);animation:rise 700ms var(--ease-out) 800ms forwards;}
-.auth-card{width:100%;max-width:400px;margin:clamp(28px,3vw,40px) auto 0;display:flex;flex-direction:column;gap:14px;
-  opacity:0;transform:translateY(12px);animation:rise 700ms var(--ease-out) 1000ms forwards;}
-.auth-legal{font-size:12px;color:var(--grey-2);max-width:36ch;margin:18px auto 0;line-height:1.5;
-  opacity:0;animation:rise 700ms var(--ease-out) 1200ms forwards;}
+  opacity:0;transform:translateY(12px);animation:rise 700ms var(--ease-out) 780ms forwards;}
+.auth-card{width:100%;max-width:400px;margin:clamp(26px,3vw,38px) auto 0;display:flex;flex-direction:column;gap:13px;
+  opacity:0;transform:translateY(12px);animation:rise 700ms var(--ease-out) 960ms forwards;}
+.auth-legal{font-size:12px;color:var(--grey-2);max-width:38ch;margin:18px auto 0;line-height:1.5;
+  opacity:0;animation:rise 700ms var(--ease-out) 1160ms forwards;}
 .auth-legal a{color:var(--grey);text-decoration:underline;text-underline-offset:2px;}
 
-/* Google chooser modal */
-.modal-back{position:fixed;inset:0;z-index:300;background:rgba(17,24,39,.42);
+/* modal */
+.modal-back{position:fixed;inset:0;z-index:300;background:rgba(17,24,39,.45);
   backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);
   display:flex;align-items:center;justify-content:center;padding:20px;animation:fade .2s ease both;}
 .gmodal{width:100%;max-width:400px;background:#fff;border-radius:18px;overflow:hidden;
-  box-shadow:0 30px 70px -20px rgba(0,0,0,.5);animation:pop .34s var(--ease-stamp) both;text-align:left;}
-.gmodal-hd{padding:22px 24px 16px;border-bottom:1px solid var(--line);}
-.gmodal-hd .g-logo{margin-bottom:14px;}
-.gmodal-hd h3{margin:0 0 4px;font-size:20px;font-weight:500;color:#202124;letter-spacing:-.01em;}
-.gmodal-hd p{margin:0;font-size:13px;color:#5f6368;}
-.gmodal-hd p b{font-weight:600;color:#202124;}
-.gacct{display:flex;align-items:center;gap:14px;width:100%;background:transparent;border:0;text-align:left;
-  padding:14px 24px;transition:background 150ms;}
-.gacct:hover{background:var(--surface-2);}
-.gacct .avi{width:36px;height:36px;font-size:14px;}
-.gacct .ga-name{font-size:14px;font-weight:600;color:#202124;}
-.gacct .ga-mail{font-size:13px;color:#5f6368;}
-.gacct.other{color:#5f6368;font-size:14px;border-top:1px solid var(--line);}
-.gacct.other .ga-ic{width:36px;height:36px;border-radius:50%;border:1px solid var(--line-strong);
-  display:flex;align-items:center;justify-content:center;color:#5f6368;}
-.gmodal-ft{padding:14px 24px 18px;font-size:11px;color:#5f6368;line-height:1.5;}
-.gspin{display:flex;flex-direction:column;align-items:center;gap:18px;padding:48px 24px;text-align:center;}
-.spinner{width:38px;height:38px;border-radius:50%;border:3px solid var(--line);border-top-color:var(--green);
-  animation:spin .8s linear infinite;}
+  box-shadow:0 30px 70px -20px rgba(0,0,0,.5);animation:pop .34s var(--ease-stamp) both;text-align:center;}
+.gspin{display:flex;flex-direction:column;align-items:center;gap:18px;padding:44px 24px;}
+.gspin .g-logo{margin-bottom:2px;}
+.gspin .ttl{font-weight:600;font-size:16px;color:#202124;}
+.gspin .sub{font-size:13px;color:#5f6368;}
+.spinner{width:38px;height:38px;border-radius:50%;border:3px solid var(--line);border-top-color:var(--green);animation:spin .8s linear infinite;}
+.cmodal{width:100%;max-width:420px;background:#fff;border-radius:18px;padding:26px;text-align:left;
+  box-shadow:0 30px 70px -20px rgba(0,0,0,.5);animation:pop .34s var(--ease-stamp) both;}
+.cmodal .ic{width:48px;height:48px;border-radius:14px;background:var(--danger-tint);color:var(--danger);
+  display:flex;align-items:center;justify-content:center;margin-bottom:16px;}
 
-/* ============================================================
-   Dashboard
-   ============================================================ */
-.dash-hd{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-bottom:28px;}
+/* dashboard */
+.dash-hd{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-bottom:26px;}
 .complete{background:var(--surface-2);border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin-bottom:26px;
   display:flex;align-items:center;gap:18px;flex-wrap:wrap;}
 .complete .bar{flex:1;min-width:160px;height:8px;border-radius:999px;background:var(--surface-3);overflow:hidden;}
 .complete .bar i{display:block;height:100%;background:var(--green);border-radius:999px;transition:width 900ms var(--ease-out);}
 .sec-head{display:flex;align-items:center;gap:12px;margin:0 0 16px;}
-.sec-head .n{font-family:var(--mono);font-size:12px;color:var(--grey-2);}
+.sec-head .n{font-family:var(--label);font-size:12px;font-weight:600;color:var(--grey-2);}
 .sec-head .ln{flex:1;height:1px;background:var(--line);}
 .stack{display:flex;flex-direction:column;gap:14px;}
 
-/* ============================================================
-   Profile
-   ============================================================ */
+/* profile */
 .pf-head{display:flex;gap:clamp(18px,3vw,30px);align-items:flex-start;flex-wrap:wrap;margin-bottom:8px;}
 .pf-id{flex:1;min-width:240px;}
 .pf-name{font-weight:700;font-size:clamp(26px,2.4vw + 16px,40px);letter-spacing:-.03em;line-height:1.05;margin:0 0 6px;}
@@ -312,30 +297,25 @@ a{color:inherit;}
 .pf-meta .it{display:inline-flex;align-items:center;gap:6px;}
 .pf-meta .it svg{width:15px;height:15px;}
 .pf-bio{margin:16px 0 0;font-size:var(--fs-body);color:var(--ink-2);line-height:1.6;max-width:62ch;}
-.pf-actions{display:flex;gap:10px;flex-shrink:0;}
+.pf-actions{display:flex;gap:10px;flex-shrink:0;flex-wrap:wrap;}
 .pf-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:26px 0;}
 @media (min-width:640px){.pf-stats{grid-template-columns:repeat(4,1fr);}}
 .stat{background:var(--surface-2);border:1px solid var(--line);border-radius:14px;padding:16px 18px;}
-.stat .num{font-weight:800;font-size:clamp(24px,2vw + 14px,32px);letter-spacing:-.02em;line-height:1;
-  display:inline-flex;align-items:center;gap:7px;}
-.stat .lbl{margin-top:7px;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--grey);}
+.stat .num{font-weight:800;font-size:clamp(24px,2vw + 14px,32px);letter-spacing:-.02em;line-height:1;display:inline-flex;align-items:center;gap:7px;}
+.stat .lbl{margin-top:7px;font-family:var(--label);font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--grey);}
 .badges{display:flex;gap:10px;flex-wrap:wrap;}
 .endorse{display:grid;gap:14px;}
 @media (min-width:720px){.endorse{grid-template-columns:1fr 1fr;}}
+.danger-zone{margin-top:42px;border:1px solid var(--danger-tint);border-radius:16px;padding:20px;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.danger-zone .t{font-weight:700;color:var(--danger);}
+.danger-zone .s{font-size:13.5px;color:var(--grey);margin-top:3px;}
 
-/* ============================================================
-   Validator standalone flow
-   ============================================================ */
-.vintro{display:flex;flex-direction:column;align-items:center;text-align:center;gap:22px;
-  padding:clamp(28px,5vw,56px) 0;}
-.prog{display:flex;align-items:center;gap:14px;}
-.prog .dots{display:flex;gap:7px;}
-.prog .dots i{width:8px;height:8px;border-radius:50%;background:var(--line-strong);transition:background .2s,transform .2s;}
-.prog .dots i.on{background:var(--green);}
-.prog .lbl{font-family:var(--mono);font-size:12px;color:var(--grey);}
+/* validator */
+.vintro{display:flex;flex-direction:column;align-items:center;text-align:center;gap:22px;padding:clamp(28px,5vw,56px) 0;}
 .opts{display:flex;flex-direction:column;gap:12px;}
 .opt{appearance:none;width:100%;text-align:left;background:var(--white);border:1px solid var(--line-strong);
-  border-radius:14px;padding:18px;min-height:62px;display:flex;align-items:center;justify-content:space-between;gap:12px;
+  border-radius:14px;padding:16px 18px;min-height:60px;display:flex;align-items:center;justify-content:space-between;gap:12px;
   color:var(--black);transition:border-color .16s,background .16s,box-shadow .16s,transform .08s;}
 .opt:hover{border-color:var(--black);}
 .opt:active{transform:scale(.99);}
@@ -350,31 +330,19 @@ a{color:inherit;}
 .opt.sel .o-sub{color:rgba(255,255,255,.82);}
 .opt.sel .o-ic{background:rgba(255,255,255,.16);color:#fff;}
 .opt.sel .o-tick{opacity:1;transform:scale(1);}
-
 .stamp-wrap{position:relative;display:inline-flex;align-items:center;justify-content:center;}
 .stamp-svg{animation:stamp-pop .42s var(--ease-stamp) both;}
-.stamp-ring{position:absolute;inset:0;border-radius:50%;border:2px solid var(--green);opacity:0;
-  animation:stamp-ring .6s ease-out .1s both;}
+.stamp-ring{position:absolute;inset:0;border-radius:50%;border:2px solid var(--green);opacity:0;animation:stamp-ring .6s ease-out .1s both;}
 
-/* ============================================================
-   Reveal on scroll
-   ============================================================ */
+/* reveal + footer */
 .reveal{opacity:0;transform:translateY(28px);transition:opacity 700ms var(--ease-out),transform 700ms var(--ease-out);}
 .reveal.in{opacity:1;transform:none;}
-
-/* ============================================================
-   Footer
-   ============================================================ */
 .app-foot{border-top:1px solid var(--line);background:var(--surface-2);margin-top:48px;}
-.app-foot .inner{max-width:1040px;margin:0 auto;padding:26px clamp(20px,4vw,40px);
-  display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;
-  font-size:13px;color:var(--grey);}
+.app-foot .inner{max-width:1040px;margin:0 auto;padding:24px clamp(20px,4vw,40px);
+  display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--grey);}
 .app-foot a{color:var(--grey);text-decoration:none;font-weight:500;}
 .app-foot a:hover{color:var(--green);}
 
-/* ============================================================
-   Animations
-   ============================================================ */
 @keyframes rise{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:none;}}
 @keyframes stamp-in{0%{opacity:0;transform:scale(.65);}60%{opacity:1;transform:scale(1.05);}100%{opacity:1;transform:scale(1);}}
 @keyframes stamp-pop{0%{transform:scale(.6);opacity:0;}60%{transform:scale(1.08);opacity:1;}100%{transform:scale(1);}}
@@ -383,9 +351,6 @@ a{color:inherit;}
 @keyframes fade{from{opacity:0;}to{opacity:1;}}
 @keyframes pop{from{opacity:0;transform:scale(.92) translateY(10px);}to{opacity:1;transform:none;}}
 @keyframes spin{to{transform:rotate(360deg);}}
-@keyframes sk{0%{background-position:100% 0;}100%{background-position:0 0;}}
-.sk{background:linear-gradient(90deg,var(--surface-3) 25%,#ECEEF1 37%,var(--surface-3) 63%);
-  background-size:400% 100%;border-radius:8px;animation:sk 1.4s ease infinite;}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.001ms !important;transition-duration:.001ms !important;}
   .reveal{opacity:1;transform:none;}
@@ -402,916 +367,710 @@ a{color:inherit;}
 <script type="text/babel" data-presets="react">
 const { useState, useEffect, useRef, useCallback } = React;
 
-/* ============================================================
-   Icons — Lucide-style, 1.8px stroke
-   ============================================================ */
+/* ---------- Icons ---------- */
 function Ic({ name, size = 20, stroke = 1.8, color = 'currentColor', style }) {
   const P = { fill:'none', stroke:color, strokeWidth:stroke, strokeLinecap:'round', strokeLinejoin:'round' };
   const paths = {
-    check:        <polyline points="20 6 9 17 4 12" {...P} />,
-    arrowLeft:    <><line x1="19" y1="12" x2="5" y2="12" {...P}/><polyline points="12 19 5 12 12 5" {...P}/></>,
-    arrowRight:   <><line x1="5" y1="12" x2="19" y2="12" {...P}/><polyline points="12 5 19 12 12 19" {...P}/></>,
-    arrowUpRight: <><path d="M7 17L17 7" {...P}/><path d="M8 7h9v9" {...P}/></>,
-    chevronDown:  <polyline points="6 9 12 15 18 9" {...P}/>,
-    x:            <><line x1="18" y1="6" x2="6" y2="18" {...P}/><line x1="6" y1="6" x2="18" y2="18" {...P}/></>,
-    plus:         <><line x1="12" y1="5" x2="12" y2="19" {...P}/><line x1="5" y1="12" x2="19" y2="12" {...P}/></>,
-    crown:        <path d="M3 8l4 4 5-7 5 7 4-4-2 11H5L3 8z" {...P}/>,
-    layers:       <><polygon points="12 2 2 7 12 12 22 7 12 2" {...P}/><polyline points="2 17 12 22 22 17" {...P}/><polyline points="2 12 12 17 22 12" {...P}/></>,
-    handshake:    <><path d="m11 17 2 2a1 1 0 1 0 3-3" {...P}/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4" {...P}/><path d="m21 3 1 11h-2" {...P}/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3" {...P}/><path d="M3 4h8" {...P}/></>,
-    info:         <><circle cx="12" cy="12" r="10" {...P}/><line x1="12" y1="16" x2="12" y2="12" {...P}/><line x1="12" y1="8" x2="12.01" y2="8" {...P}/></>,
-    inbox:        <><polyline points="22 12 16 12 14 15 10 15 8 12 2 12" {...P}/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" {...P}/></>,
-    share:        <><circle cx="18" cy="5" r="3" {...P}/><circle cx="6" cy="12" r="3" {...P}/><circle cx="18" cy="19" r="3" {...P}/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49" {...P}/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49" {...P}/></>,
-    refresh:      <><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" {...P}/><path d="M21 3v5h-5" {...P}/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" {...P}/><path d="M8 16H3v5" {...P}/></>,
-    mapPin:       <><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" {...P}/><circle cx="12" cy="10" r="3" {...P}/></>,
-    edit:         <><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" {...P}/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" {...P}/></>,
-    shield:       <><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" {...P}/><path d="m9 12 2 2 4-4" {...P}/></>,
-    briefcase:    <><rect x="3" y="7" width="18" height="13" rx="2" {...P}/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" {...P}/><path d="M3 12h18" {...P}/></>,
-    fileText:     <><path d="M14 3v4a1 1 0 0 0 1 1h4" {...P}/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z" {...P}/><path d="M9 13h6M9 17h4" {...P}/></>,
-    sparkle:      <path d="m12 3 1.9 5.8a2 2 0 0 0 1.3 1.3L21 12l-5.8 1.9a2 2 0 0 0-1.3 1.3L12 21l-1.9-5.8a2 2 0 0 0-1.3-1.3L3 12l5.8-1.9a2 2 0 0 0 1.3-1.3z" {...P}/>,
-    logout:       <><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" {...P}/><polyline points="16 17 21 12 16 7" {...P}/><line x1="21" y1="12" x2="9" y2="12" {...P}/></>,
-    grid:         <><rect x="3" y="3" width="7" height="7" rx="1" {...P}/><rect x="14" y="3" width="7" height="7" rx="1" {...P}/><rect x="3" y="14" width="7" height="7" rx="1" {...P}/><rect x="14" y="14" width="7" height="7" rx="1" {...P}/></>,
-    user:         <><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" {...P}/><circle cx="12" cy="7" r="4" {...P}/></>,
-    send:         <><path d="m22 2-7 20-4-9-9-4Z" {...P}/><path d="M22 2 11 13" {...P}/></>,
+    check:<polyline points="20 6 9 17 4 12" {...P}/>,
+    arrowLeft:<><line x1="19" y1="12" x2="5" y2="12" {...P}/><polyline points="12 19 5 12 12 5" {...P}/></>,
+    arrowRight:<><line x1="5" y1="12" x2="19" y2="12" {...P}/><polyline points="12 5 19 12 12 19" {...P}/></>,
+    arrowUpRight:<><path d="M7 17L17 7" {...P}/><path d="M8 7h9v9" {...P}/></>,
+    chevronDown:<polyline points="6 9 12 15 18 9" {...P}/>,
+    x:<><line x1="18" y1="6" x2="6" y2="18" {...P}/><line x1="6" y1="6" x2="18" y2="18" {...P}/></>,
+    plus:<><line x1="12" y1="5" x2="12" y2="19" {...P}/><line x1="5" y1="12" x2="19" y2="12" {...P}/></>,
+    crown:<path d="M3 8l4 4 5-7 5 7 4-4-2 11H5L3 8z" {...P}/>,
+    layers:<><polygon points="12 2 2 7 12 12 22 7 12 2" {...P}/><polyline points="2 17 12 22 22 17" {...P}/><polyline points="2 12 12 17 22 12" {...P}/></>,
+    handshake:<><path d="m11 17 2 2a1 1 0 1 0 3-3" {...P}/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4" {...P}/><path d="m21 3 1 11h-2" {...P}/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3" {...P}/><path d="M3 4h8" {...P}/></>,
+    info:<><circle cx="12" cy="12" r="10" {...P}/><line x1="12" y1="16" x2="12" y2="12" {...P}/><line x1="12" y1="8" x2="12.01" y2="8" {...P}/></>,
+    inbox:<><polyline points="22 12 16 12 14 15 10 15 8 12 2 12" {...P}/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" {...P}/></>,
+    share:<><circle cx="18" cy="5" r="3" {...P}/><circle cx="6" cy="12" r="3" {...P}/><circle cx="18" cy="19" r="3" {...P}/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49" {...P}/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49" {...P}/></>,
+    refresh:<><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" {...P}/><path d="M21 3v5h-5" {...P}/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" {...P}/><path d="M8 16H3v5" {...P}/></>,
+    mapPin:<><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" {...P}/><circle cx="12" cy="10" r="3" {...P}/></>,
+    edit:<><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" {...P}/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" {...P}/></>,
+    shield:<><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" {...P}/><path d="m9 12 2 2 4-4" {...P}/></>,
+    fileText:<><path d="M14 3v4a1 1 0 0 0 1 1h4" {...P}/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z" {...P}/><path d="M9 13h6M9 17h4" {...P}/></>,
+    sparkle:<path d="m12 3 1.9 5.8a2 2 0 0 0 1.3 1.3L21 12l-5.8 1.9a2 2 0 0 0-1.3 1.3L12 21l-1.9-5.8a2 2 0 0 0-1.3-1.3L3 12l5.8-1.9a2 2 0 0 0 1.3-1.3z" {...P}/>,
+    logout:<><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" {...P}/><polyline points="16 17 21 12 16 7" {...P}/><line x1="21" y1="12" x2="9" y2="12" {...P}/></>,
+    grid:<><rect x="3" y="3" width="7" height="7" rx="1" {...P}/><rect x="14" y="3" width="7" height="7" rx="1" {...P}/><rect x="3" y="14" width="7" height="7" rx="1" {...P}/><rect x="14" y="14" width="7" height="7" rx="1" {...P}/></>,
+    user:<><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" {...P}/><circle cx="12" cy="7" r="4" {...P}/></>,
+    send:<><path d="m22 2-7 20-4-9-9-4Z" {...P}/><path d="M22 2 11 13" {...P}/></>,
+    link:<><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" {...P}/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" {...P}/></>,
+    image:<><rect x="3" y="3" width="18" height="18" rx="2" {...P}/><circle cx="9" cy="9" r="2" {...P}/><path d="m21 15-3.5-3.5a2 2 0 0 0-2.8 0L6 21" {...P}/></>,
+    paperclip:<path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" {...P}/>,
+    upload:<><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" {...P}/><polyline points="17 8 12 3 7 8" {...P}/><line x1="12" y1="3" x2="12" y2="15" {...P}/></>,
+    trash:<><polyline points="3 6 5 6 21 6" {...P}/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" {...P}/></>,
+    camera:<><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" {...P}/><circle cx="12" cy="13" r="3" {...P}/></>,
+    calendar:<><rect x="3" y="4" width="18" height="18" rx="2" {...P}/><line x1="16" y1="2" x2="16" y2="6" {...P}/><line x1="8" y1="2" x2="8" y2="6" {...P}/><line x1="3" y1="10" x2="21" y2="10" {...P}/></>,
   };
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" style={{display:'block',flexShrink:0,...style}} aria-hidden="true">
-      {paths[name]}
-    </svg>
-  );
+  return <svg width={size} height={size} viewBox="0 0 24 24" style={{display:'block',flexShrink:0,...style}} aria-hidden="true">{paths[name]}</svg>;
 }
-
-function Wordmark() {
-  return (
-    <span className="wm">
-      <span>verified</span>
-      <span className="check"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
-      <span className="work">work</span>
-    </span>
-  );
+function Wordmark(){ return (<span className="wm"><span>verified</span>
+  <span className="check"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+  <span className="work">work</span></span>); }
+function CheckDot({ size=18 }){ return <span className="check-dot" style={{width:size,height:size}}><Ic name="check" size={size*0.62} color="#fff" stroke={2.8}/></span>; }
+function Avatar({ name='', size=56, src }){
+  const initials=name.trim().split(/\s+/).map(p=>p[0]).slice(0,2).join('').toUpperCase()||'?';
+  return <span className="avi" style={{width:size,height:size,fontSize:size*0.36,background:src?'transparent':'var(--black)'}}>
+    {src ? <img src={src} alt={name}/> : initials}</span>;
 }
-
-function CheckDot({ size = 18 }) {
-  return (
-    <span className="check-dot" style={{ width:size, height:size }}>
-      <Ic name="check" size={size*0.62} color="#fff" stroke={2.8} />
-    </span>
-  );
+function MarkIcon(){ return (<div className="auth-icon" aria-hidden="true"><svg viewBox="0 0 100 100">
+  <path className="vp" d="M 12 30 L 31 77 L 50 53"/><path className="wp" d="M 50 53 L 69 77 L 88 23"/></svg></div>); }
+function GoogleG({ size=18 }){ return (<svg width={size} height={size} viewBox="0 0 48 48" aria-hidden="true">
+  <path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/>
+  <path fill="#FF3D00" d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"/>
+  <path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238C29.211 35.091 26.715 36 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/>
+  <path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303c-.792 2.237-2.231 4.166-4.087 5.571l6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"/></svg>); }
+function Reveal({ children, className='', delay=0, style }){
+  const ref=useRef(null); const [seen,setSeen]=useState(false);
+  useEffect(()=>{ const el=ref.current; if(!el) return;
+    const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ setSeen(true); io.unobserve(e.target); } }),
+      { threshold:0.15, rootMargin:'0px 0px -50px 0px' });
+    io.observe(el); return ()=>io.disconnect(); },[]);
+  return <div ref={ref} className={'reveal '+(seen?'in ':'')+className} style={{transitionDelay:(seen?delay:0)+'ms',...style}}>{children}</div>;
 }
+function Stamp({ size=104 }){ return (<div className="stamp-wrap" style={{width:size,height:size}}>
+  <span className="stamp-ring"/><svg className="stamp-svg" width={size} height={size} viewBox="0 0 96 96">
+  <circle cx="48" cy="48" r="48" fill="var(--green)"/>
+  <polyline points="29 49 42 62 67 34" fill="none" stroke="#fff" strokeWidth="7" strokeLinecap="round" strokeLinejoin="round"/></svg></div>); }
 
-function Avatar({ name = '', size = 56, src }) {
-  const initials = name.trim().split(/\s+/).map(p => p[0]).slice(0,2).join('').toUpperCase();
-  return (
-    <span className="avi" style={{ width:size, height:size, fontSize:size*0.36, background: src?'transparent':'var(--black)' }}>
-      {src ? <img src={src} alt={name} style={{width:'100%',height:'100%',objectFit:'cover'}}/> : initials}
-    </span>
-  );
-}
-
-/* The V/W mark, drawn-in (reused from the landing hero) */
-function MarkIcon() {
-  return (
-    <div className="auth-icon" aria-hidden="true">
-      <svg viewBox="0 0 100 100">
-        <path className="vp" d="M 12 30 L 31 77 L 50 53"/>
-        <path className="wp" d="M 50 53 L 69 77 L 88 23"/>
-      </svg>
-    </div>
-  );
-}
-
-function GoogleG({ size = 18 }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 48 48" aria-hidden="true">
-      <path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/>
-      <path fill="#FF3D00" d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"/>
-      <path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238C29.211 35.091 26.715 36 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/>
-      <path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303c-.792 2.237-2.231 4.166-4.087 5.571l6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"/>
-    </svg>
-  );
-}
-
-/* Reveal-on-scroll wrapper */
-function Reveal({ children, className = '', delay = 0, style }) {
-  const ref = useRef(null);
-  const [seen, setSeen] = useState(false);
-  useEffect(() => {
-    const el = ref.current; if (!el) return;
-    const io = new IntersectionObserver((es) => {
-      es.forEach(e => { if (e.isIntersecting) { setSeen(true); io.unobserve(e.target); } });
-    }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-  return (
-    <div ref={ref} className={'reveal ' + (seen ? 'in ' : '') + className}
-         style={{ transitionDelay: (seen ? delay : 0) + 'ms', ...style }}>
-      {children}
-    </div>
-  );
-}
-
-/* ============================================================
-   Seed data — Frank Docent
-   ============================================================ */
-const SEED_USER = {
-  name: 'Frank Docent',
-  role: 'Creative direction & brand',
-  location: 'Lisbon, Portugal',
-  handle: 'frankdocent',
-  bio: "I build visual systems that hold up — brand identities, design languages, and the occasional impossible deadline. Twelve years across studios and in-house teams.",
-};
-
-const SEED_PROJECTS = [
-  { id:1, title:'Brand identity redesign', company:'Studio Nord', year:'2024', contrib:'Partner', status:'verified',
-    outcome:'Increased client retention by 40% in six months',
-    quote:'Frank has a rare ability to translate business goals into visual systems that actually hold up. The rebrand is still the best decision we made that year.',
-    endorser:'Jordan M.', endorserRole:'Creative Director', again:'Yes', artifact:true },
-  { id:2, title:'Campaign identity system', company:'Bloom Agency', year:'2023', contrib:'Owner', status:'verified',
-    outcome:'Built the entire visual language from scratch and shipped under a tight deadline',
-    quote:'He built the entire visual language from scratch and shipped under a tight deadline without compromising on quality.',
-    endorser:'Priya S.', endorserRole:'Producer', again:'Yes', artifact:false },
-  { id:3, title:'Design system for fintech app', company:'Ledgerline', year:'2025', contrib:'Owner', status:'pending',
-    outcome:'Unified four product teams on one component library',
-    endorser:'Sam K.', endorserRole:'Head of Product', artifact:false },
-];
-
+/* ---------- data + helpers ---------- */
 const CONTRIB_DEF = [
   { key:'Owner', label:'Owner', sub:'End-to-end ownership', icon:'crown' },
-  { key:'Executor', label:'Executor', sub:"Tasks under someone's direction", icon:'layers' },
-  { key:'Partner', label:'Partner', sub:'Owned a specific area in a cross-functional project', icon:'handshake' },
+  { key:'Partner', label:'Partner', sub:'Owned a specific area', icon:'handshake' },
+  { key:'Executor', label:'Executor', sub:"Tasks under direction", icon:'layers' },
 ];
+const REL_OPTIONS = ['Manager','Founder','Client','Professor','Colleague / peer','Other'];
+const FREE_MAIL = ['gmail.com','yahoo.com','outlook.com','hotmail.com','icloud.com','proton.me','protonmail.com','live.com','aol.com'];
+function badgeTier(email){
+  const at=email.indexOf('@'); if(at<0||!/\.[^@\s]+$/.test(email)) return null;
+  const d=email.slice(at+1).toLowerCase();
+  if(/(\.edu|\.ac\.[a-z]{2,}|\.edu\.[a-z]{2,})$/.test(d)) return { kind:'academic', label:'Academic verified' };
+  if(FREE_MAIL.includes(d)) return { kind:'peer', label:'Peer verified' };
+  return { kind:'company', label:'Company verified' };
+}
+const NOW = 2026;
+const YEARS = Array.from({length:NOW-1999},(_,i)=>String(NOW-i));
+function periodLabel(s,e){ if(!s) return ''; const end = e==='Present'||!e ? 'Present' : e; return s===end?s:(s+'–'+end); }
+function durationLabel(s,e){ if(!s) return ''; const sy=+s, ey=(e==='Present'||!e)?NOW:+e; const y=Math.max(0,ey-sy);
+  return y<=0?'under a year':(y+' yr'+(y>1?'s':'')); }
+const emailOk = v => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v);
+function readPending(){ try{ const r=localStorage.getItem('vw_pending'); return r?JSON.parse(r):null; }catch(_){ return null; } }
 
-/* ============================================================
-   Top nav + menu
-   ============================================================ */
+/* ---------- shared bits ---------- */
+function WizBar({ current, total, label, onBack }){
+  return (<div className="wiz">
+    <div className="wiz-top">
+      {onBack ? <button className="wiz-back" onClick={onBack} aria-label="Back"><Ic name="arrowLeft" size={16}/></button> : <span style={{width:36}}/>}
+      <div className="wiz-bar"><i style={{width:(current/total*100)+'%'}}/></div>
+      <span className="wiz-step">{current}/{total}</span>
+    </div>
+    {label && <h1 className="h2" style={{marginTop:16,fontSize:'clamp(22px,2vw,30px)'}}>{label}</h1>}
+  </div>);
+}
+function QGroup({ label, options, value, onChange }){
+  return (<div className="qgroup">
+    <div className="q-lbl">{label}</div>
+    <div className="pills">{options.map(o=>{ const v=o.v||o, l=o.l||o;
+      return <button key={v} className={'pill'+(value===v?' sel':'')} onClick={()=>onChange(v)}>{l}</button>; })}</div>
+  </div>);
+}
+function Opt({ label, sub, icon, sel, onClick }){
+  return (<button className={'opt'+(sel?' sel':'')} onClick={onClick}>
+    <span className="o-row">{icon&&<span className="o-ic"><Ic name={icon} size={20}/></span>}
+      <span><span className="o-label" style={{display:'block'}}>{label}</span>{sub&&<span className="o-sub" style={{display:'block'}}>{sub}</span>}</span></span>
+    <span className="o-tick"><Ic name="check" size={20} color="#fff" stroke={2.4}/></span></button>);
+}
+
+/* ---------- Artifact attach (link / image / file) ---------- */
+function ArtifactInput({ value, onChange }){
+  const [type,setType]=useState(value?value.type:'link');
+  const [link,setLink]=useState(value&&value.type==='link'?value.value:'');
+  const fileRef=useRef(null);
+  const onFile=(e)=>{ const f=e.target.files&&e.target.files[0]; if(!f) return;
+    const url=URL.createObjectURL(f);
+    onChange({ type: f.type.indexOf('image/')===0?'image':'file', value:url, name:f.name }); };
+  const tabs=[{k:'link',l:'Link',i:'link'},{k:'image',l:'Image',i:'image'},{k:'file',l:'File',i:'paperclip'}];
+  return (<div style={{display:'flex',flexDirection:'column',gap:12}}>
+    <div className="atabs">{tabs.map(t=>(
+      <button key={t.k} className={'atab'+(type===t.k?' sel':'')} onClick={()=>setType(t.k)} type="button"><Ic name={t.i} size={15}/>{t.l}</button>))}</div>
+    {value ? (
+      <div className="art-prev">
+        {value.type==='image' ? <img src={value.value} alt=""/> : <span className="ic"><Ic name={value.type==='link'?'link':'fileText'} size={20}/></span>}
+        <span className="nm">{value.name||value.value}</span>
+        <button className="rm" type="button" onClick={()=>{ onChange(null); setLink(''); }} aria-label="Remove"><Ic name="x" size={15}/></button>
+      </div>
+    ) : type==='link' ? (
+      <div style={{display:'flex',gap:8}}>
+        <input className="input" placeholder="https://your-work.com/case-study" value={link} onChange={e=>setLink(e.target.value)}/>
+        <button className="btn btn-secondary btn-sm" type="button" disabled={!link.trim()} onClick={()=>onChange({type:'link',value:link.trim(),name:link.trim()})}>Attach</button>
+      </div>
+    ) : (
+      <>
+        <div className="drop" onClick={()=>fileRef.current&&fileRef.current.click()}>
+          <Ic name={type==='image'?'image':'upload'} size={22}/>
+          <div style={{fontWeight:600,color:'var(--ink-2)'}}>{type==='image'?'Add an image':'Attach a file'}</div>
+          <div style={{fontSize:13}}>Click to choose — others can open or download it</div>
+        </div>
+        <input ref={fileRef} type="file" accept={type==='image'?'image/*':undefined} style={{display:'none'}} onChange={onFile}/>
+      </>
+    )}
+  </div>);
+}
+function ArtifactView({ a, small }){
+  if(!a) return null;
+  if(a.type==='image') return <a href={a.value} target="_blank" rel="noopener"><img src={a.value} alt={a.name}
+    style={{borderRadius:12,border:'1px solid var(--line)',maxHeight:small?120:220,width:'auto'}}/></a>;
+  return <a className="tlink" href={a.value} target="_blank" rel="noopener"><Ic name={a.type==='link'?'link':'fileText'} size={14}/> {a.type==='link'?'View artifact':('Open '+(a.name||'file'))} <Ic name="arrowUpRight" size={14}/></a>;
+}
+
+/* ---------- TOP NAV ---------- */
 const MENU = [
   { to:'#/dashboard', label:'Dashboard', icon:'grid' },
   { to:'#/profile',   label:'My profile', icon:'user' },
-  { to:'#/add',       label:'Add work', icon:'plus' },
-  { to:'#/validate',  label:'Validator demo', icon:'shield' },
+  { to:'#/add',       label:'Add a project', icon:'plus' },
+  { to:'#/validate',  label:'Validator preview', icon:'shield' },
 ];
-
-function TopNav({ route, go, authed, onSignout }) {
-  const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const wrapRef = useRef(null);
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
-    window.addEventListener('scroll', onScroll, { passive:true }); onScroll();
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-  useEffect(() => {
-    const onDoc = (e) => { if (wrapRef.current && !wrapRef.current.contains(e.target)) setOpen(false); };
-    const onKey = (e) => { if (e.key === 'Escape') setOpen(false); };
-    document.addEventListener('click', onDoc); document.addEventListener('keydown', onKey);
-    return () => { document.removeEventListener('click', onDoc); document.removeEventListener('keydown', onKey); };
-  }, []);
-  useEffect(() => { setOpen(false); }, [route]);
-
-  return (
-    <nav className={'app-nav' + (scrolled ? ' scrolled' : '')}>
-      <div className="inner">
-        <a className="wm" href="index.html" aria-label="verified.work — home"><Wordmark/></a>
-        <div className="nav-actions" ref={wrapRef}>
-          {authed && route !== '/profile' && (
-            <button className="btn btn-primary btn-sm pill" onClick={() => go('#/profile')}>My profile</button>
-          )}
-          {!authed && (
-            <button className="btn btn-primary btn-sm pill" onClick={() => go('#/auth')}>Sign in</button>
-          )}
-          <button className={'nav-menu-btn' + (open ? ' open' : '')} aria-label="Menu"
-                  aria-expanded={open} onClick={(e)=>{e.stopPropagation();setOpen(o=>!o);}}>
-            <span></span><span></span><span></span>
-          </button>
-          <div className={'nav-menu' + (open ? ' open' : '')} role="menu">
-            <div className="mlabel">The app</div>
-            {MENU.map(m => (
-              <a key={m.to} className={'mi' + (route === m.to.slice(1) ? ' active' : '')} href={m.to} role="menuitem">
-                <Ic name={m.icon} size={16}/>{m.label}
-              </a>
-            ))}
-            <div className="sep"></div>
-            <div className="mlabel">Site</div>
-            <a className="mi" href="index.html" role="menuitem"><Ic name="arrowLeft" size={16}/>Back to landing</a>
-            <a className="mi" href="blog/" role="menuitem"><Ic name="fileText" size={16}/>Blog</a>
-            {authed && <button className="mi" role="menuitem" onClick={onSignout}><Ic name="logout" size={16}/>Sign out</button>}
-          </div>
-        </div>
-      </div>
-    </nav>
-  );
-}
-
-/* ============================================================
-   AUTH — Google (simulated) + magic link
-   ============================================================ */
-const CYCLE = ['found.', 'verified.', 'hired.'];
-function AuthScreen({ onGoogle, onEmail }) {
-  const [email, setEmail] = useState('');
-  const [idx, setIdx] = useState(0);
-  const [out, setOut] = useState(false);
-  const valid = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
-  useEffect(() => {
-    const t = setInterval(() => {
-      setOut(true);
-      setTimeout(() => { setIdx(i => (i+1)%CYCLE.length); setOut(false); }, 420);
-    }, 2600);
-    return () => clearInterval(t);
-  }, []);
-  return (
-    <div className="auth wrap wrap-sm">
-      <MarkIcon/>
-      <h1>
-        <span>Get <span className="cyc"><span className={'cyc-w' + (out?' out':'')}>{CYCLE[idx]}</span></span></span>
-      </h1>
-      <p className="auth-sub">Your verified profile, endorsed by the people who were actually there.</p>
-      <div className="auth-card">
-        <button className="btn btn-google block" onClick={onGoogle}>
-          <GoogleG size={18}/> Continue with Google
-        </button>
-        <div className="divider-or">or</div>
-        <input className="input" type="email" placeholder="you@company.com" value={email} inputMode="email"
-               onChange={e=>setEmail(e.target.value)} onKeyDown={e=>e.key==='Enter'&&valid&&onEmail(email)} />
-        <button className="btn btn-primary block" disabled={!valid} onClick={()=>onEmail(email)}>
-          Send magic link
-        </button>
-      </div>
-      <p className="auth-legal">
-        By continuing you agree to our <a href="terms.html">Terms</a> and <a href="privacy.html">Privacy policy</a>.
-        No passwords — ever.
-      </p>
-    </div>
-  );
-}
-
-function GoogleModal({ onPick, onClose }) {
-  const [signing, setSigning] = useState(false);
-  const pick = () => { setSigning(true); setTimeout(onPick, 1300); };
-  return (
-    <div className="modal-back" onClick={onClose}>
-      <div className="gmodal" onClick={e=>e.stopPropagation()} role="dialog" aria-modal="true" aria-label="Sign in with Google">
-        {signing ? (
-          <div className="gspin">
-            <div className="spinner"></div>
-            <div><div style={{fontWeight:600,marginBottom:4}}>Signing you in…</div>
-              <div style={{fontSize:13,color:'#5f6368'}}>frank@docent.co</div></div>
-          </div>
-        ) : (
-          <>
-            <div className="gmodal-hd">
-              <div className="g-logo"><GoogleG size={22}/></div>
-              <h3>Choose an account</h3>
-              <p>to continue to <b>verified.work</b></p>
-            </div>
-            <button className="gacct" onClick={pick}>
-              <Avatar name="Frank Docent" size={36}/>
-              <span><div className="ga-name">Frank Docent</div><div className="ga-mail">frank@docent.co</div></span>
-            </button>
-            <button className="gacct other" onClick={pick}>
-              <span className="ga-ic"><Ic name="user" size={18}/></span>
-              <span>Use another account</span>
-            </button>
-            <div className="gmodal-ft">
-              This is a prototype — no real Google account is used. To continue to verified.work, Google would share
-              your name, email address, and profile picture.
-            </div>
-          </>
-        )}
+function TopNav({ route, go, authed, onSignout, onDelete }){
+  const [open,setOpen]=useState(false); const [scrolled,setScrolled]=useState(false); const wrapRef=useRef(null);
+  useEffect(()=>{ const s=()=>setScrolled(window.scrollY>8); window.addEventListener('scroll',s,{passive:true}); s();
+    return ()=>window.removeEventListener('scroll',s); },[]);
+  useEffect(()=>{ const d=e=>{ if(wrapRef.current&&!wrapRef.current.contains(e.target)) setOpen(false); };
+    const k=e=>{ if(e.key==='Escape') setOpen(false); };
+    document.addEventListener('click',d); document.addEventListener('keydown',k);
+    return ()=>{ document.removeEventListener('click',d); document.removeEventListener('keydown',k); }; },[]);
+  useEffect(()=>{ setOpen(false); },[route]);
+  return (<nav className={'app-nav'+(scrolled?' scrolled':'')}><div className="inner">
+    <a className="wm" href="index.html" aria-label="verified.work home"><Wordmark/></a>
+    <div className="nav-actions" ref={wrapRef}>
+      {authed && route!=='/profile' && <button className="btn btn-primary btn-sm pill" onClick={()=>go('#/profile')}>My profile</button>}
+      {!authed && <button className="btn btn-primary btn-sm pill" onClick={()=>go('#/auth')}>Sign in</button>}
+      <button className={'nav-menu-btn'+(open?' open':'')} aria-label="Menu" aria-expanded={open}
+        onClick={e=>{e.stopPropagation();setOpen(o=>!o);}}><span></span><span></span><span></span></button>
+      <div className={'nav-menu'+(open?' open':'')} role="menu">
+        <div className="mlabel">The app</div>
+        {MENU.map(m=><a key={m.to} className={'mi'+(route===m.to.slice(1)?' active':'')} href={m.to} role="menuitem"><Ic name={m.icon} size={16}/>{m.label}</a>)}
+        <div className="sep"></div>
+        <a className="mi" href="index.html" role="menuitem"><Ic name="arrowLeft" size={16}/>Back to landing</a>
+        {authed && <button className="mi" role="menuitem" onClick={onSignout}><Ic name="logout" size={16}/>Sign out</button>}
+        {authed && <button className="mi danger" role="menuitem" onClick={onDelete}><Ic name="trash" size={16}/>Delete account</button>}
       </div>
     </div>
-  );
+  </div></nav>);
 }
 
-function LinkSent({ email, onContinue }) {
-  return (
-    <div className="auth wrap wrap-sm">
-      <div style={{width:72,height:72,borderRadius:20,background:'var(--surface-2)',border:'1px solid var(--line)',
-        display:'flex',alignItems:'center',justifyContent:'center',marginBottom:8}}>
-        <Ic name="inbox" size={30} color="var(--black)"/>
-      </div>
-      <h1 style={{fontSize:'clamp(26px,3vw,34px)',animationDelay:'80ms'}}>Check your inbox.</h1>
-      <p className="auth-sub" style={{animationDelay:'200ms'}}>
-        We sent a magic link to <span className="mono" style={{color:'var(--black)',fontWeight:500}}>{email}</span>. It expires in 15 minutes.
-      </p>
-      <div className="auth-card" style={{animationDelay:'360ms'}}>
-        <button className="btn btn-primary block" onClick={onContinue}>Simulate clicking the link</button>
-      </div>
+/* ---------- AUTH (Google one-click + email) ---------- */
+function AuthScreen({ onGoogle, onEmail }){
+  const [email,setEmail]=useState('');
+  const ok=emailOk(email);
+  return (<div className="auth wrap wrap-sm">
+    <MarkIcon/>
+    <h1>Create your verified profile</h1>
+    <p className="auth-sub">Showcase the work you actually did — endorsed by the people who were there.</p>
+    <div className="auth-card">
+      <button className="btn btn-google block" onClick={onGoogle}><GoogleG size={18}/> Continue with Google</button>
+      <div className="divider-or">or</div>
+      <input className="input" type="email" placeholder="you@anything.com" value={email} inputMode="email"
+        onChange={e=>setEmail(e.target.value)} onKeyDown={e=>e.key==='Enter'&&ok&&onEmail(email)}/>
+      <button className="btn btn-primary block" disabled={!ok} onClick={()=>onEmail(email)}>Continue with email</button>
     </div>
-  );
+    <p className="auth-legal">By continuing you agree to our <a href="terms.html">Terms</a> and <a href="privacy.html">Privacy policy</a>. Any email works — no corporate address needed.</p>
+  </div>);
+}
+function GoogleConnecting(){
+  return (<div className="modal-back"><div className="gmodal"><div className="gspin">
+    <div className="g-logo"><GoogleG size={26}/></div>
+    <div className="spinner"></div>
+    <div><div className="ttl">Connecting to Google…</div><div className="sub">Verifying your account</div></div>
+  </div></div></div>);
 }
 
-/* ============================================================
-   ONBOARDING
-   ============================================================ */
-const ROLES = ['Creative director','Product designer','Product manager','Software engineer','Freelancer / consultant','Other'];
-function Onboarding({ user, onDone }) {
-  const [step, setStep] = useState(0);
-  const [name, setName] = useState(user.name || '');
-  const [role, setRole] = useState(user.role || '');
-  return (
-    <div className="screen"><div className="wrap wrap-sm" style={{paddingTop:'clamp(32px,6vw,64px)',paddingBottom:48}}>
-      {step === 0 ? (
-        <div style={{display:'flex',flexDirection:'column',gap:24}}>
-          <div><span className="eyebrow">Step 1 of 2</span>
-            <h1 className="h1" style={{marginTop:16}}>What's your name?</h1>
-            <p className="lede" style={{marginTop:10}}>This is how you'll appear on your verified profile.</p></div>
-          <input className="input" value={name} onChange={e=>setName(e.target.value)} placeholder="Your full name"
-                 style={{fontSize:19,fontWeight:600}} autoFocus onKeyDown={e=>e.key==='Enter'&&name.trim()&&setStep(1)}/>
-          <button className="btn btn-primary block" disabled={!name.trim()} onClick={()=>setStep(1)}>Continue</button>
+/* ---------- ONBOARDING (profile setup) ---------- */
+function Onboarding({ signupName, onDone }){
+  const [step,setStep]=useState(1);
+  const [name,setName]=useState(signupName||'');
+  const [title,setTitle]=useState('');
+  const [loc,setLoc]=useState('');
+  const [handle,setHandle]=useState('');
+  const [photo,setPhoto]=useState(null);
+  const photoRef=useRef(null);
+  const autoHandle = name.toLowerCase().replace(/[^a-z0-9]/g,'');
+  const h = handle || autoHandle;
+  const onPhoto=(e)=>{ const f=e.target.files&&e.target.files[0]; if(f) setPhoto(URL.createObjectURL(f)); };
+  return (<div className="screen"><div className="wrap wrap-sm" style={{paddingTop:'clamp(28px,5vw,52px)',paddingBottom:48}}>
+    <WizBar current={step} total={2} label={step===1?'About you':'Your profile link'} onBack={step>1?()=>setStep(step-1):null}/>
+    {step===1 ? (<div style={{display:'flex',flexDirection:'column',gap:18}}>
+      <p className="lede" style={{marginTop:-8}}>The basics for your public profile. You can change these any time.</p>
+      <div className="field"><label className="field-lbl">Full name</label>
+        <input className="input" value={name} onChange={e=>setName(e.target.value)} placeholder="Your full name" autoFocus/></div>
+      <div className="field"><label className="field-lbl">Current or most recent title</label>
+        <input className="input" value={title} onChange={e=>setTitle(e.target.value)} placeholder="e.g. Product designer"/></div>
+      <div className="field"><label className="field-lbl">City / country</label>
+        <input className="input" value={loc} onChange={e=>setLoc(e.target.value)} placeholder="e.g. Bengaluru, India"/></div>
+      <button className="btn btn-primary block" disabled={!name.trim()||!title.trim()} onClick={()=>setStep(2)}>Continue</button>
+    </div>) : (<div style={{display:'flex',flexDirection:'column',gap:18}}>
+      <p className="lede" style={{marginTop:-8}}>Claim your link and add a photo. Here's how it'll look.</p>
+      <div className="field"><label className="field-lbl">Your profile link</label>
+        <div style={{display:'flex',alignItems:'center',gap:8}}>
+          <span className="lblf muted" style={{fontSize:14}}>verified.work/</span>
+          <input className="input" value={h} onChange={e=>setHandle(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g,''))} placeholder="yourname"/>
+        </div></div>
+      <div className="field"><label className="field-lbl">Profile photo · optional</label>
+        <div className="photo-up">
+          <button type="button" className="photo-btn" onClick={()=>photoRef.current&&photoRef.current.click()}>
+            {photo ? <img src={photo} alt=""/> : <Ic name="camera" size={22}/>}</button>
+          <div><button className="btn btn-secondary btn-sm" type="button" onClick={()=>photoRef.current&&photoRef.current.click()}>Upload photo</button>
+            {photo && <button className="btn btn-ghost btn-sm" type="button" onClick={()=>setPhoto(null)}>Remove</button>}</div>
+          <input ref={photoRef} type="file" accept="image/*" style={{display:'none'}} onChange={onPhoto}/>
+        </div></div>
+      <div className="prevcard">
+        <Avatar name={name} src={photo} size={56}/>
+        <div style={{minWidth:0}}>
+          <div style={{fontWeight:700,fontSize:18,letterSpacing:'-.01em'}}>{name||'Your name'}</div>
+          <div className="muted" style={{fontSize:14}}>{title||'Your title'}</div>
+          <div className="lblf" style={{fontSize:12.5,color:'var(--grey)',marginTop:2}}>verified.work/{h||'yourname'}</div>
         </div>
-      ) : (
-        <div style={{display:'flex',flexDirection:'column',gap:24}}>
-          <div><span className="eyebrow">Step 2 of 2</span>
-            <h1 className="h1" style={{marginTop:16}}>What do you do?</h1>
-            <p className="lede" style={{marginTop:10}}>Pick the closest fit — you can change it later.</p></div>
-          <div className="opts">
-            {ROLES.map(r => (
-              <button key={r} className={'opt' + (role===r?' sel':'')} onClick={()=>setRole(r)}>
-                <div className="o-row"><span className="o-label">{r}</span></div>
-                <span className="o-tick"><Ic name="check" size={20} color="#fff" stroke={2.4}/></span>
-              </button>
-            ))}
-          </div>
-          <button className="btn btn-primary block" disabled={!role} onClick={()=>onDone({ ...user, name, role })}>
-            Continue to dashboard
-          </button>
-        </div>
-      )}
-    </div></div>
-  );
-}
-
-/* ============================================================
-   DASHBOARD
-   ============================================================ */
-function ProjectCard({ p, expanded, onToggle }) {
-  return (
-    <div className={'xcard' + (expanded?' open':'')}>
-      <button className="xcard-head" onClick={onToggle} aria-expanded={expanded}>
-        <div className="x-main">
-          <div style={{display:'flex',alignItems:'center',gap:10,flexWrap:'wrap',marginBottom:6}}>
-            <h3 className="h3" style={{fontSize:17}}>{p.title}</h3>
-            <span className={'status ' + p.status}>
-              {p.status==='verified' && <CheckDot size={13}/>}
-              {p.status[0].toUpperCase()+p.status.slice(1)}
-            </span>
-          </div>
-          <span className="mono" style={{fontSize:12.5,color:'var(--grey)'}}>{p.company} · {p.year}</span>
-        </div>
-        <span className="contrib" style={{marginRight:4}}>
-          {p.status==='verified' && <CheckDot size={14}/>}{p.contrib}
-        </span>
-        <span className="xcard-toggle"><Ic name="chevronDown" size={14} stroke={2.4}/></span>
-      </button>
-      <div className="xcard-more"><div className="xcard-more-inner">
-        <div style={{padding:'0 clamp(16px,2.2vw,22px) clamp(18px,2.2vw,22px)',display:'flex',flexDirection:'column',gap:14}}>
-          <div className="quotebox" style={p.status!=='verified'?{opacity:.6}:undefined}>
-            <span className="qm">&ldquo;</span>
-            <p>{p.status==='verified' ? p.quote : 'Awaiting endorsement from ' + p.endorser + '.'}</p>
-          </div>
-          <div>
-            <div className="receipt-row" style={{borderTop:0}}><span className="k">Outcome</span>
-              <span className="v">{p.outcome}</span></div>
-            <div className="receipt-row"><span className="k">Endorser</span>
-              <span className="v">{p.endorser}, {p.endorserRole}</span></div>
-            {p.again && <div className="receipt-row"><span className="k">Work again</span>
-              <span className="v" style={{color:'var(--green)'}}>{p.again}</span></div>}
-          </div>
-          {p.artifact && <a className="tlink" href="#" onClick={e=>e.preventDefault()}>View artifact <Ic name="arrowUpRight" size={14}/></a>}
-        </div>
-      </div></div>
-    </div>
-  );
-}
-
-function Dashboard({ user, projects, go }) {
-  const [open, setOpen] = useState(null);
-  const first = (user.name||'there').split(' ')[0];
-  const verified = projects.filter(p=>p.status==='verified').length;
-  const pct = Math.min(100, 40 + verified*22);
-  return (
-    <div className="screen"><div className="wrap wrap-lg" style={{paddingTop:'clamp(28px,5vw,48px)',paddingBottom:40}}>
-      <div className="dash-hd">
-        <div>
-          <span className="eyebrow">Your workspace</span>
-          <h1 className="h1" style={{marginTop:14,fontSize:'clamp(28px,3vw,42px)'}}>Hi, {first}.</h1>
-        </div>
-        <button className="btn btn-primary pill" onClick={()=>go('#/add')}><Ic name="plus" size={18} color="#fff"/> Add project</button>
       </div>
-
-      <Reveal>
-        <div className="complete">
-          <div>
-            <div style={{fontWeight:700,marginBottom:4}}>Profile {pct}% complete</div>
-            <div className="muted" style={{fontSize:13.5}}>{verified} verified · {projects.length-verified} awaiting endorsement</div>
-          </div>
-          <div className="bar"><i style={{width:pct+'%'}}/></div>
-          <button className="btn btn-secondary btn-sm" onClick={()=>go('#/profile')}>View public profile</button>
-        </div>
-      </Reveal>
-
-      <div className="sec-head"><span className="eyebrow">Your work</span><span className="n">{projects.length}</span><span className="ln"/></div>
-      <div className="stack">
-        {projects.map((p,i) => (
-          <Reveal key={p.id} delay={i*70}>
-            <ProjectCard p={p} expanded={open===p.id} onToggle={()=>setOpen(o=>o===p.id?null:p.id)} />
-          </Reveal>
-        ))}
-      </div>
-    </div></div>
-  );
+      <button className="btn btn-primary block" disabled={!h} onClick={()=>onDone({ name:name.trim(), title:title.trim(), location:loc.trim(), handle:h, photo })}>Create my profile</button>
+    </div>)}
+  </div></div>);
 }
 
-/* ============================================================
-   ADD WORK
-   ============================================================ */
-function AddWork({ go, onAdd }) {
-  const [f, setF] = useState({ title:'', company:'', contrib:'Owner', outcome:'' });
-  const set = k => e => setF(p=>({ ...p, [k]: e.target.value }));
-  const valid = f.title.trim() && f.company.trim() && f.outcome.trim();
-  return (
-    <div className="screen"><div className="wrap wrap-md" style={{paddingTop:'clamp(28px,5vw,48px)',paddingBottom:48}}>
-      <button className="btn btn-ghost btn-sm" style={{paddingLeft:0}} onClick={()=>go('#/dashboard')}><Ic name="arrowLeft" size={16}/> Dashboard</button>
-      <h1 className="h2" style={{margin:'14px 0 6px'}}>Add a project</h1>
-      <p className="lede" style={{marginBottom:28}}>Describe what you did and the outcome it drove. Your validator will confirm it.</p>
-      <div style={{display:'flex',flexDirection:'column',gap:20}}>
-        <div className="field"><label className="field-lbl">Project name</label>
-          <input className="input" value={f.title} onChange={set('title')} placeholder="What did you work on?"/></div>
-        <div className="field"><label className="field-lbl">Company / client</label>
-          <input className="input" value={f.company} onChange={set('company')} placeholder="Where?"/></div>
-        <div className="field"><label className="field-lbl">Your contribution</label>
-          <div className="pills">{['Owner','Partner','Executor'].map(c=>(
-            <button key={c} className={'pill'+(f.contrib===c?' sel':'')} onClick={()=>setF(p=>({...p,contrib:c}))}>{c}</button>
-          ))}</div></div>
-        <div className="field"><label className="field-lbl">Outcome claim</label>
-          <textarea className="textarea" value={f.outcome} onChange={set('outcome')} placeholder="What changed because of this work?"/>
-          <span className="muted" style={{fontSize:13}}>Your validator will be asked to confirm this.</span></div>
-        <button className="btn btn-primary block" disabled={!valid} onClick={()=>onAdd(f)}>Next — invite a validator</button>
+/* ---------- DASHBOARD ---------- */
+function ProjectCard({ p, open, onToggle }){
+  return (<div className={'xcard'+(open?' open':'')}>
+    <button className="xcard-head" onClick={onToggle} aria-expanded={open}>
+      <div className="x-main">
+        <div style={{display:'flex',alignItems:'center',gap:10,flexWrap:'wrap',marginBottom:6}}>
+          <h3 className="h3" style={{fontSize:17}}>{p.title}</h3>
+          <span className={'status '+p.status}>{p.status==='verified'&&<CheckDot size={13}/>}{p.status[0].toUpperCase()+p.status.slice(1)}</span>
+        </div>
+        <span className="lblf muted" style={{fontSize:12.5}}>{p.company} · {periodLabel(p.startYear,p.endYear)} · {durationLabel(p.startYear,p.endYear)}</span>
       </div>
-    </div></div>
-  );
-}
-
-/* ============================================================
-   INVITE VALIDATOR  +  SENT
-   ============================================================ */
-// PRD tiered badge system — the verifier's email domain decides the badge.
-const FREE_MAIL = ['gmail.com','yahoo.com','outlook.com','hotmail.com','icloud.com','proton.me','protonmail.com','live.com','aol.com'];
-function badgeTier(email) {
-  const at = email.indexOf('@');
-  if (at < 0 || !/\.[^@\s]+$/.test(email)) return null;
-  const domain = email.slice(at+1).toLowerCase();
-  if (/(\.edu|\.ac\.[a-z]{2,}|\.edu\.[a-z]{2,})$/.test(domain)) return { kind:'academic', label:'Academic verified' };
-  if (FREE_MAIL.includes(domain)) return { kind:'peer', label:'Peer verified' };
-  return { kind:'company', label:'Company verified' };
-}
-
-const REL_OPTIONS = ['Manager','Founder','Client','Professor','Colleague / peer','Other'];
-
-function Invite({ go, onSent, selfEmail }) {
-  const [name, setName] = useState('Jordan M.');
-  const [rel, setRel] = useState('Manager');
-  const [role, setRole] = useState('Creative Director');
-  const [email, setEmail] = useState('jordan@studionord.co');
-  const [linkedin, setLinkedin] = useState('');
-  const [note, setNote] = useState('');
-  const emailOk = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
-  const isSelf = emailOk && selfEmail && email.trim().toLowerCase() === selfEmail.toLowerCase();
-  const tier = emailOk && !isSelf ? badgeTier(email) : null;
-  const valid = name.trim() && role.trim() && emailOk && !isSelf;
-
-  return (
-    <div className="screen"><div className="wrap wrap-md" style={{paddingTop:'clamp(28px,5vw,48px)',paddingBottom:48}}>
-      <button className="btn btn-ghost btn-sm" style={{paddingLeft:0}} onClick={()=>go('#/add')}><Ic name="arrowLeft" size={16}/> Back</button>
-      <h1 className="h2" style={{margin:'14px 0 6px'}}>Invite a validator</h1>
-      <p className="lede" style={{marginBottom:24}}>Someone who was directly involved confirms your work — in under 90 seconds, no account needed.</p>
-      <div style={{display:'flex',flexDirection:'column',gap:20}}>
-        <div className="callout"><Ic name="info" size={18}/><p>Any email works — Gmail, university, or corporate. The badge on your profile is <b>honest about how it was verified.</b></p></div>
-
-        <div className="row2">
-          <div className="field"><label className="field-lbl">Their name</label>
-            <input className="input" value={name} onChange={e=>setName(e.target.value)} placeholder="Who are you inviting?"/></div>
-          <div className="field"><label className="field-lbl">How you worked together</label>
-            <select className="input select" value={rel} onChange={e=>setRel(e.target.value)}>
-              {REL_OPTIONS.map(o=><option key={o} value={o}>{o}</option>)}
-            </select></div>
-        </div>
-
-        <div className="field"><label className="field-lbl">Their role / title at the time</label>
-          <input className="input" value={role} onChange={e=>setRole(e.target.value)} placeholder="e.g. Creative Director, Founder, Professor"/>
-          <span className="muted" style={{fontSize:13}}>Shown publicly next to their endorsement.</span></div>
-
-        <div className="field"><label className="field-lbl">Their email</label>
-          <input className={'input'+(isSelf?' err':'')} type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="their@email.com"/>
-          {isSelf
-            ? <span className="field-err">You can't verify your own work — use the email of someone who saw it.</span>
-            : tier && <span className="tier-preview"><span className={'status '+(tier.kind==='peer'?'pending':'verified')}>{tier.kind!=='peer'&&<CheckDot size={13}/>}{tier.label}</span><span className="muted" style={{fontSize:13}}>This is the badge your entry will earn.</span></span>}
-        </div>
-
-        <div className="field"><label className="field-lbl">Their LinkedIn URL <span style={{color:'var(--green)',textTransform:'none',letterSpacing:0}}>· recommended</span></label>
-          <input className="input" value={linkedin} onChange={e=>setLinkedin(e.target.value)} placeholder="linkedin.com/in/…"/>
-          <span className="muted" style={{fontSize:13}}>Adds a real face to the verification — shown publicly on your badge.</span></div>
-
-        <div className="field"><label className="field-lbl">Add a personal note <span style={{textTransform:'none',letterSpacing:0,color:'var(--grey-2)'}}>· optional</span></label>
-          <textarea className="textarea" value={note} maxLength={240} onChange={e=>setNote(e.target.value)}
-            placeholder="Hey Jordan — could you confirm the Studio Nord rebrand? Takes ~90 seconds. Thanks!" style={{minHeight:90}}/></div>
-
-        <button className="btn btn-primary block" disabled={!valid} onClick={()=>onSent(email)}>
-          <Ic name="send" size={17} color="#fff"/> Send verification request
-        </button>
-      </div>
-    </div></div>
-  );
-}
-
-function Sent({ email, go }) {
-  return (
-    <div className="auth wrap wrap-sm">
-      <div style={{position:'relative',width:72,height:72,marginBottom:8}}>
-        <div style={{width:72,height:72,borderRadius:20,background:'var(--surface-2)',border:'1px solid var(--line)',
-          display:'flex',alignItems:'center',justifyContent:'center'}}><Ic name="send" size={28} color="var(--black)"/></div>
-        <span style={{position:'absolute',bottom:-6,right:-6}}><CheckDot size={26}/></span>
-      </div>
-      <h1 style={{fontSize:'clamp(24px,3vw,32px)'}}>Email sent to your validator.</h1>
-      <p className="auth-sub" style={{animationDelay:'200ms'}}>
-        We sent a verification request to <span className="mono" style={{color:'var(--black)',fontWeight:500}}>{email}</span>.
-        You'll see it on your profile once they confirm.
-      </p>
-      <div className="auth-card" style={{animationDelay:'360ms',gap:10}}>
-        <button className="btn btn-primary block" onClick={()=>go('#/validate')}>Preview what they see</button>
-        <button className="btn btn-ghost block" onClick={()=>go('#/dashboard')}>Back to dashboard</button>
-      </div>
-    </div>
-  );
-}
-
-/* ============================================================
-   VALIDATOR / ENDORSER standalone flow
-   ============================================================ */
-function Stamp({ size = 104 }) {
-  return (
-    <div className="stamp-wrap" style={{width:size,height:size}}>
-      <span className="stamp-ring"/>
-      <svg className="stamp-svg" width={size} height={size} viewBox="0 0 96 96">
-        <circle cx="48" cy="48" r="48" fill="var(--green)"/>
-        <polyline points="29 49 42 62 67 34" fill="none" stroke="#fff" strokeWidth="7" strokeLinecap="round" strokeLinejoin="round"/>
-      </svg>
-    </div>
-  );
-}
-
-const SUBJECT = { name:'Frank Docent', project:'brand identity redesign', company:'Studio Nord',
-  claim:'Increased client retention by 40% in six months' };
-
-function Validator({ go }) {
-  const [stage, setStage] = useState('intro'); // intro | 1..4 | stamp | done
-  const [ans, setAns] = useState({});
-  const [text, setText] = useState('');
-  const [again, setAgain] = useState(null);
-  const [vName, setVName] = useState('Jordan M.');
-  const [vLink, setVLink] = useState('');
-  const first = SUBJECT.name.split(' ')[0];
-  const topRef = useRef(null);
-  const set = (k,v) => setAns(a=>({...a,[k]:v}));
-  const pick = (k,v) => { set(k,v); setTimeout(()=>adv(), 240); };
-  const adv = () => { setStage(s => (typeof s==='number'? s+1 : 1)); if(topRef.current) topRef.current.scrollIntoView({behavior:'smooth',block:'start'}); };
-  const back = () => setStage(s => (s>1? s-1 : 'intro'));
-  const submit = () => { setStage('stamp'); setTimeout(()=>setStage('done'), 1900); };
-
-  if (stage === 'intro') {
-    return (
-      <div className="screen"><div className="wrap wrap-sm vintro">
-        <span className="eyebrow">Verification request</span>
-        <div style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
-          <Avatar name="Jordan M." size={56}/>
-          <span style={{margin:'0 -8px',zIndex:1}}><CheckDot size={26}/></span>
-          <Avatar name={SUBJECT.name} size={56}/>
-        </div>
-        <h1 className="h1" style={{fontSize:'clamp(26px,3vw,38px)'}}>{first} asked you to verify his work.</h1>
-        <p className="lede" style={{maxWidth:'34ch'}}>
-          You're confirming a project you worked on together at <b style={{color:'var(--black)'}}>{SUBJECT.company}</b>.
-          It takes about two minutes. No account needed.
-        </p>
-        <div className="card card-pad" style={{textAlign:'left',width:'100%',maxWidth:420}}>
-          <div className="mono" style={{fontSize:11,letterSpacing:'.06em',textTransform:'uppercase',color:'var(--grey)',marginBottom:8}}>The project</div>
-          <div style={{fontWeight:700,fontSize:17,marginBottom:4}}>{SUBJECT.project}</div>
-          <div className="mono muted" style={{fontSize:12.5}}>{SUBJECT.company} · 2024</div>
-        </div>
-        <button className="btn btn-primary pill" style={{minWidth:200}} onClick={adv}>Start verifying</button>
-      </div></div>
-    );
-  }
-
-  if (stage === 'stamp' || stage === 'done') {
-    return (
-      <div className="screen"><div className="wrap wrap-sm vintro" style={{minHeight:'60vh',justifyContent:'center'}}>
-        <Stamp size={108}/>
-        <h1 className="h1" style={{fontSize:'clamp(26px,3vw,36px)'}}>Endorsement published.</h1>
-        <p className="lede" style={{maxWidth:'32ch'}}>Thanks — your verification of {first}'s work is now part of his record.</p>
-        {stage === 'done' && (
-          <div style={{display:'flex',gap:10,flexWrap:'wrap',justifyContent:'center'}}>
-            <button className="btn btn-secondary" onClick={()=>go('#/profile')}>See his profile</button>
-            <button className="btn btn-ghost" onClick={()=>{setStage('intro');setAns({});setText('');setAgain(null);setVLink('');}}>Run it again</button>
-          </div>
-        )}
-      </div></div>
-    );
-  }
-
-  const step = stage;
-  return (
-    <div className="screen"><div className="wrap wrap-sm" style={{paddingTop:'clamp(24px,4vw,40px)',paddingBottom:48}} ref={topRef}>
-      <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:24}}>
-        <div className="prog"><div className="dots">{[1,2,3,4].map(i=><i key={i} className={i<=step?'on':''}/>)}</div>
-          <span className="lbl">{step} of 4</span></div>
-        <button className="btn btn-ghost btn-sm" onClick={back}><Ic name="arrowLeft" size={15}/> Back</button>
-      </div>
-
-      {step===1 && (<div style={{display:'flex',flexDirection:'column',gap:22}}>
-        <h2 className="h2" style={{fontSize:'clamp(21px,2vw,27px)'}}>{first} says you worked together on the <b>{SUBJECT.project}</b> at {SUBJECT.company}. Is that right?</h2>
-        <div className="opts">
-          <Opt label="Yes, I can speak to his work" sel={ans.rel==='yes'} onClick={()=>pick('rel','yes')}/>
-          <Opt label="We were peers" sel={ans.rel==='peer'} onClick={()=>pick('rel','peer')}/>
-          <Opt label="I'm not the right person" sel={ans.rel==='no'} onClick={()=>pick('rel','no')}/>
-        </div>
-      </div>)}
-
-      {step===2 && (<div style={{display:'flex',flexDirection:'column',gap:22}}>
-        <h2 className="h2" style={{fontSize:'clamp(21px,2vw,27px)'}}>What was {first}'s involvement?</h2>
-        <div className="opts">{CONTRIB_DEF.map(c=>(
-          <Opt key={c.key} icon={c.icon} label={c.label} sub={c.sub} sel={ans.contrib===c.key} onClick={()=>pick('contrib',c.key)}/>
-        ))}</div>
-      </div>)}
-
-      {step===3 && (<div style={{display:'flex',flexDirection:'column',gap:20}}>
-        <p className="muted">{first} described the outcome as:</p>
-        <div className="quotebox"><span className="qm">&ldquo;</span><p>{SUBJECT.claim}</p></div>
-        <h2 className="h2" style={{fontSize:'clamp(20px,2vw,25px)'}}>Does this reflect what you saw?</h2>
-        <div className="opts">
-          <Opt label="Yes, that's accurate" sel={ans.out==='acc'} onClick={()=>pick('out','acc')}/>
-          <Opt label="Roughly right" sel={ans.out==='rough'} onClick={()=>pick('out','rough')}/>
-          <Opt label="Can't confirm this" sel={ans.out==='cant'} onClick={()=>pick('out','cant')}/>
-        </div>
-      </div>)}
-
-      {step===4 && (<div style={{display:'flex',flexDirection:'column',gap:20}}>
-        <h2 className="h2" style={{fontSize:'clamp(21px,2vw,27px)'}}>In your own words — what should someone hiring {first} know?</h2>
-        <div className="field">
-          <textarea className="textarea" value={text} maxLength={100} onChange={e=>setText(e.target.value)}
-            placeholder="He's the person I'd want on the hardest problem in the room…"/>
-          <span className="muted" style={{fontSize:13}}>One sentence is enough · {100 - text.length} left</span>
-        </div>
-        <div style={{display:'flex',flexDirection:'column',gap:10}}>
-          <span className="field-lbl">Would you work with him again?</span>
-          <div className="pills">{['Yes','Depends','No'].map(p=>(
-            <button key={p} className={'pill'+(again===p?' sel':'')} onClick={()=>setAgain(p)}>{p}</button>
-          ))}</div>
-        </div>
-        <div className="row2">
-          <div className="field"><label className="field-lbl">Your name</label>
-            <input className="input" value={vName} onChange={e=>setVName(e.target.value)} placeholder="Shown publicly"/></div>
-          <div className="field"><label className="field-lbl">Your LinkedIn <span style={{color:'var(--green)',textTransform:'none',letterSpacing:0}}>· builds trust</span></label>
-            <input className="input" value={vLink} onChange={e=>setVLink(e.target.value)} placeholder="linkedin.com/in/…"/></div>
-        </div>
-        <p className="muted" style={{fontSize:12.5,margin:0}}>Your name{vLink.trim()?' and LinkedIn':''} appear on {first}'s public badge — verifications are never anonymous.</p>
-        <button className="btn btn-primary block" disabled={!text.trim()||!vName.trim()} onClick={submit}>Submit endorsement</button>
-      </div>)}
-    </div></div>
-  );
-}
-
-function Opt({ label, sub, icon, sel, onClick }) {
-  return (
-    <button className={'opt' + (sel?' sel':'')} onClick={onClick}>
-      <div className="o-row">
-        {icon && <span className="o-ic"><Ic name={icon} size={20}/></span>}
-        <span><span className="o-label" style={{display:'block'}}>{label}</span>{sub && <span className="o-sub" style={{display:'block'}}>{sub}</span>}</span>
-      </div>
-      <span className="o-tick"><Ic name="check" size={20} color="#fff" stroke={2.4}/></span>
+      <span className="contrib">{p.status==='verified'&&<CheckDot size={14}/>}{p.contrib}</span>
+      <span className="xcard-toggle"><Ic name="chevronDown" size={14} stroke={2.4}/></span>
     </button>
-  );
-}
-
-/* ============================================================
-   PROFILE — rich, expandable, editable
-   ============================================================ */
-function WorkCard({ p, open, onToggle }) {
-  return (
-    <div className={'xcard' + (open?' open':'')}>
-      <button className="xcard-head" onClick={onToggle} aria-expanded={open}>
-        <div className="x-main">
-          <div style={{display:'flex',alignItems:'center',gap:10,flexWrap:'wrap',marginBottom:6}}>
-            <h3 className="h3" style={{fontSize:18}}>{p.title}</h3>
-            <span className={'status '+p.status}>{p.status==='verified'&&<CheckDot size={13}/>}{p.status[0].toUpperCase()+p.status.slice(1)}</span>
-          </div>
-          <span className="mono muted" style={{fontSize:12.5}}>{p.company} · {p.year}</span>
-          {p.status==='verified' && (
-            <p style={{margin:'12px 0 0',fontSize:15,lineHeight:1.5,color:'var(--ink-2)'}}>
-              <span style={{color:'var(--green)',fontWeight:600}}>Outcome confirmed</span> — {p.outcome}.
-            </p>
-          )}
+    <div className="xcard-more"><div className="xcard-more-inner">
+      <div style={{padding:'0 clamp(16px,2.2vw,22px) clamp(18px,2.2vw,22px)',display:'flex',flexDirection:'column',gap:14}}>
+        {p.status==='verified' ? <div className="quotebox"><span className="qm">&ldquo;</span><p>{p.endorsement.quote}</p></div>
+          : <div className="callout"><Ic name="info" size={18}/><p>Awaiting verification from <b>{p.verifier.name}</b>. We'll stamp it the moment they confirm.</p></div>}
+        <div>
+          <div className="receipt-row" style={{borderTop:0}}><span className="k">Outcome</span><span className="v">{p.outcome}</span></div>
+          <div className="receipt-row"><span className="k">Validator</span><span className="v">{p.verifier.name}{p.verifier.role?', '+p.verifier.role:''}</span></div>
+          {p.status==='verified'&&p.endorsement.again&&<div className="receipt-row"><span className="k">Work again</span><span className="v" style={{color:'var(--green)'}}>{p.endorsement.again}</span></div>}
         </div>
-        <span className="contrib">{p.status==='verified'&&<CheckDot size={14}/>}{p.contrib}</span>
-        <span className="xcard-toggle"><Ic name="chevronDown" size={14} stroke={2.4}/></span>
-      </button>
-      <div className="xcard-more"><div className="xcard-more-inner">
-        <div style={{padding:'0 clamp(16px,2.2vw,24px) clamp(18px,2.2vw,24px)',display:'flex',flexDirection:'column',gap:16}}>
-          {p.status==='verified' ? (
-            <>
-              <div className="quotebox"><span className="qm">&ldquo;</span><p>{p.quote}</p></div>
-              <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:12,flexWrap:'wrap'}}>
-                <span style={{display:'inline-flex',alignItems:'center',gap:8,fontSize:14,fontWeight:500,color:'var(--ink-2)'}}>
-                  <CheckDot size={15}/> {p.endorser}, {p.endorserRole}{p.again && <span className="muted">· would work again: <b style={{color:'var(--green)'}}>{p.again}</b></span>}
-                </span>
-                {p.artifact && <a className="tlink" href="#" onClick={e=>e.preventDefault()}>View artifact <Ic name="arrowUpRight" size={14}/></a>}
-              </div>
-            </>
-          ) : (
-            <div className="callout"><Ic name="info" size={18}/><p>Awaiting endorsement from <b>{p.endorser}, {p.endorserRole}</b>. We'll stamp it the moment they confirm.</p></div>
-          )}
-        </div>
-      </div></div>
-    </div>
-  );
-}
-
-function Profile({ user, projects, setUser, go }) {
-  const [open, setOpen] = useState(projects[0] ? projects[0].id : null);
-  const [edit, setEdit] = useState(false);
-  const [draft, setDraft] = useState(user);
-  useEffect(()=>{ setDraft(user); }, [user]);
-  const verified = projects.filter(p=>p.status==='verified');
-  const save = () => { setUser(draft); setEdit(false); };
-  const onField = k => e => setDraft(d=>({ ...d, [k]: e.target.value }));
-
-  return (
-    <div className="screen"><div className="wrap wrap-lg" style={{paddingTop:'clamp(28px,5vw,52px)',paddingBottom:24}}>
-      <Reveal>
-        <div className="pf-head">
-          <Avatar name={user.name} size={92}/>
-          <div className="pf-id">
-            {edit ? (
-              <div style={{display:'flex',flexDirection:'column',gap:10,maxWidth:460}}>
-                <input className="input" value={draft.name} onChange={onField('name')} placeholder="Full name"/>
-                <input className="input" value={draft.role} onChange={onField('role')} placeholder="What you do"/>
-                <input className="input" value={draft.location} onChange={onField('location')} placeholder="Location"/>
-              </div>
-            ) : (
-              <>
-                <h1 className="pf-name">{user.name}</h1>
-                <p className="pf-role">{user.role}</p>
-                <div className="pf-meta">
-                  <span className="it"><Ic name="mapPin" size={15}/>{user.location}</span>
-                  <span className="it mono">verified.work/{user.handle}</span>
-                </div>
-              </>
-            )}
-          </div>
-          <div className="pf-actions">
-            {edit ? (
-              <><button className="btn btn-secondary btn-sm" onClick={()=>{setDraft(user);setEdit(false);}}>Cancel</button>
-                <button className="btn btn-primary btn-sm" onClick={save}>Save</button></>
-            ) : (
-              <><button className="btn btn-secondary btn-icon" aria-label="Share"><Ic name="share" size={16}/></button>
-                <button className="btn btn-secondary btn-sm" onClick={()=>setEdit(true)}><Ic name="edit" size={15}/> Edit</button></>
-            )}
-          </div>
-        </div>
-      </Reveal>
-
-      {edit ? (
-        <textarea className="textarea" style={{marginTop:16,maxWidth:680}} value={draft.bio} onChange={onField('bio')} placeholder="A short bio"/>
-      ) : (
-        <p className="pf-bio">{user.bio}</p>
-      )}
-
-      <Reveal>
-        <div className="pf-stats">
-          <div className="stat"><div className="num">{projects.length}</div><div className="lbl">Projects</div></div>
-          <div className="stat"><div className="num" style={{color:'var(--green)'}}><CheckDot size={22}/>{verified.length}</div><div className="lbl">Verified</div></div>
-          <div className="stat"><div className="num">{verified.length}</div><div className="lbl">Endorsements</div></div>
-          <div className="stat"><div className="num">100%</div><div className="lbl">Would work again</div></div>
-        </div>
-      </Reveal>
-
-      <Reveal>
-        <div style={{marginBottom:26}}>
-          <div className="sec-head"><span className="eyebrow">Contribution</span><span className="ln"/></div>
-          <div className="badges">
-            {[...new Set(verified.map(p=>p.contrib))].map(c=>(
-              <span key={c} className="contrib"><CheckDot size={15}/>{c}</span>
-            ))}
-          </div>
-        </div>
-      </Reveal>
-
-      <div className="sec-head"><span className="eyebrow">Verified work</span><span className="n">{projects.length}</span><span className="ln"/></div>
-      <div className="stack">
-        {projects.map((p,i)=>(
-          <Reveal key={p.id} delay={i*70}>
-            <WorkCard p={p} open={open===p.id} onToggle={()=>setOpen(o=>o===p.id?null:p.id)}/>
-          </Reveal>
-        ))}
-      </div>
-
-      <div className="sec-head" style={{marginTop:34}}><span className="eyebrow">What people say</span><span className="ln"/></div>
-      <div className="endorse">
-        {verified.map((p,i)=>(
-          <Reveal key={p.id} delay={i*80}>
-            <div className="card card-pad" style={{height:'100%',display:'flex',flexDirection:'column',gap:14}}>
-              <Ic name="sparkle" size={20} color="var(--line-strong)"/>
-              <p style={{margin:0,fontSize:16,lineHeight:1.5,fontWeight:500}}>{p.quote}</p>
-              <div style={{marginTop:'auto',display:'flex',alignItems:'center',gap:10}}>
-                <Avatar name={p.endorser} size={34}/>
-                <span style={{fontSize:13.5}}><b>{p.endorser}</b><span className="muted"> · {p.endorserRole}, {p.company}</span></span>
-              </div>
-            </div>
-          </Reveal>
-        ))}
+        {p.artifact && <ArtifactView a={p.artifact} small/>}
       </div>
     </div></div>
-  );
+  </div>);
+}
+function Dashboard({ user, projects, go }){
+  const [open,setOpen]=useState(projects.length?projects[0].id:null);
+  const first=(user.name||'there').split(' ')[0];
+  const verified=projects.filter(p=>p.status==='verified').length;
+  if(projects.length===0){
+    return (<div className="screen"><div className="wrap wrap-lg" style={{paddingTop:'clamp(28px,5vw,48px)'}}>
+      <span className="eyebrow">Your workspace</span>
+      <h1 className="h1" style={{marginTop:14,fontSize:'clamp(26px,3vw,38px)'}}>Hi{first?', '+first:''}.</h1>
+      <div className="empty card" style={{marginTop:24}}>
+        <span className="ic"><Ic name="layers" size={26}/></span>
+        <div><h2 className="h3" style={{marginBottom:8}}>Add your first project</h2>
+          <p className="lede" style={{maxWidth:'40ch'}}>Showcase what you actually built, then invite someone who was there to verify it.</p></div>
+        <button className="btn btn-primary pill" style={{maxWidth:260}} onClick={()=>go('#/add')}><Ic name="plus" size={18} color="#fff"/> Add a project</button>
+      </div>
+    </div></div>);
+  }
+  const pct=Math.min(100,30+Math.round(verified/projects.length*70));
+  return (<div className="screen"><div className="wrap wrap-lg" style={{paddingTop:'clamp(28px,5vw,48px)',paddingBottom:40}}>
+    <div className="dash-hd">
+      <div><span className="eyebrow">Your workspace</span>
+        <h1 className="h1" style={{marginTop:12,fontSize:'clamp(26px,3vw,38px)'}}>Hi, {first}.</h1></div>
+      <button className="btn btn-primary btn-sm pill" onClick={()=>go('#/add')}><Ic name="plus" size={16} color="#fff"/> Add a project</button>
+    </div>
+    <Reveal><div className="complete">
+      <div><div style={{fontWeight:700,marginBottom:4}}>Profile {pct}% complete</div>
+        <div className="muted" style={{fontSize:13.5}}>{verified} verified · {projects.length-verified} awaiting</div></div>
+      <div className="bar"><i style={{width:pct+'%'}}/></div>
+      <button className="btn btn-secondary btn-sm" onClick={()=>go('#/profile')}>View public profile</button>
+    </div></Reveal>
+    <div className="sec-head"><span className="eyebrow">Your work</span><span className="n">{projects.length}</span><span className="ln"/></div>
+    <div className="stack">{projects.map((p,i)=>(
+      <Reveal key={p.id} delay={i*70}><ProjectCard p={p} open={open===p.id} onToggle={()=>setOpen(o=>o===p.id?null:p.id)}/></Reveal>))}</div>
+  </div></div>);
 }
 
-/* ============================================================
-   ROOT — hash router
-   ============================================================ */
-function getRoute() { return (location.hash || '#/auth').replace(/^#/, ''); }
+/* ---------- ADD PROJECT (3-step wizard, with dates + artifact) ---------- */
+function AddProject({ selfEmail, onCancel, onSubmit }){
+  const [step,setStep]=useState(1);
+  const [f,setF]=useState({ title:'', company:'', startYear:'', endYear:'Present',
+    contrib:'Owner', description:'', outcome:'', artifact:null,
+    vName:'', vRel:'Manager', vRole:'', vEmail:'', vLink:'', vNote:'' });
+  const set=(k,v)=>setF(p=>({...p,[k]:v}));
+  const ok1=f.title.trim()&&f.company.trim()&&f.startYear;
+  const ok2=f.description.trim()&&f.outcome.trim();
+  const isSelf=emailOk(f.vEmail)&&selfEmail&&f.vEmail.trim().toLowerCase()===selfEmail.toLowerCase();
+  const tier=emailOk(f.vEmail)&&!isSelf?badgeTier(f.vEmail):null;
+  const ok3=f.vName.trim()&&f.vRole.trim()&&emailOk(f.vEmail)&&!isSelf;
+  const labels=['The work','Details & proof','Who can verify it'];
+  return (<div className="screen"><div className="wrap wrap-md" style={{paddingTop:'clamp(28px,5vw,48px)',paddingBottom:48}}>
+    <WizBar current={step} total={3} label={labels[step-1]} onBack={()=>step>1?setStep(step-1):onCancel()}/>
 
-// Handoff from the sign-up page (index.html stores name + email here).
-function readPending() {
-  try { const raw = localStorage.getItem('vw_pending'); return raw ? JSON.parse(raw) : null; }
-  catch (_) { return null; }
+    {step===1 && (<div style={{display:'flex',flexDirection:'column',gap:18}}>
+      <div className="field"><label className="field-lbl">Project / role title</label>
+        <input className="input" value={f.title} onChange={e=>set('title',e.target.value)} placeholder="What did you work on?" autoFocus/></div>
+      <div className="field"><label className="field-lbl">Company / organisation</label>
+        <input className="input" value={f.company} onChange={e=>set('company',e.target.value)} placeholder="Where? (a startup, client, college…)"/></div>
+      <div className="field"><label className="field-lbl">How long — period</label>
+        <div className="row2">
+          <select className="input select" value={f.startYear} onChange={e=>set('startYear',e.target.value)}>
+            <option value="">Start year</option>{YEARS.map(y=><option key={y} value={y}>{y}</option>)}</select>
+          <select className="input select" value={f.endYear} onChange={e=>set('endYear',e.target.value)}>
+            <option value="Present">Present</option>{YEARS.map(y=><option key={y} value={y}>{y}</option>)}</select>
+        </div>
+        {f.startYear && <span className="helper"><Ic name="calendar" size={13} style={{display:'inline',verticalAlign:'-2px',marginRight:5}}/>{periodLabel(f.startYear,f.endYear)} · about {durationLabel(f.startYear,f.endYear)}</span>}
+      </div>
+      <button className="btn btn-primary block" disabled={!ok1} onClick={()=>setStep(2)}>Continue</button>
+    </div>)}
+
+    {step===2 && (<div style={{display:'flex',flexDirection:'column',gap:18}}>
+      <div className="field"><label className="field-lbl">Your contribution</label>
+        <div className="pills">{['Owner','Partner','Executor'].map(c=>(
+          <button key={c} className={'pill'+(f.contrib===c?' sel':'')} onClick={()=>set('contrib',c)}>{c}</button>))}</div></div>
+      <div className="field"><label className="field-lbl">What did you do?</label>
+        <textarea className="textarea" value={f.description} onChange={e=>set('description',e.target.value)} placeholder="The problem, what you built, how you solved it…"/></div>
+      <div className="field"><label className="field-lbl">What was the outcome?</label>
+        <textarea className="textarea" value={f.outcome} onChange={e=>set('outcome',e.target.value)} placeholder="e.g. grew traffic 3×, shipped the backend, cut drop-off 34%" style={{minHeight:80}}/></div>
+      <div className="field"><label className="field-lbl">Attach an artifact · optional</label>
+        <ArtifactInput value={f.artifact} onChange={v=>set('artifact',v)}/>
+        <span className="helper">A link, image, or file your validator and viewers can open.</span></div>
+      <button className="btn btn-primary block" disabled={!ok2} onClick={()=>setStep(3)}>Continue</button>
+    </div>)}
+
+    {step===3 && (<div style={{display:'flex',flexDirection:'column',gap:18}}>
+      <div className="callout"><Ic name="info" size={18}/><p>Any email works — Gmail, university or corporate. The badge is <b>honest about how it was verified.</b></p></div>
+      <div className="row2">
+        <div className="field"><label className="field-lbl">Their name</label>
+          <input className="input" value={f.vName} onChange={e=>set('vName',e.target.value)} placeholder="Who can confirm this?"/></div>
+        <div className="field"><label className="field-lbl">How you worked together</label>
+          <select className="input select" value={f.vRel} onChange={e=>set('vRel',e.target.value)}>{REL_OPTIONS.map(o=><option key={o}>{o}</option>)}</select></div>
+      </div>
+      <div className="field"><label className="field-lbl">Their role / title at the time</label>
+        <input className="input" value={f.vRole} onChange={e=>set('vRole',e.target.value)} placeholder="e.g. Founder, Professor, Manager"/></div>
+      <div className="field"><label className="field-lbl">Their email</label>
+        <input className={'input'+(isSelf?' err':'')} type="email" value={f.vEmail} onChange={e=>set('vEmail',e.target.value)} placeholder="their@email.com"/>
+        {isSelf ? <span className="field-err">You can't verify your own work — use someone else's email.</span>
+          : tier && <span className="tier-preview"><span className={'status '+(tier.kind==='peer'?'pending':'verified')}>{tier.kind!=='peer'&&<CheckDot size={13}/>}{tier.label}</span><span className="helper">This is the badge this entry will earn.</span></span>}</div>
+      <div className="field"><label className="field-lbl">Their LinkedIn <span style={{textTransform:'none',letterSpacing:0,color:'var(--green)'}}>· recommended</span></label>
+        <input className="input" value={f.vLink} onChange={e=>set('vLink',e.target.value)} placeholder="linkedin.com/in/…"/></div>
+      <div className="field"><label className="field-lbl">Personal note <span style={{textTransform:'none',letterSpacing:0,color:'var(--grey-2)'}}>· optional</span></label>
+        <textarea className="textarea" value={f.vNote} maxLength={240} onChange={e=>set('vNote',e.target.value)} placeholder="Hey — could you confirm this? Takes ~90 seconds. Thanks!" style={{minHeight:80}}/></div>
+      <button className="btn btn-primary block" disabled={!ok3} onClick={()=>onSubmit(f)}><Ic name="send" size={17} color="#fff"/> Send verification request</button>
+    </div>)}
+  </div></div>);
 }
 
-function App() {
-  const pendingRef = useRef(undefined);
-  if (pendingRef.current === undefined) pendingRef.current = readPending();
-  const pending = pendingRef.current;
+function Sent({ project, go }){
+  return (<div className="screen"><div className="auth wrap wrap-sm">
+    <div style={{position:'relative',width:72,height:72,marginBottom:8}}>
+      <div style={{width:72,height:72,borderRadius:20,background:'var(--surface-2)',border:'1px solid var(--line)',display:'flex',alignItems:'center',justifyContent:'center'}}><Ic name="send" size={28} color="var(--black)"/></div>
+      <span style={{position:'absolute',bottom:-6,right:-6}}><CheckDot size={26}/></span>
+    </div>
+    <h1 style={{fontSize:'clamp(24px,3vw,32px)'}}>Request sent.</h1>
+    <p className="auth-sub" style={{animationDelay:'160ms'}}>We emailed <span className="lblf" style={{color:'var(--black)',fontWeight:600}}>{project?project.verifier.email:'your validator'}</span>. Your entry shows <b>Pending</b> until they confirm.</p>
+    <div className="auth-card" style={{animationDelay:'320ms',gap:10}}>
+      <button className="btn btn-primary block" onClick={()=>go('#/validate')}>Preview what they see</button>
+      <button className="btn btn-ghost block" onClick={()=>go('#/dashboard')}>Back to dashboard</button>
+    </div>
+  </div></div>);
+}
 
-  const [route, setRoute] = useState(getRoute());
-  const [authed, setAuthed] = useState(!!pending);
-  const [user, setUser] = useState(SEED_USER);
-  const [projects, setProjects] = useState(SEED_PROJECTS);
-  const [signupName, setSignupName] = useState(pending ? pending.name : '');
-  const [email, setEmail] = useState(pending ? pending.email : 'frank@docent.co');
-  const [validatorEmail, setValidatorEmail] = useState('jordan@studionord.co');
-  const [gmodal, setGmodal] = useState(false);
+/* ---------- VALIDATOR (2 grouped question screens) ---------- */
+function Validator({ subject, project, onVerify, go }){
+  const [stage,setStage]=useState('intro'); // intro | 1 | 2 | stamp | done
+  const [a,setA]=useState({ capacity:'', dates:'', contrib:'', outcome:'' });
+  const [text,setText]=useState(''); const [again,setAgain]=useState('');
+  const [vName,setVName]=useState(project?project.verifier.name:''); const [vLink,setVLink]=useState(project&&project.verifier.linkedin?project.verifier.linkedin:'');
+  const set=(k,v)=>setA(s=>({...s,[k]:v}));
+  const first = subject ? (subject.name||'they').split(' ')[0] : 'they';
 
-  useEffect(() => {
-    const onHash = () => { setRoute(getRoute()); window.scrollTo(0,0); };
-    window.addEventListener('hashchange', onHash);
-    if (pending) { try { localStorage.removeItem('vw_pending'); } catch (_) {} }
-    else if (!location.hash) location.hash = '#/auth';
-    return () => window.removeEventListener('hashchange', onHash);
-  }, []);
+  if(!project){
+    return (<div className="screen"><div className="wrap wrap-sm vintro">
+      <span className="empty ic"><Ic name="shield" size={26}/></span>
+      <h1 className="h1" style={{fontSize:'clamp(24px,3vw,34px)'}}>Nothing to verify yet</h1>
+      <p className="lede" style={{maxWidth:'34ch'}}>This is the screen a validator sees after you invite them. Add a project and send a request to preview it with your real details.</p>
+      <button className="btn btn-primary pill" onClick={()=>go('#/add')}>Add a project</button>
+    </div></div>);
+  }
 
-  const go = useCallback((to) => { location.hash = to; }, []);
+  if(stage==='intro'){
+    return (<div className="screen"><div className="wrap wrap-sm vintro">
+      <span className="eyebrow">Verification request</span>
+      <div style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
+        <Avatar name={project.verifier.name} size={54}/>
+        <span style={{margin:'0 -8px',zIndex:1}}><CheckDot size={26}/></span>
+        <Avatar name={subject.name} src={subject.photo} size={54}/>
+      </div>
+      <h1 className="h1" style={{fontSize:'clamp(24px,3vw,36px)'}}>{first} asked you to verify their work.</h1>
+      <p className="lede" style={{maxWidth:'36ch'}}>You're confirming a project at <b style={{color:'var(--black)'}}>{project.company}</b>. About 90 seconds — no account needed.</p>
+      <div className="card card-pad" style={{textAlign:'left',width:'100%',maxWidth:440}}>
+        <div className="lblf" style={{fontSize:11,letterSpacing:'.05em',textTransform:'uppercase',color:'var(--grey)',marginBottom:8}}>The project</div>
+        <div style={{fontWeight:700,fontSize:17,marginBottom:4}}>{project.title}</div>
+        <div className="lblf muted" style={{fontSize:12.5}}>{project.company} · {periodLabel(project.startYear,project.endYear)}</div>
+        {project.verifier.note && <p style={{margin:'14px 0 0',fontSize:14,color:'var(--ink-2)',lineHeight:1.5}}>“{project.verifier.note}”</p>}
+        {project.artifact && <div style={{marginTop:14}}><ArtifactView a={project.artifact} small/></div>}
+      </div>
+      <button className="btn btn-primary pill btn-lg" style={{minWidth:220}} onClick={()=>setStage(1)}>Start verifying</button>
+    </div></div>);
+  }
 
-  // Routes that require auth fall back to /auth
-  const guarded = ['/dashboard','/add','/invite','/profile','/sent','/onboarding'];
-  useEffect(() => {
-    if (!authed && guarded.includes(route)) go('#/auth');
-  }, [route, authed]);
+  if(stage==='stamp'||stage==='done'){
+    return (<div className="screen"><div className="wrap wrap-sm vintro" style={{minHeight:'60vh',justifyContent:'center'}}>
+      <Stamp size={108}/>
+      <h1 className="h1" style={{fontSize:'clamp(24px,3vw,34px)'}}>Endorsement published.</h1>
+      <p className="lede" style={{maxWidth:'32ch'}}>Thanks — your verification of {first}'s work is now part of their record.</p>
+      {stage==='done' && <div style={{display:'flex',gap:10,flexWrap:'wrap',justifyContent:'center'}}>
+        <button className="btn btn-secondary" onClick={()=>go('#/profile')}>See the profile</button>
+        <button className="btn btn-ghost" onClick={()=>{setStage('intro');setA({capacity:'',dates:'',contrib:'',outcome:''});setText('');setAgain('');}}>Run it again</button>
+      </div>}
+    </div></div>);
+  }
 
-  const onGoogle = () => { setUser(SEED_USER); setAuthed(true); setGmodal(false); go('#/dashboard'); };
-  const onEmail = (e) => { setEmail(e); setAuthed(true); go('#/link-sent'); };
+  const submit=()=>{
+    onVerify({ contrib:a.contrib||project.contrib, quote:text.trim(), again,
+      verifierName:vName.trim(), verifierLinkedin:vLink.trim(),
+      capacity:a.capacity, dates:a.dates, outcome:a.outcome });
+    setStage('stamp'); setTimeout(()=>setStage('done'),1900);
+  };
+
+  return (<div className="screen"><div className="wrap wrap-sm" style={{paddingTop:'clamp(24px,4vw,40px)',paddingBottom:48}}>
+    <WizBar current={stage} total={2} label={stage===1?'Confirm the basics':'The outcome & your endorsement'} onBack={()=>setStage(stage===2?1:'intro')}/>
+    {stage===1 && (<div style={{display:'flex',flexDirection:'column',gap:24}}>
+      <QGroup label={'Did '+first+' work with you in this capacity?'} value={a.capacity}
+        options={[{v:'yes',l:'Yes'},{v:'partial',l:'Partially'},{v:'no',l:'No'}]} onChange={v=>set('capacity',v)}/>
+      <QGroup label="Were the dates roughly accurate?" value={a.dates}
+        options={[{v:'yes',l:'Yes'},{v:'roughly',l:'Roughly'},{v:'no',l:'No'}]} onChange={v=>set('dates',v)}/>
+      <div className="qgroup"><div className="q-lbl">How would you describe their contribution?</div>
+        <div className="opts">{CONTRIB_DEF.map(c=>(
+          <Opt key={c.key} icon={c.icon} label={c.label} sub={c.sub} sel={a.contrib===c.key} onClick={()=>set('contrib',c.key)}/>))}</div></div>
+      <button className="btn btn-primary block" disabled={!a.capacity||!a.dates||!a.contrib} onClick={()=>setStage(2)}>Continue</button>
+    </div>)}
+    {stage===2 && (<div style={{display:'flex',flexDirection:'column',gap:22}}>
+      <div><p className="muted" style={{marginBottom:10}}>{first} described the outcome as:</p>
+        <div className="quotebox"><span className="qm">&ldquo;</span><p>{project.outcome}</p></div></div>
+      <QGroup label="Does this reflect what you saw?" value={a.outcome}
+        options={[{v:'yes',l:'Yes'},{v:'roughly',l:'Roughly'},{v:'cant',l:"Can't confirm"}]} onChange={v=>set('outcome',v)}/>
+      <div className="field"><label className="field-lbl">In your own words — what should someone hiring {first} know?</label>
+        <textarea className="textarea" value={text} maxLength={100} onChange={e=>setText(e.target.value)} placeholder="The person I'd want on the hardest problem in the room…"/>
+        <span className="helper">Max 100 characters · {100-text.length} left</span></div>
+      <QGroup label={'Would you work with '+first+' again?'} value={again}
+        options={[{v:'Yes',l:'Yes'},{v:'Depends',l:'Depends'},{v:'No',l:'No'}]} onChange={setAgain}/>
+      <div className="row2">
+        <div className="field"><label className="field-lbl">Your name</label>
+          <input className="input" value={vName} onChange={e=>setVName(e.target.value)} placeholder="Shown publicly"/></div>
+        <div className="field"><label className="field-lbl">Your LinkedIn <span style={{textTransform:'none',letterSpacing:0,color:'var(--green)'}}>· builds trust</span></label>
+          <input className="input" value={vLink} onChange={e=>setVLink(e.target.value)} placeholder="linkedin.com/in/…"/></div>
+      </div>
+      <p className="helper" style={{margin:0}}>Your name appears on {first}'s public badge — verifications are never anonymous.</p>
+      <button className="btn btn-primary block" disabled={!a.outcome||!text.trim()||!again||!vName.trim()} onClick={submit}>Submit endorsement</button>
+    </div>)}
+  </div></div>);
+}
+
+/* ---------- PROFILE ---------- */
+function WorkCard({ p, open, onToggle }){
+  const v=p.status==='verified';
+  return (<div className={'xcard'+(open?' open':'')}>
+    <button className="xcard-head" onClick={onToggle} aria-expanded={open}>
+      <div className="x-main">
+        <div style={{display:'flex',alignItems:'center',gap:10,flexWrap:'wrap',marginBottom:6}}>
+          <h3 className="h3" style={{fontSize:18}}>{p.title}</h3>
+          <span className={'status '+p.status}>{v&&<CheckDot size={13}/>}{p.status[0].toUpperCase()+p.status.slice(1)}</span>
+        </div>
+        <span className="lblf muted" style={{fontSize:12.5}}>{p.company} · {periodLabel(p.startYear,p.endYear)}</span>
+        {v && <p style={{margin:'12px 0 0',fontSize:15,lineHeight:1.5,color:'var(--ink-2)'}}><span style={{color:'var(--green)',fontWeight:600}}>Outcome confirmed</span> — {p.outcome}.</p>}
+      </div>
+      <span className="contrib">{v&&<CheckDot size={14}/>}{p.contrib}</span>
+      <span className="xcard-toggle"><Ic name="chevronDown" size={14} stroke={2.4}/></span>
+    </button>
+    <div className="xcard-more"><div className="xcard-more-inner">
+      <div style={{padding:'0 clamp(16px,2.2vw,24px) clamp(18px,2.2vw,24px)',display:'flex',flexDirection:'column',gap:16}}>
+        {p.description && <p style={{margin:0,fontSize:15,lineHeight:1.6,color:'var(--ink-2)'}}>{p.description}</p>}
+        {v ? (<>
+          <div className="quotebox"><span className="qm">&ldquo;</span><p>{p.endorsement.quote}</p></div>
+          <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:12,flexWrap:'wrap'}}>
+            <span style={{display:'inline-flex',alignItems:'center',gap:8,fontSize:14,fontWeight:500,color:'var(--ink-2)'}}>
+              <CheckDot size={15}/> {p.endorsement.verifierName}{p.verifier.role?', '+p.verifier.role:''}
+              {p.endorsement.again&&<span className="muted"> · would work again: <b style={{color:'var(--green)'}}>{p.endorsement.again}</b></span>}</span>
+            {p.endorsement.verifierLinkedin && <a className="tlink" href={'https://'+p.endorsement.verifierLinkedin.replace(/^https?:\/\//,'')} target="_blank" rel="noopener">LinkedIn <Ic name="arrowUpRight" size={14}/></a>}
+          </div>
+        </>) : <div className="callout"><Ic name="info" size={18}/><p>Awaiting verification from <b>{p.verifier.name}</b>. Honest until confirmed.</p></div>}
+        {p.artifact && <div><div className="field-lbl" style={{marginBottom:8}}>Artifact</div><ArtifactView a={p.artifact}/></div>}
+      </div>
+    </div></div>
+  </div>);
+}
+function Profile({ user, projects, setUser, go, onDelete }){
+  const [open,setOpen]=useState(projects[0]?projects[0].id:null);
+  const [edit,setEdit]=useState(false);
+  const [draft,setDraft]=useState(user);
+  useEffect(()=>{ setDraft(user); },[user]);
+  const verified=projects.filter(p=>p.status==='verified');
+  const onF=k=>e=>setDraft(d=>({...d,[k]:e.target.value}));
+  const empty=projects.length===0;
+  return (<div className="screen"><div className="wrap wrap-lg" style={{paddingTop:'clamp(28px,5vw,52px)',paddingBottom:24}}>
+    <Reveal><div className="pf-head">
+      <Avatar name={user.name} src={user.photo} size={92}/>
+      <div className="pf-id">
+        {edit ? (<div style={{display:'flex',flexDirection:'column',gap:10,maxWidth:460}}>
+          <input className="input" value={draft.name} onChange={onF('name')} placeholder="Full name"/>
+          <input className="input" value={draft.title} onChange={onF('title')} placeholder="What you do"/>
+          <input className="input" value={draft.location} onChange={onF('location')} placeholder="Location"/>
+        </div>) : (<>
+          <h1 className="pf-name">{user.name||'Your name'}</h1>
+          <p className="pf-role">{user.title||'Your title'}</p>
+          <div className="pf-meta">{user.location&&<span className="it"><Ic name="mapPin" size={15}/>{user.location}</span>}
+            <span className="it lblf">verified.work/{user.handle}</span></div>
+        </>)}
+      </div>
+      <div className="pf-actions">
+        {edit ? (<><button className="btn btn-secondary btn-sm" onClick={()=>{setDraft(user);setEdit(false);}}>Cancel</button>
+          <button className="btn btn-primary btn-sm" onClick={()=>{setUser(draft);setEdit(false);}}>Save</button></>)
+          : (<><button className="btn btn-secondary btn-icon" aria-label="Share"><Ic name="share" size={16}/></button>
+            <button className="btn btn-secondary btn-sm" onClick={()=>setEdit(true)}><Ic name="edit" size={15}/> Edit</button></>)}
+      </div>
+    </div></Reveal>
+    {edit ? <textarea className="textarea" style={{marginTop:16,maxWidth:680}} value={draft.bio||''} onChange={onF('bio')} placeholder="A short bio"/>
+      : user.bio && <p className="pf-bio">{user.bio}</p>}
+
+    <Reveal><div className="pf-stats">
+      <div className="stat"><div className="num">{projects.length}</div><div className="lbl">Projects</div></div>
+      <div className="stat"><div className="num" style={{color:'var(--green)'}}><CheckDot size={22}/>{verified.length}</div><div className="lbl">Verified</div></div>
+      <div className="stat"><div className="num">{verified.length}</div><div className="lbl">Endorsements</div></div>
+      <div className="stat"><div className="num">{verified.length?Math.round(verified.filter(p=>p.endorsement.again==='Yes').length/verified.length*100)+'%':'—'}</div><div className="lbl">Would work again</div></div>
+    </div></Reveal>
+
+    {empty ? (
+      <div className="empty card"><span className="ic"><Ic name="sparkle" size={26}/></span>
+        <div><h2 className="h3" style={{marginBottom:8}}>Your profile is empty</h2>
+          <p className="lede" style={{maxWidth:'40ch'}}>Add your first project and get it verified — it'll appear here for anyone with your link.</p></div>
+        <button className="btn btn-primary pill" style={{maxWidth:240}} onClick={()=>go('#/add')}><Ic name="plus" size={18} color="#fff"/> Add a project</button>
+      </div>
+    ) : (<>
+      {verified.length>0 && <Reveal><div style={{marginBottom:26}}>
+        <div className="sec-head"><span className="eyebrow">Contribution</span><span className="ln"/></div>
+        <div className="badges">{[...new Set(verified.map(p=>p.contrib))].map(c=><span key={c} className="contrib"><CheckDot size={15}/>{c}</span>)}</div>
+      </div></Reveal>}
+      <div className="sec-head"><span className="eyebrow">Verified work</span><span className="n">{projects.length}</span><span className="ln"/></div>
+      <div className="stack">{projects.map((p,i)=>(
+        <Reveal key={p.id} delay={i*70}><WorkCard p={p} open={open===p.id} onToggle={()=>setOpen(o=>o===p.id?null:p.id)}/></Reveal>))}</div>
+      {verified.length>0 && (<>
+        <div className="sec-head" style={{marginTop:34}}><span className="eyebrow">What people say</span><span className="ln"/></div>
+        <div className="endorse">{verified.map((p,i)=>(
+          <Reveal key={p.id} delay={i*80}><div className="card card-pad" style={{height:'100%',display:'flex',flexDirection:'column',gap:14}}>
+            <Ic name="sparkle" size={20} color="var(--line-strong)"/>
+            <p style={{margin:0,fontSize:16,lineHeight:1.5,fontWeight:500}}>{p.endorsement.quote}</p>
+            <div style={{marginTop:'auto',display:'flex',alignItems:'center',gap:10}}>
+              <Avatar name={p.endorsement.verifierName} size={34}/>
+              <span style={{fontSize:13.5}}><b>{p.endorsement.verifierName}</b><span className="muted"> · {p.verifier.role}, {p.company}</span></span></div>
+          </div></Reveal>))}</div>
+      </>)}
+    </>)}
+
+    <div className="danger-zone">
+      <div><div className="t">Delete account</div><div className="s">Permanently removes your profile and every work entry. This can't be undone.</div></div>
+      <button className="btn btn-danger btn-sm" onClick={onDelete}><Ic name="trash" size={15}/> Delete account</button>
+    </div>
+  </div></div>);
+}
+
+function DeleteModal({ onCancel, onConfirm }){
+  return (<div className="modal-back" onClick={onCancel}><div className="cmodal" onClick={e=>e.stopPropagation()} role="dialog" aria-modal="true">
+    <div className="ic"><Ic name="trash" size={22}/></div>
+    <h2 className="h3" style={{marginBottom:8}}>Delete your account?</h2>
+    <p className="lede" style={{fontSize:15,marginBottom:20}}>This permanently removes your profile, all work entries, and every verification. This action can't be undone.</p>
+    <div style={{display:'flex',gap:10,justifyContent:'flex-end',flexWrap:'wrap'}}>
+      <button className="btn btn-secondary btn-sm" onClick={onCancel}>Cancel</button>
+      <button className="btn btn-sm" style={{background:'var(--danger)',color:'#fff'}} onClick={onConfirm}>Delete everything</button>
+    </div>
+  </div></div>);
+}
+
+/* ---------- ROOT ---------- */
+function getRoute(){ return (location.hash||'#/auth').replace(/^#/,''); }
+
+function App(){
+  const pendingRef=useRef(undefined);
+  if(pendingRef.current===undefined) pendingRef.current=readPending();
+  const pending=pendingRef.current;
+
+  const [route,setRoute]=useState(getRoute());
+  const [authed,setAuthed]=useState(!!pending);
+  const [signupName,setSignupName]=useState(pending?pending.name:'');
+  const [user,setUser]=useState({ name:'', title:'', location:'', handle:'', photo:null, bio:'', email: pending?pending.email:'' });
+  const [projects,setProjects]=useState([]);
+  const [activeId,setActiveId]=useState(null);
+  const [connecting,setConnecting]=useState(false);
+  const [confirmDelete,setConfirmDelete]=useState(false);
+
+  useEffect(()=>{
+    const onHash=()=>{ setRoute(getRoute()); window.scrollTo(0,0); };
+    window.addEventListener('hashchange',onHash);
+    if(pending){ try{ localStorage.removeItem('vw_pending'); }catch(_){} }
+    else if(!location.hash) location.hash='#/auth';
+    return ()=>window.removeEventListener('hashchange',onHash);
+  },[]);
+
+  const go=useCallback(to=>{ location.hash=to; },[]);
+
+  const onGoogle=()=>{ setConnecting(true); setTimeout(()=>{ setConnecting(false); setAuthed(true); go('#/onboarding'); },1300); };
+  const onEmail=(e)=>{ setUser(u=>({...u,email:e})); setAuthed(true); go('#/onboarding'); };
+  const finishOnboarding=(u)=>{ setUser(prev=>({...prev,...u})); go('#/dashboard'); };
+  const addProject=(f)=>{
+    const id=Date.now();
+    const proj={ id, title:f.title.trim(), company:f.company.trim(), startYear:f.startYear, endYear:f.endYear,
+      contrib:f.contrib, description:f.description.trim(), outcome:f.outcome.trim(), artifact:f.artifact,
+      verifier:{ name:f.vName.trim(), rel:f.vRel, role:f.vRole.trim(), email:f.vEmail.trim(), linkedin:f.vLink.trim(), note:f.vNote.trim() },
+      status:'pending', endorsement:null };
+    setProjects(ps=>[proj,...ps]); setActiveId(id); go('#/sent');
+  };
+  const verifyActive=(end)=>{
+    setProjects(ps=>ps.map(p=>p.id===activeId?{...p, status:'verified', contrib:end.contrib,
+      verifier:{...p.verifier, role:end.contrib?p.verifier.role:p.verifier.role, linkedin:end.verifierLinkedin||p.verifier.linkedin},
+      endorsement:{ quote:end.quote, again:end.again, verifierName:end.verifierName, verifierLinkedin:end.verifierLinkedin,
+        capacity:end.capacity, dates:end.dates, outcome:end.outcome }}:p));
+  };
+  const wipe=()=>{ try{ localStorage.removeItem('vw_pending'); }catch(_){}; window.location.href='index.html'; };
+
+  const guarded=['/onboarding','/dashboard','/add','/sent','/profile'];
+  const activeProject = projects.find(p=>p.id===activeId) || projects.find(p=>p.status==='pending') || projects[0] || null;
 
   let screen;
-  switch (route) {
-    case '/auth':      screen = <AuthScreen onGoogle={()=>setGmodal(true)} onEmail={onEmail}/>; break;
-    case '/link-sent': screen = <LinkSent email={email} onContinue={()=>go('#/onboarding')}/>; break;
-    case '/onboarding':screen = <Onboarding user={{name:signupName,role:''}} email={email} onDone={(u)=>{setUser({...SEED_USER,...u});go('#/dashboard');}}/>; break;
-    case '/dashboard': screen = <Dashboard user={user} projects={projects} go={go}/>; break;
-    case '/add':       screen = <AddWork go={go} onAdd={()=>go('#/invite')}/>; break;
-    case '/invite':    screen = <Invite go={go} selfEmail={email} onSent={(e)=>{setValidatorEmail(e);go('#/sent');}}/>; break;
-    case '/sent':      screen = <Sent email={validatorEmail} go={go}/>; break;
-    case '/validate':  screen = <Validator go={go}/>; break;
-    case '/profile':   screen = <Profile user={user} projects={projects} setUser={setUser} go={go}/>; break;
-    default:           screen = <AuthScreen onGoogle={()=>setGmodal(true)} onEmail={onEmail}/>;
+  if(guarded.indexOf('/'+route.replace(/^\//,''))>=0 && !authed){
+    screen=<AuthScreen onGoogle={onGoogle} onEmail={onEmail}/>;
+  } else {
+    switch(route){
+      case '/auth':       screen=<AuthScreen onGoogle={onGoogle} onEmail={onEmail}/>; break;
+      case '/onboarding': screen=<Onboarding signupName={signupName} onDone={finishOnboarding}/>; break;
+      case '/dashboard':  screen=<Dashboard user={user} projects={projects} go={go}/>; break;
+      case '/add':        screen=<AddProject selfEmail={user.email} onCancel={()=>go('#/dashboard')} onSubmit={addProject}/>; break;
+      case '/sent':       screen=<Sent project={activeProject} go={go}/>; break;
+      case '/validate':   screen=<Validator subject={user} project={activeProject} onVerify={verifyActive} go={go}/>; break;
+      case '/profile':    screen=<Profile user={user} projects={projects} setUser={setUser} go={go} onDelete={()=>setConfirmDelete(true)}/>; break;
+      default:            screen=<AuthScreen onGoogle={onGoogle} onEmail={onEmail}/>;
+    }
   }
+  const showFoot=['/dashboard','/profile','/validate'].indexOf(route)>=0;
 
-  const showFoot = ['/dashboard','/profile','/validate'].includes(route);
-
-  return (
-    <div className="app">
-      <TopNav route={route} go={go} authed={authed} onSignout={()=>{setAuthed(false);go('#/auth');}}/>
-      <div className="app-main">
-        <div className="screen" key={route}>{screen}</div>
-      </div>
-      {showFoot && (
-        <footer className="app-foot"><div className="inner">
-          <span>© 2026 verified.work — human validation in an AI world.</span>
-          <span style={{display:'inline-flex',gap:16}}>
-            <a href="index.html">Landing</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a>
-          </span>
-        </div></footer>
-      )}
-      {gmodal && <GoogleModal onPick={onGoogle} onClose={()=>setGmodal(false)}/>}
-    </div>
-  );
+  return (<div className="app">
+    <TopNav route={route} go={go} authed={authed} onSignout={()=>{setAuthed(false);go('#/auth');}} onDelete={()=>setConfirmDelete(true)}/>
+    <div className="app-main"><div className="screen" key={route}>{screen}</div></div>
+    {showFoot && <footer className="app-foot"><div className="inner">
+      <span>© 2026 verified.work — human validation in an AI world.</span>
+      <span style={{display:'inline-flex',gap:16}}><a href="index.html">Landing</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></span>
+    </div></footer>}
+    {connecting && <GoogleConnecting/>}
+    {confirmDelete && <DeleteModal onCancel={()=>setConfirmDelete(false)} onConfirm={wipe}/>}
+  </div>);
 }
-
 ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
 </script>
 </body>
