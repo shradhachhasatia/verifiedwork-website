@@ -92,57 +92,37 @@ button{font-family:inherit;cursor:pointer;}
 .hero-grid{display:grid;grid-template-columns:1fr;gap:clamp(48px,6vw,72px);align-items:center;}
 @media(min-width:1000px){.hero-grid{grid-template-columns:1.04fr .96fr;}}
 
-/* cycling label above h1 */
 .hero-label{margin:0 0 20px;font-size:15px;color:var(--grey);
   opacity:0;transform:translateY(10px);animation:rise .7s var(--ease-out) .1s forwards;}
-.hero-label .cyc2{color:var(--green);font-weight:700;display:inline-block;position:relative;overflow:hidden;vertical-align:bottom;height:1.2em;}
-.cyc2-w{display:inline-block;transition:transform .4s var(--ease-out),opacity .3s,filter .36s;}
-.cyc2-w.out{transform:translateY(-110%);opacity:0;filter:blur(6px);}
-
-.h1{font-weight:800;font-size:var(--fs-h1);line-height:1.02;letter-spacing:-.04em;margin:0 0 0;text-wrap:balance;}
-.h1 .l{display:block;opacity:0;transform:translateY(18px);animation:rise .8s var(--ease-out) forwards;}
-.h1 .l1{animation-delay:.22s;}.h1 .l2{animation-delay:.34s;}.h1 .l3{animation-delay:.46s;}
-.cyc{display:inline-block;position:relative;overflow:hidden;height:1.04em;vertical-align:bottom;color:var(--green);}
-.cyc-w{display:inline-block;transition:transform .42s var(--ease-out),opacity .3s,filter .38s;}
-.cyc-w.out{transform:translateY(-105%);opacity:0;filter:blur(7px);}
+.hero-label strong{color:var(--green);font-weight:700;}
+.h1{font-weight:800;font-size:var(--fs-h1);line-height:1.02;letter-spacing:-.04em;margin:0;text-wrap:balance;
+  opacity:0;transform:translateY(18px);animation:rise .8s var(--ease-out) .22s forwards;}
+.h1 em{font-style:normal;color:var(--green);}
 .hero-sub{margin:24px 0 0;font-size:var(--fs-lede);color:var(--grey);max-width:40ch;
-  opacity:0;transform:translateY(12px);animation:rise .7s var(--ease-out) .66s forwards;}
+  opacity:0;transform:translateY(12px);animation:rise .7s var(--ease-out) .44s forwards;}
 .hero-sub b{color:var(--black);font-weight:600;}
 .hero-cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:34px;
-  opacity:0;transform:translateY(12px);animation:rise .7s var(--ease-out) .85s forwards;}
+  opacity:0;transform:translateY(12px);animation:rise .7s var(--ease-out) .6s forwards;}
 
-/* ---------- Hero motion graphic ---------- */
+/* ---------- Hero sample card ---------- */
 .demo{position:relative;opacity:0;transform:translateY(16px);animation:rise .9s var(--ease-out) .5s forwards;}
-/* fixed height container prevents layout reflow as entries animate in */
 .demo-inner{position:relative;}
-.demo-card{background:#fff;border:1px solid var(--line);border-radius:22px;
-  box-shadow:0 24px 56px -28px rgba(26,26,26,.28),0 2px 8px rgba(26,26,26,.04);
-  padding:clamp(18px,2vw,24px);}
-.demo-prof{display:flex;align-items:center;gap:14px;padding-bottom:16px;border-bottom:1px solid var(--line);}
-.demo-ava{width:52px;height:52px;border-radius:50%;background:var(--black);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:19px;flex-shrink:0;}
-.demo-prof .nm{font-weight:700;font-size:17px;letter-spacing:-.01em;}
-.demo-prof .rl{font-size:13.5px;color:var(--grey);}
-.demo-prof .vpill{margin-left:auto;display:inline-flex;align-items:center;gap:6px;font-family:var(--label);font-size:11px;font-weight:600;
-  color:var(--green-deep);background:var(--green-tint);border-radius:999px;padding:5px 10px;white-space:nowrap;}
-.demo-prof .vpill .k{width:14px;height:14px;border-radius:50%;background:var(--green);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;}
-.demo-prof .vpill .k svg{width:9px;height:9px;}
-.demo-list{display:flex;flex-direction:column;gap:10px;margin-top:16px;}
-.entry{border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;align-items:center;gap:12px;background:#fff;
-  opacity:0;transform:translateY(12px);}
-.entry.in{animation:entryin .6s var(--ease-out) forwards;}
-.entry .eic{width:34px;height:34px;border-radius:9px;background:var(--surface-2);color:var(--grey-3);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.entry .eic svg{width:17px;height:17px;}
-.entry .et{flex:1;min-width:0;}
-.entry .et .t{font-weight:600;font-size:14.5px;}
-.entry .et .m{font-family:var(--label);font-size:11.5px;color:var(--grey);}
-.entry .badge{display:inline-flex;align-items:center;gap:5px;font-family:var(--label);font-size:10.5px;font-weight:600;
-  border-radius:999px;padding:4px 9px;white-space:nowrap;transition:background .3s,color .3s;}
-.entry .badge.pending{background:var(--surface-3);color:var(--grey-3);}
+.demo-card{background:#fff;border:1px solid var(--line);border-radius:20px;
+  box-shadow:0 20px 48px -24px rgba(26,26,26,.22),0 2px 6px rgba(26,26,26,.04);
+  padding:clamp(20px,2.4vw,28px);display:flex;flex-direction:column;gap:12px;}
+.entry{border:1px solid var(--line);border-radius:14px;padding:16px 18px;background:#fff;}
+.entry-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:4px;}
+.entry .et .t{font-weight:700;font-size:15px;letter-spacing:-.01em;}
+.entry .et .m{font-size:13px;color:var(--grey);margin-top:2px;}
+.entry .et .detail{font-size:13.5px;color:var(--grey-3);margin-top:8px;line-height:1.55;}
+.entry .badge{display:inline-flex;align-items:center;gap:5px;font-family:var(--label);font-size:11px;font-weight:600;
+  border-radius:999px;padding:5px 11px;white-space:nowrap;flex-shrink:0;}
 .entry .badge.verified{background:var(--green-tint);color:var(--green-deep);}
-.entry .badge .k{width:12px;height:12px;border-radius:50%;background:var(--green);display:none;align-items:center;justify-content:center;}
-.entry .badge.verified .k{display:inline-flex;}
+.entry .badge.pending{background:var(--surface-3);color:var(--grey-3);}
+.entry .badge .k{width:13px;height:13px;border-radius:50%;background:var(--green);display:inline-flex;align-items:center;justify-content:center;}
+.entry .badge.pending .k{display:none;}
 .entry .badge .k svg{width:8px;height:8px;}
-.entry.stamping{border-color:var(--green);box-shadow:0 0 0 3px var(--green-ring);}
+.entry .endorser{margin-top:10px;padding-top:10px;border-top:1px solid var(--line-faint);font-size:12.5px;color:var(--grey);}
 
 /* ---------- Section header ---------- */
 .sec{padding:var(--gap-section) 0;}
@@ -235,10 +215,9 @@ button{font-family:inherit;cursor:pointer;}
 .rd1{transition-delay:90ms;}.rd2{transition-delay:180ms;}.rd3{transition-delay:270ms;}
 
 @keyframes rise{to{opacity:1;transform:none;}}
-@keyframes entryin{to{opacity:1;transform:none;}}
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;}
-  .reveal,.h1 .l,.hero-label,.hero-sub,.hero-cta,.demo,.entry{opacity:1 !important;transform:none !important;}
+  .reveal,.h1,.hero-label,.hero-sub,.hero-cta,.demo{opacity:1 !important;transform:none !important;}
 }
 </style>
 </head>
@@ -261,38 +240,40 @@ button{font-family:inherit;cursor:pointer;}
 <!-- HERO -->
 <header class="hero" id="top"><div class="container hero-grid">
   <div>
-    <p class="hero-label">For the <span class="cyc2"><span class="cyc2-w" id="cyc2">intern</span></span> who did real work.</p>
-    <h1 class="h1">
-      <span class="l l1">Stop being filtered.</span>
-      <span class="l l2">Start being</span>
-      <span class="l l3"><span class="cyc"><span class="cyc-w" id="cyc">found.</span></span></span>
-    </h1>
-    <p class="hero-sub">Showcase the internships, freelance gigs and projects you actually did — <b>verified by the people who were there.</b> Not what your CV claims.</p>
+    <p class="hero-label">For interns, freelancers, and founders who did <strong>real work</strong>.</p>
+    <h1 class="h1">Your work happened.<br><em>Now it can be proven.</em></h1>
+    <p class="hero-sub">Showcase the projects, internships and gigs you actually did — <b>verified by the people who were there.</b> Not what your CV claims.</p>
     <div class="hero-cta">
       <a class="btn btn-dark btn-lg" href="app.html">Try verifiedwork for free <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></a>
       <a class="btn btn-out" href="#how">See how it works</a>
     </div>
   </div>
 
-  <!-- motion graphic -->
+  <!-- sample entries -->
   <div class="demo" aria-hidden="true">
     <div class="demo-inner">
       <div class="demo-card">
-        <div class="demo-prof">
-          <span class="demo-ava">FD</span>
-          <div><div class="nm">Frank Docent</div><div class="rl">Creative direction &amp; brand</div></div>
-          <span class="vpill"><span class="k"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Verified</span>
+        <div class="entry">
+          <div class="entry-top">
+            <div class="et">
+              <div class="t">Redesigned onboarding for 40k users</div>
+              <div class="m">Bloom Agency · Internship · Jun–Aug 2024</div>
+            </div>
+            <span class="badge verified"><span class="k"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Verified</span>
+          </div>
+          <div class="et"><div class="detail">Reduced drop-off by 18% — confirmed by design lead.</div></div>
+          <div class="endorser">Endorsed by <b>Priya Mehta</b>, Design Lead · verified via work email</div>
         </div>
-        <div class="demo-list" id="demoList">
-          <div class="entry" data-i="0"><span class="eic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z"/></svg></span>
-            <div class="et"><div class="t">Brand identity redesign</div><div class="m">Studio Nord · 2024</div></div>
-            <span class="badge pending"><span class="k"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="bt">Pending</span></span></div>
-          <div class="entry" data-i="1"><span class="eic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 14 3-4 3 2 4-6"/></svg></span>
-            <div class="et"><div class="t">Campaign identity system</div><div class="m">Bloom Agency · 2023</div></div>
-            <span class="badge pending"><span class="k"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="bt">Pending</span></span></div>
-          <div class="entry" data-i="2"><span class="eic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></span>
-            <div class="et"><div class="t">Design system · fintech</div><div class="m">Ledgerline · 2025</div></div>
-            <span class="badge pending"><span class="k"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="bt">Pending</span></span></div>
+        <div class="entry">
+          <div class="entry-top">
+            <div class="et">
+              <div class="t">Built payment integration for e-commerce client</div>
+              <div class="m">Freelance · Mar 2025</div>
+            </div>
+            <span class="badge verified"><span class="k"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Verified</span>
+          </div>
+          <div class="et"><div class="detail">Stripe + webhook setup, shipped in 3 weeks.</div></div>
+          <div class="endorser">Endorsed by <b>James O.</b>, Founder · verified via personal email</div>
         </div>
       </div>
     </div>
@@ -384,53 +365,10 @@ button{font-family:inherit;cursor:pointer;}
   var s=function(){ nav.classList.toggle('scrolled',window.scrollY>8); };
   window.addEventListener('scroll',s,{passive:true}); s(); })();
 
-/* h1 word cycle: found → verified → hired */
-(function(){ var el=document.getElementById('cyc'); if(!el) return;
-  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  var words=['found.','verified.','hired.'], i=0;
-  setInterval(function(){ el.classList.add('out');
-    setTimeout(function(){ i=(i+1)%words.length; el.textContent=words[i];
-      el.style.transition='none'; el.style.transform='translateY(105%)'; el.classList.remove('out');
-      void el.offsetWidth; el.style.transition=''; el.style.transform=''; },420);
-  },2600); })();
-
-/* hero label word cycle: intern → freelancer → designer → founder → student */
-(function(){
-  var el=document.getElementById('cyc2'); if(!el) return;
-  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  var words=['intern','freelancer','designer','founder','student'], i=0;
-  setInterval(function(){ el.classList.add('out');
-    setTimeout(function(){ i=(i+1)%words.length; el.textContent=words[i];
-      el.style.transition='none'; el.style.transform='translateY(110%)'; el.classList.remove('out');
-      void el.offsetWidth; el.style.transition=''; el.style.transform=''; },400);
-  },2200); })();
-
 /* reveal on scroll */
 (function(){ var io=new IntersectionObserver(function(es){ es.forEach(function(e){
   if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }); },{threshold:.16,rootMargin:'0px 0px -60px 0px'});
   document.querySelectorAll('.reveal,.step').forEach(function(el){ io.observe(el); }); })();
-
-/* hero motion: entries slide in, then verify one by one on a loop */
-(function(){
-  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var entries=Array.prototype.slice.call(document.querySelectorAll('#demoList .entry'));
-  var tiers=['Company verified','Peer verified','Academic verified'];
-  if(reduce){ entries.forEach(function(en,i){ en.classList.add('in'); verify(en,i); }); return; }
-  entries.forEach(function(en,i){ setTimeout(function(){ en.classList.add('in'); }, 600+i*260); });
-  function verify(en,i){
-    var badge=en.querySelector('.badge'); var txt=en.querySelector('.bt');
-    en.classList.add('stamping');
-    setTimeout(function(){ badge.classList.remove('pending'); badge.classList.add('verified'); txt.textContent=tiers[i%tiers.length]; en.classList.remove('stamping'); },420);
-  }
-  function reset(en){ var badge=en.querySelector('.badge'); var txt=en.querySelector('.bt');
-    badge.classList.remove('verified'); badge.classList.add('pending'); txt.textContent='Pending'; }
-  var idx=0;
-  function loop(){ var en=entries[idx%entries.length];
-    if((idx)>=entries.length){ reset(en); setTimeout(function(){ verify(en,idx%entries.length); },500); }
-    else verify(en,idx);
-    idx++; }
-  setTimeout(function(){ setInterval(loop, 1700); }, 1700);
-})();
 
 /* research carousel */
 (function(){
