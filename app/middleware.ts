@@ -26,8 +26,9 @@ export async function middleware(request: NextRequest) {
   // Refresh session — do not add logic between createServerClient and getUser
   const { data: { user } } = await supabase.auth.getUser()
 
-  // Redirect unauthenticated users away from /dashboard
-  if (!user && request.nextUrl.pathname.startsWith('/dashboard')) {
+  // Redirect unauthenticated users away from the app's protected routes
+  const path = request.nextUrl.pathname
+  if (!user && (path.startsWith('/dashboard') || path.startsWith('/onboarding'))) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
 
