@@ -1,7 +1,11 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
-export async function middleware(request: NextRequest) {
+// Next.js 16 renamed the `middleware` convention to `proxy`, which defaults to
+// the Node.js runtime. That matters here: @supabase/ssr pulls in code that
+// references `__dirname`, which is undefined on the Edge runtime and crashed
+// every request with MIDDLEWARE_INVOCATION_FAILED.
+export async function proxy(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request })
 
   const supabase = createServerClient(
