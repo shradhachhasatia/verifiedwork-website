@@ -1,11 +1,15 @@
+import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
+import { Wordmark } from '@/components/Icon'
 import LogoutButton from './LogoutButton'
+import DashboardView, { type Entry } from './DashboardView'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
   // New users must finish onboarding before they reach the dashboard.
@@ -17,19 +21,23 @@ export default async function DashboardPage() {
 
   if (!profile?.onboarded) redirect('/onboarding')
 
-  const firstName = profile.full_name?.trim().split(/\s+/)[0]
+  const { data: entries } = await supabase
+    .from('entries')
+    .select('id, role_title, company, start_date, end_date, contribution, metrics, artifact_url, status, validators(name, role), verifications(sentence, rehire)')
+    .eq('user_id', user.id)
+    .order('created_at', { ascending: false })
+
+  const firstName = profile.full_name?.trim().split(/\s+/)[0] ?? ''
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 text-center">
-        <p className="text-lg font-medium text-gray-900">
-          {firstName ? <>Welcome, <span className="text-black font-bold">{firstName}</span>.</> : <>You&apos;re logged in as <span className="text-black font-bold">{user.email}</span></>}
-        </p>
-        <p className="mt-1 text-sm text-gray-500">Your profile is saved. The dashboard is the next screen to build.</p>
-        <div className="mt-6">
+    <main className="app-main">
+      <header className="app-head">
+        <div className="inner">
+          <Link href="/dashboard" aria-label="verified.work" style={{ textDecoration: 'none' }}><Wordmark /></Link>
           <LogoutButton />
         </div>
-      </div>
+      </header>
+      <DashboardView firstName={firstName} entries={(entries ?? []) as Entry[]} />
     </main>
   )
 }
