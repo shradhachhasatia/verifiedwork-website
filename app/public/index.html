@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+<title>verified.work | Human validation in an AI world</title>
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="description" content="Showcase the work you actually did — verified by the people who were there. Human validation in an AI world.">
+<link rel="canonical" href="https://verifiedwork.co/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="verified.work">
+<meta property="og:url" content="https://verifiedwork.co/">
+<meta property="og:title" content="verified.work | Human validation in an AI world">
+<meta property="og:description" content="Showcase the work you actually did — verified by the people who were there.">
+<meta property="og:image" content="https://verifiedwork.co/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://verifiedwork.co/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green:#2D6A4F; --green-2:#40916C; --green-tint:#D8F3DC; --green-deep:#1F4A37;
+  --green-ring:rgba(45,106,79,.20);
+  --black:#1A1A1A; --white:#FFFFFF;
+  --grey:#6B7280; --grey-2:#9CA3AF; --grey-3:#4B5563; --ink-2:#374151;
+  --line:#E5E7EB; --line-strong:#D1D5DB; --line-faint:#F3F4F6; --surface-2:#F9FAFB; --surface-3:#F3F4F6;
+  --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --label:'Space Grotesk','Inter',sans-serif;
+  --ease-out:cubic-bezier(0.16,1,0.3,1);
+  --ease-stamp:cubic-bezier(0.2,1.3,0.4,1);
+  --fs-eyebrow:clamp(11px,0.5vw+9px,13px);
+  --fs-body:clamp(15px,0.4vw+13px,18px);
+  --fs-lede:clamp(17px,0.9vw+14px,22px);
+  --fs-h2:clamp(28px,2.4vw+18px,46px);
+  --fs-h1:clamp(40px,5vw+16px,82px);
+  --gap-section:clamp(80px,9vw,150px);
+  --pad-x:clamp(20px,4vw,56px);
+  --max-w:1240px;
+}
+*,*::before,*::after{box-sizing:border-box;}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+body{margin:0;font-family:var(--font);font-size:var(--fs-body);line-height:1.55;color:var(--black);
+  background:var(--white);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden;}
+::selection{background:var(--green-tint);color:var(--green-deep);}
+img,svg{display:block;max-width:100%;}
+a{color:inherit;text-decoration:none;}
+button{font-family:inherit;cursor:pointer;}
+.container{width:100%;max-width:var(--max-w);margin:0 auto;padding:0 var(--pad-x);}
+.lblf{font-family:var(--label);}
+
+/* ---------- Nav ---------- */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.8);
+  backdrop-filter:saturate(180%) blur(12px);-webkit-backdrop-filter:saturate(180%) blur(12px);
+  border-bottom:1px solid transparent;transition:border-color 200ms var(--ease-out);}
+.nav.scrolled{border-color:var(--line);}
+.nav .inner{height:clamp(58px,5vw,72px);display:flex;align-items:center;justify-content:space-between;gap:16px;}
+.mark{display:inline-flex;align-items:center;font-weight:700;font-size:clamp(17px,0.6vw+14px,21px);letter-spacing:-.015em;color:var(--black);}
+.mark .work{font-weight:400;color:var(--grey);}
+.mark .ck{display:inline-flex;align-items:center;justify-content:center;width:12px;height:12px;border-radius:50%;background:var(--green);margin:0 2px;}
+.mark .ck svg{width:8px;height:8px;}
+.nav-r{display:inline-flex;align-items:center;gap:14px;}
+.nav-links{display:none;gap:26px;}
+@media(min-width:860px){.nav-links{display:inline-flex;}}
+.nav-links a{font-weight:500;font-size:14.5px;color:var(--grey-3);transition:color .15s;}
+.nav-links a:hover{color:var(--green);}
+.nav-signin{font-weight:600;font-size:14px;color:var(--black);transition:color .15s;}
+.nav-signin:hover{color:var(--green);}
+@media(max-width:520px){.nav-signin{display:none;}}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:999px;
+  font-weight:600;letter-spacing:-.005em;transition:background .16s,transform .08s,box-shadow .2s,border-color .15s,color .15s;}
+.btn:active{transform:scale(.985);}
+.btn-dark{background:var(--black);color:#fff;padding:11px 20px;font-size:14px;}
+.btn-dark:hover{background:var(--green);}
+.btn-lg{padding:16px 30px;font-size:16px;box-shadow:0 16px 34px -14px rgba(26,26,26,.5);}
+.btn-out{background:#fff;color:var(--black);border:1px solid var(--line-strong);padding:15px 26px;font-size:16px;}
+.btn-out:hover{border-color:var(--black);}
+.btn svg{width:18px;height:18px;}
+.btn-lg svg,.btn-out svg{transition:transform .2s var(--ease-out);}
+.btn-lg:hover svg,.btn-out:hover svg{transform:translateX(3px);}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;padding-top:clamp(120px,14vw,180px);padding-bottom:var(--gap-section);overflow:hidden;}
+.hero::before{content:"";position:absolute;inset:0;z-index:-2;pointer-events:none;
+  background:radial-gradient(60% 50% at 22% 0%,rgba(216,243,220,.7) 0%,rgba(255,255,255,0) 70%);}
+.hero::after{content:"";position:absolute;inset:0;z-index:-2;pointer-events:none;opacity:.5;
+  background-image:radial-gradient(rgba(26,26,26,.05) 1px,transparent 1px);background-size:26px 26px;
+  -webkit-mask-image:radial-gradient(70% 60% at 50% 20%,#000,transparent 75%);
+  mask-image:radial-gradient(70% 60% at 50% 20%,#000,transparent 75%);}
+.hero-grid{display:grid;grid-template-columns:1fr;gap:clamp(48px,6vw,72px);align-items:center;}
+@media(min-width:1000px){.hero-grid{grid-template-columns:1.04fr .96fr;}}
+
+.hero-label{margin:0 0 20px;font-size:15px;color:var(--grey);
+  opacity:0;transform:translateY(10px);animation:rise .7s var(--ease-out) .1s forwards;}
+.hero-label strong{color:var(--green);font-weight:700;}
+.h1{font-weight:800;font-size:var(--fs-h1);line-height:1.02;letter-spacing:-.04em;margin:0;text-wrap:balance;
+  opacity:0;transform:translateY(18px);animation:rise .8s var(--ease-out) .22s forwards;}
+.h1 em{font-style:normal;color:var(--green);}
+.hero-sub{margin:24px 0 0;font-size:var(--fs-lede);color:var(--grey);max-width:40ch;
+  opacity:0;transform:translateY(12px);animation:rise .7s var(--ease-out) .44s forwards;}
+.hero-sub b{color:var(--black);font-weight:600;}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:34px;
+  opacity:0;transform:translateY(12px);animation:rise .7s var(--ease-out) .6s forwards;}
+
+/* ---------- Hero sample card ---------- */
+.demo{position:relative;opacity:0;transform:translateY(16px);animation:rise .9s var(--ease-out) .5s forwards;}
+.demo-inner{position:relative;}
+.demo-card{background:#fff;border:1px solid var(--line);border-radius:20px;
+  box-shadow:0 20px 48px -24px rgba(26,26,26,.22),0 2px 6px rgba(26,26,26,.04);
+  padding:clamp(20px,2.4vw,28px);display:flex;flex-direction:column;gap:12px;}
+.entry{border:1px solid var(--line);border-radius:14px;padding:16px 18px;background:#fff;}
+.entry-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:4px;}
+.entry .et .t{font-weight:700;font-size:15px;letter-spacing:-.01em;}
+.entry .et .m{font-size:13px;color:var(--grey);margin-top:2px;}
+.entry .et .detail{font-size:13.5px;color:var(--grey-3);margin-top:8px;line-height:1.55;}
+.entry .badge{display:inline-flex;align-items:center;gap:5px;font-family:var(--label);font-size:11px;font-weight:600;
+  border-radius:999px;padding:5px 11px;white-space:nowrap;flex-shrink:0;}
+.entry .badge.verified{background:var(--green-tint);color:var(--green-deep);}
+.entry .badge.pending{background:var(--surface-3);color:var(--grey-3);}
+.entry .badge .k{width:13px;height:13px;border-radius:50%;background:var(--green);display:inline-flex;align-items:center;justify-content:center;}
+.entry .badge.pending .k{display:none;}
+.entry .badge .k svg{width:8px;height:8px;}
+.entry .endorser{margin-top:10px;padding-top:10px;border-top:1px solid var(--line-faint);font-size:12.5px;color:var(--grey);}
+
+/* ---------- Section header ---------- */
+.sec{padding:var(--gap-section) 0;}
+.sec.alt{background:var(--surface-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+.sec-eyebrow{display:flex;align-items:center;justify-content:center;gap:10px;font-family:var(--label);font-size:var(--fs-eyebrow);
+  font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--grey);margin-bottom:18px;}
+.sec-eyebrow::before,.sec-eyebrow::after{content:"";width:30px;height:1px;background:var(--grey-2);}
+.sec-h2{text-align:center;font-weight:700;font-size:var(--fs-h2);line-height:1.1;letter-spacing:-.03em;margin:0 auto;max-width:18ch;text-wrap:balance;}
+.sec-lede{text-align:center;color:var(--grey);font-size:var(--fs-lede);max-width:54ch;margin:18px auto 0;}
+
+/* ---------- How it helps you ---------- */
+.help-grid{display:grid;grid-template-columns:1fr;gap:1px;margin-top:clamp(44px,5vw,64px);
+  background:var(--line);border:1px solid var(--line);border-radius:18px;overflow:hidden;}
+@media(min-width:760px){.help-grid{grid-template-columns:repeat(3,1fr);}}
+.help-card{background:#fff;padding:clamp(24px,3vw,36px);transition:background .2s;}
+.help-card:hover{background:var(--surface-2);}
+.help-card .hi{width:40px;height:40px;border-radius:11px;background:var(--green-tint);color:var(--green);display:flex;align-items:center;justify-content:center;margin-bottom:16px;}
+.help-card .hi svg{width:20px;height:20px;}
+.help-card h3{margin:0 0 8px;font-weight:700;font-size:18px;letter-spacing:-.02em;}
+.help-card p{margin:0;color:var(--grey);font-size:15px;line-height:1.6;}
+
+/* ---------- Steps ---------- */
+.steps{display:grid;grid-template-columns:1fr;gap:18px;max-width:560px;margin:clamp(44px,5vw,64px) auto 0;}
+.step{display:grid;grid-template-columns:54px 1fr;gap:20px;align-items:start;}
+.step .mk{width:54px;height:54px;border-radius:16px;background:#fff;border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;
+  color:var(--grey-2);font-family:var(--label);font-weight:700;font-size:18px;}
+.step.in .mk{background:var(--green-tint);border-color:var(--green);color:var(--green);transition:all .4s var(--ease-out);}
+.step h3{margin:6px 0 6px;font-weight:700;font-size:20px;letter-spacing:-.02em;}
+.step p{margin:0;color:var(--grey);font-size:15px;line-height:1.6;}
+
+/* ---------- Research carousel ---------- */
+.carousel-wrap{margin-top:clamp(40px,5vw,56px);position:relative;}
+.carousel-viewport{overflow:hidden;border-radius:20px;}
+.carousel-track{display:flex;transition:transform .52s var(--ease-out);will-change:transform;}
+.carousel-slide{min-width:100%;padding:clamp(24px,3vw,34px);background:#fff;border:1px solid var(--line);
+  border-radius:20px;box-shadow:0 22px 46px -26px rgba(26,26,26,.2);text-align:left;}
+.carousel-nav{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:22px;}
+.carousel-dots{display:flex;gap:8px;align-items:center;}
+.carousel-dot{width:7px;height:7px;border-radius:50%;background:var(--line-strong);border:0;padding:0;cursor:pointer;
+  transition:background .2s,transform .2s,width .3s var(--ease-out);}
+.carousel-dot.active{background:var(--green);width:22px;border-radius:999px;}
+.carousel-btn{width:38px;height:38px;border-radius:50%;background:#fff;border:1px solid var(--line);
+  color:var(--grey-3);display:flex;align-items:center;justify-content:center;padding:0;
+  transition:border-color .2s,color .2s,background .2s;}
+.carousel-btn:hover{border-color:var(--green);color:var(--green);}
+.carousel-btn svg{width:16px;height:16px;}
+.proof-geo{display:inline-flex;align-items:center;gap:6px;font-family:var(--label);font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--green);background:var(--green-tint);padding:5px 11px;border-radius:999px;margin-bottom:16px;}
+.proof-geo svg{width:11px;height:11px;}
+.proof-stat{margin:0;font-weight:700;font-size:clamp(20px,1.4vw+14px,28px);line-height:1.22;letter-spacing:-.02em;text-wrap:balance;padding-right:36px;}
+.proof-stat .hl{color:var(--green);}
+.proof-ctx{margin:12px 0 0;color:var(--grey);font-size:15px;line-height:1.55;}
+.proof-detail{margin:14px 0 0;color:var(--grey-3);font-size:14.5px;line-height:1.6;}
+.proof-foot{margin-top:20px;padding-top:16px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.proof-src{font-family:var(--label);font-size:12px;color:var(--grey-2);}
+.proof-src b{color:var(--ink-2);font-weight:600;}
+.proof-link{display:inline-flex;align-items:center;gap:6px;font-weight:600;font-size:13.5px;color:var(--green);}
+.proof-link svg{width:13px;height:13px;transition:transform .2s var(--ease-out);}
+.proof-link:hover svg{transform:translate(2px,-2px);}
+
+/* ---------- Final CTA ---------- */
+.final{padding:var(--gap-section) 0;text-align:center;background:var(--black);color:#fff;position:relative;overflow:hidden;}
+.final::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at top,rgba(45,106,79,.25),transparent 60%);pointer-events:none;}
+.final-in{position:relative;z-index:1;}
+.final h2{font-weight:700;font-size:clamp(34px,5vw+14px,72px);line-height:1.02;letter-spacing:-.035em;margin:0 auto;max-width:16ch;text-wrap:balance;}
+.final p{margin:22px auto 0;max-width:40ch;font-size:var(--fs-lede);color:var(--grey-2);}
+.final .btn-lg{margin-top:32px;background:var(--green);}
+.final .btn-lg:hover{background:var(--green-2);}
+.final .fmeta{margin-top:18px;font-size:14px;color:var(--grey-2);}
+
+/* ---------- Footer ---------- */
+.foot{background:var(--black);color:var(--grey-2);padding:clamp(54px,6vw,90px) 0 28px;border-top:1px solid rgba(255,255,255,.06);}
+.foot-grid{display:grid;grid-template-columns:1fr;gap:clamp(36px,4vw,64px);padding-bottom:clamp(36px,4vw,56px);}
+@media(min-width:760px){.foot-grid{grid-template-columns:1.4fr 2fr;}}
+.foot-mark{display:inline-flex;align-items:center;font-weight:700;font-size:19px;color:#fff;}
+.foot-mark .work{font-weight:400;color:var(--grey-2);}
+.foot-mark .ck{display:inline-flex;align-items:center;justify-content:center;width:12px;height:12px;border-radius:50%;background:var(--green);margin:0 2px;}
+.foot-mark .ck svg{width:8px;height:8px;}
+.foot-tag{margin:14px 0 0;font-size:14px;color:var(--grey-2);max-width:34ch;}
+.foot-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;}
+.foot-col h4{margin:0 0 16px;font-family:var(--label);font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--grey-2);}
+.foot-col ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px;}
+.foot-col a{color:#fff;font-size:14.5px;transition:color .15s;}
+.foot-col a:hover{color:var(--green-2);}
+.foot-bot{padding-top:24px;border-top:1px solid rgba(255,255,255,.06);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:13px;color:var(--grey-2);}
+
+/* ---------- reveal ---------- */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .8s var(--ease-out),transform .8s var(--ease-out);}
+.reveal.in{opacity:1;transform:none;}
+.rd1{transition-delay:90ms;}.rd2{transition-delay:180ms;}.rd3{transition-delay:270ms;}
+
+@keyframes rise{to{opacity:1;transform:none;}}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;}
+  .reveal,.h1,.hero-label,.hero-sub,.hero-cta,.demo{opacity:1 !important;transform:none !important;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav"><div class="container inner">
+  <a class="mark" href="#top" aria-label="verified.work"><span>verified</span>
+    <span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+    <span class="work">work</span></a>
+  <div class="nav-r">
+    <span class="nav-links">
+      <a href="#how">How it works</a><a href="#why">Why it matters</a><a href="#research">Research</a>
+    </span>
+    <a class="nav-signin" href="/login">Sign in</a>
+    <a class="btn btn-dark" href="/login">Try free</a>
+  </div>
+</div></nav>
+
+<!-- HERO -->
+<header class="hero" id="top"><div class="container hero-grid">
+  <div>
+    <p class="hero-label">For interns, freelancers, and founders who did <strong>real work</strong>.</p>
+    <h1 class="h1">Your work happened.<br><em>Now it can be proven.</em></h1>
+    <p class="hero-sub">Showcase the projects, internships and gigs you actually did — <b>verified by the people who were there.</b> Not what your CV claims.</p>
+    <div class="hero-cta">
+      <a class="btn btn-dark btn-lg" href="/login">Try verifiedwork for free <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></a>
+      <a class="btn btn-out" href="#how">See how it works</a>
+    </div>
+  </div>
+
+  <!-- sample entries -->
+  <div class="demo" aria-hidden="true">
+    <div class="demo-inner">
+      <div class="demo-card">
+        <div class="entry">
+          <div class="entry-top">
+            <div class="et">
+              <div class="t">Redesigned onboarding for 40k users</div>
+              <div class="m">Bloom Agency · Internship · Jun–Aug 2024</div>
+            </div>
+            <span class="badge verified"><span class="k"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Verified</span>
+          </div>
+          <div class="et"><div class="detail">Reduced drop-off by 18% — confirmed by design lead.</div></div>
+          <div class="endorser">Endorsed by <b>Priya Mehta</b>, Design Lead · verified via work email</div>
+        </div>
+        <div class="entry">
+          <div class="entry-top">
+            <div class="et">
+              <div class="t">Built payment integration for e-commerce client</div>
+              <div class="m">Freelance · Mar 2025</div>
+            </div>
+            <span class="badge verified"><span class="k"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Verified</span>
+          </div>
+          <div class="et"><div class="detail">Stripe + webhook setup, shipped in 3 weeks.</div></div>
+          <div class="endorser">Endorsed by <b>James O.</b>, Founder · verified via personal email</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div></header>
+
+<!-- HOW THIS HELPS YOU -->
+<section class="sec" id="why"><div class="container">
+  <div class="reveal"><div class="sec-eyebrow">Why it matters</div>
+    <h2 class="sec-h2">How verified.work helps you</h2>
+    <p class="sec-lede">AI writes resumes and AI screens them. Real, verified experience is the one thing that still cuts through.</p></div>
+  <div class="help-grid">
+    <div class="reveal help-card">
+      <div class="hi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></div>
+      <h3>Prove the work no one can vouch for</h3>
+      <p>Startup that shut down? Gmail-only internship? Freelance for a tiny business? Get it verified without corporate infrastructure.</p></div>
+    <div class="reveal rd1 help-card">
+      <div class="hi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></div>
+      <h3>One link recruiters actually trust</h3>
+      <p>Share a single profile that shows outcomes, not job titles — each one endorsed by a real person, with their name attached.</p></div>
+    <div class="reveal rd2 help-card">
+      <div class="hi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-3-3.87"/><path d="M9 21v-2a4 4 0 0 1 3-3.87"/><circle cx="9" cy="7" r="4"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+      <h3>Verified by humans, not AI</h3>
+      <p>A manager, founder, professor or client confirms what you did. Honest, tiered badges show exactly how it was verified.</p></div>
+  </div>
+</div></section>
+
+<!-- HOW IT WORKS -->
+<section class="sec alt" id="how"><div class="container">
+  <div class="reveal"><div class="sec-eyebrow">How it works</div>
+    <h2 class="sec-h2">Three steps to a verified profile</h2></div>
+  <div class="steps" id="steps">
+    <div class="step reveal"><div class="mk">1</div><div><h3>Show your work</h3><p>Add a project — internship, freelance, side or academic — with what you did, the dates, the outcome, and an artifact.</p></div></div>
+    <div class="step reveal rd1"><div class="mk">2</div><div><h3>Get endorsed</h3><p>Invite someone who was there. They confirm it in under 90 seconds — no account, any email works.</p></div></div>
+    <div class="step reveal rd2"><div class="mk">3</div><div><h3>Get found</h3><p>Your entry earns a verified badge with the endorser's name. Share one link anyone can trust.</p></div></div>
+  </div>
+</div></section>
+
+<!-- RESEARCH CAROUSEL -->
+<section class="sec" id="research"><div class="container">
+  <div class="reveal"><div class="sec-eyebrow">Backed by research</div>
+    <h2 class="sec-h2">Hiring is broken. The data proves it.</h2></div>
+  <div class="carousel-wrap reveal rd1">
+    <div class="carousel-viewport">
+      <div class="carousel-track" id="carouselTrack"></div>
+    </div>
+    <div class="carousel-nav">
+      <button class="carousel-btn" id="carouselPrev" aria-label="Previous">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="carousel-dots" id="carouselDots"></div>
+      <button class="carousel-btn" id="carouselNext" aria-label="Next">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+    </div>
+  </div>
+</div></section>
+
+<!-- FINAL CTA -->
+<section class="final"><div class="container final-in">
+  <h2 class="reveal">Your work deserves proof.</h2>
+  <p class="reveal rd1">Build a verified profile in minutes — free, and honest about every endorsement.</p>
+  <div class="reveal rd2"><a class="btn btn-lg" href="/login" style="color:#fff">Try verifiedwork for free <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></a></div>
+  <div class="fmeta reveal rd3">Free to start · No credit card · Any email works</div>
+</div></section>
+
+<!-- FOOTER -->
+<footer class="foot"><div class="container">
+  <div class="foot-grid">
+    <div>
+      <span class="foot-mark"><span>verified</span><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="work">work</span></span>
+      <p class="foot-tag">Human validation in an AI world. Made by people. Endorsed by people.</p>
+    </div>
+    <nav class="foot-cols" aria-label="Footer">
+      <div class="foot-col"><h4>Product</h4><ul>
+        <li><a href="/login">Try free</a></li><li><a href="/login">Validator demo</a></li><li><a href="#how">How it works</a></li></ul></div>
+      <div class="foot-col"><h4>Company</h4><ul>
+        <li><a href="careers.html">Careers</a></li><li><a href="blog/">Blog</a></li><li><a href="mailto:admin@verifiedwork.co">Contact</a></li></ul></div>
+      <div class="foot-col"><h4>Legal</h4><ul>
+        <li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li><li><a href="privacy.html#cookies">Cookies</a></li></ul></div>
+    </nav>
+  </div>
+  <div class="foot-bot"><span>© 2026 verified.work</span><span>verifiedwork.co</span></div>
+</div></footer>
+
+<script>
+/* nav scrolled */
+(function(){ var nav=document.getElementById('nav');
+  var s=function(){ nav.classList.toggle('scrolled',window.scrollY>8); };
+  window.addEventListener('scroll',s,{passive:true}); s(); })();
+
+/* reveal on scroll */
+(function(){ var io=new IntersectionObserver(function(es){ es.forEach(function(e){
+  if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }); },{threshold:.16,rootMargin:'0px 0px -60px 0px'});
+  document.querySelectorAll('.reveal,.step').forEach(function(el){ io.observe(el); }); })();
+
+/* research carousel */
+(function(){
+  var DATA=[
+    {geo:'India',svg:'pin',stat:'<span class="hl">1 in 6</span> Indian white-collar resumes don\'t match the candidate\'s real credentials.',ctx:'AuthBridge screened millions of background checks between Oct 2024 and Mar 2025.',detail:'Discrepancies ran highest in pharma (16%), banking (11.7%) and telecom (11.3%). A polished resume routinely outruns the truth.',src:'AuthBridge',rep:'Workforce Fraud Files 2025',url:'https://authbridge.com/newsroom/authbridge-exposes-indias-hiring-red-flags/'},
+    {geo:'Global',svg:'globe',stat:'LinkedIn now sees <span class="hl">11,000</span> job applications every minute, up 45% in a year.',ctx:'AI-written applications have flooded hiring to a scale no human can read.',detail:'Recruiters face hundreds of near-identical, machine-written resumes per role. Genuine, verified experience is almost impossible to spot.',src:'eWEEK',rep:'AI in hiring 2025',url:'https://www.eweek.com/news/ai-job-applications-linkedin/'},
+    {geo:'Global',svg:'globe',stat:'<span class="hl">88%</span> of employers admit their own screening software rejects qualified candidates.',ctx:'Automated filters quietly reject people who can do the job but miss the keywords.',detail:'Harvard Business School and Accenture estimate more than 27 million capable workers sit hidden behind these systems.',src:'Harvard Business School',rep:'Hidden Workers 2021',url:'https://www.hbs.edu/managing-the-future-of-work/research/Pages/hidden-workers-untapped-talent.aspx'},
+    {geo:'Global',svg:'globe',stat:'Just <span class="hl">26%</span> of job seekers trust AI to evaluate them fairly.',ctx:'Another 32% fear an algorithm will reject them before a human ever looks.',detail:'Gartner surveyed 2,918 candidates in early 2025. Trust collapses exactly where hiring leans on automation most.',src:'Gartner',rep:'Candidate Trust Survey 2025',url:'https://www.gartner.com/en/newsroom/press-releases/2025-07-31-gartner-survey-shows-just-26-percent-of-job-applicants-trust-ai-will-fairly-evaluate-them'},
+    {geo:'Global',svg:'globe',stat:'<span class="hl">91%</span> of HR leaders look for verified credentials. Only <span class="hl">46%</span> can find them.',ctx:'The demand for proof is already here. The supply is not.',detail:'Accredible surveyed 502 HR and recruiting leaders in 2025 — verified work is exactly the gap verified.work was built to close.',src:'Accredible',rep:'State of Credentialing 2025',url:'https://www.accredible.com/reports/2025-state-of-credentialing-report'}
+  ];
+  var pin='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6-7-11a7 7 0 1 1 14 0c0 5-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>';
+  var globe='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"/></svg>';
+  var ext='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M8 7h9v9"/></svg>';
+
+  var track=document.getElementById('carouselTrack');
+  var dotsWrap=document.getElementById('carouselDots');
+  var prevBtn=document.getElementById('carouselPrev');
+  var nextBtn=document.getElementById('carouselNext');
+  if(!track) return;
+
+  DATA.forEach(function(d){
+    var slide=document.createElement('div'); slide.className='carousel-slide';
+    slide.innerHTML=
+      '<span class="proof-geo">'+(d.svg==='pin'?pin:globe)+d.geo+'</span>'+
+      '<p class="proof-stat">'+d.stat+'</p>'+
+      '<p class="proof-ctx">'+d.ctx+'</p>'+
+      '<p class="proof-detail">'+d.detail+'</p>'+
+      '<div class="proof-foot"><span class="proof-src">Source · <b>'+d.src+'</b> — '+d.rep+'</span>'+
+      '<a class="proof-link" href="'+d.url+'" target="_blank" rel="noopener noreferrer">Read the study '+ext+'</a></div>';
+    track.appendChild(slide);
+  });
+
+  var dots=[];
+  DATA.forEach(function(_,i){
+    var dot=document.createElement('button'); dot.className='carousel-dot'; dot.setAttribute('aria-label','Slide '+(i+1));
+    dot.addEventListener('click',function(){ go(i); });
+    dotsWrap.appendChild(dot); dots.push(dot);
+  });
+
+  var cur=0, timer=null;
+
+  function go(n){
+    cur=(n+DATA.length)%DATA.length;
+    track.style.transform='translateX(-'+cur*100+'%)';
+    dots.forEach(function(d,i){ d.classList.toggle('active',i===cur); });
+  }
+
+  function startAuto(){ timer=setInterval(function(){ go(cur+1); },4500); }
+  function stopAuto(){ clearInterval(timer); }
+
+  prevBtn.addEventListener('click',function(){ stopAuto(); go(cur-1); startAuto(); });
+  nextBtn.addEventListener('click',function(){ stopAuto(); go(cur+1); startAuto(); });
+
+  /* touch swipe */
+  var startX=0;
+  track.addEventListener('touchstart',function(e){ startX=e.touches[0].clientX; },{passive:true});
+  track.addEventListener('touchend',function(e){
+    var dx=e.changedTouches[0].clientX-startX;
+    if(Math.abs(dx)>40){ stopAuto(); go(dx<0?cur+1:cur-1); startAuto(); }
+  },{passive:true});
+
+  go(0);
+  startAuto();
+})();
+</script>
+</body>
+</html>

@@ -6,6 +6,19 @@ import { NextResponse, type NextRequest } from 'next/server'
 // references `__dirname`, which is undefined on the Edge runtime and crashed
 // every request with MIDDLEWARE_INVOCATION_FAILED.
 export async function proxy(request: NextRequest) {
+  const path = request.nextUrl.pathname
+
+  // Public marketing pages (landing, blog, legal, assets) need no auth work —
+  // skip the Supabase round-trip entirely so they stay fast.
+  if (
+    path === '/' ||
+    path.startsWith('/blog') ||
+    path.startsWith('/assets') ||
+    /\.(html|txt|xml|ico|png|svg|jpe?g|gif|webp)$/i.test(path)
+  ) {
+    return NextResponse.next()
+  }
+
   let supabaseResponse = NextResponse.next({ request })
 
   const supabase = createServerClient(
@@ -31,7 +44,6 @@ export async function proxy(request: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser()
 
   // Redirect unauthenticated users away from the app's protected routes
-  const path = request.nextUrl.pathname
   if (!user && (path.startsWith('/dashboard') || path.startsWith('/onboarding'))) {
     return NextResponse.redirect(new URL('/login', request.url))
   }

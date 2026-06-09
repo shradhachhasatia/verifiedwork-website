@@ -1,0 +1,11 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024" aria-label="VerifiedWork V/W mark">
+  <defs>
+    <linearGradient id="vw-split-onblack" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="1024" y2="0">
+      <stop offset="47.85%" stop-color="#FFFFFF"></stop>
+      <stop offset="47.85%" stop-color="#40916C"></stop>
+    </linearGradient>
+  </defs>
+  <rect width="1024" height="1024" rx="225" fill="#1A1A1A"></rect>
+  <path d="M 120 310 L 315 786 L 490 543 L 665 786 L 870 240" stroke="url(#vw-split-onblack)" stroke-width="120" fill="none" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="6"></path>
+</svg>
