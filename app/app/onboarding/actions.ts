@@ -35,17 +35,25 @@ export async function completeOnboarding(
     return { error: 'Your profile link can only use letters, numbers and hyphens.' }
   }
 
+  // Upsert (not update): the auth callback's row-creation can be skipped while
+  // the session is still being established, so the row may not exist yet. In
+  // this server action the user is fully authenticated, so RLS lets us create
+  // or update their own row safely.
   const { error } = await supabase
     .from('users')
-    .update({
-      full_name,
-      title,
-      location: location || null,
-      slug,
-      photo_url: input.photo_url,
-      onboarded: true,
-    })
-    .eq('id', user.id)
+    .upsert(
+      {
+        id: user.id,
+        email: user.email ?? '',
+        full_name,
+        title,
+        location: location || null,
+        slug,
+        photo_url: input.photo_url,
+        onboarded: true,
+      },
+      { onConflict: 'id' },
+    )
 
   if (error) {
     if (error.code === '23505') {

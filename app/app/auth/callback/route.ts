@@ -10,29 +10,20 @@ export async function GET(request: Request) {
     const { data: { user }, error } = await supabase.auth.exchangeCodeForSession(code)
 
     if (!error && user) {
-      // Auto-create users row on first login
-      const { data: existing } = await supabase
-        .from('users')
-        .select('id')
-        .eq('id', user.id)
-        .single()
+      // Best-effort: create the users row on first login. If this is skipped
+      // (e.g. while the session is still settling), onboarding upserts it.
+      const email = user.email ?? ''
+      const fullName = user.user_metadata?.full_name as string | undefined
+      const nameParts = fullName?.trim().split(/\s+/) ?? email.split('@')[0].split('.')
+      const first = (nameParts[0] ?? 'user').toLowerCase().replace(/[^a-z0-9]/g, '')
+      const last = (nameParts[1] ?? '').toLowerCase().replace(/[^a-z0-9]/g, '')
+      const rand = Math.random().toString(36).slice(2, 7)
+      const slug = [first, last, rand].filter(Boolean).join('-')
 
-      if (!existing) {
-        const email = user.email ?? ''
-        const fullName = user.user_metadata?.full_name as string | undefined
-        const nameParts = fullName?.trim().split(/\s+/) ?? email.split('@')[0].split('.')
-        const first = (nameParts[0] ?? 'user').toLowerCase().replace(/[^a-z0-9]/g, '')
-        const last = (nameParts[1] ?? '').toLowerCase().replace(/[^a-z0-9]/g, '')
-        const rand = Math.random().toString(36).slice(2, 7)
-        const slug = [first, last, rand].filter(Boolean).join('-')
-
-        await supabase.from('users').insert({
-          id: user.id,
-          email,
-          full_name: fullName ?? null,
-          slug,
-        })
-      }
+      await supabase.from('users').upsert(
+        { id: user.id, email, full_name: fullName ?? null, slug },
+        { onConflict: 'id', ignoreDuplicates: true },
+      )
 
       return NextResponse.redirect(`${origin}/dashboard`)
     }
