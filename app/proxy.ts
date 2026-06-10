@@ -6,7 +6,29 @@ import { NextResponse, type NextRequest } from 'next/server'
 // references `__dirname`, which is undefined on the Edge runtime and crashed
 // every request with MIDDLEWARE_INVOCATION_FAILED.
 export async function proxy(request: NextRequest) {
+  const host = (request.headers.get('host') || '').toLowerCase()
   const path = request.nextUrl.pathname
+
+  // verifiedwork.co is the public waitlist; the product lives on the app
+  // (.vercel.app) domain. Serve different content per host from one deployment.
+  if (host === 'verifiedwork.co' || host === 'www.verifiedwork.co') {
+    const APP = 'https://verifiedwork-website.vercel.app'
+    // App routes don't belong on the marketing domain — hand them to the app.
+    if (
+      path === '/login' ||
+      path.startsWith('/dashboard') ||
+      path.startsWith('/onboarding') ||
+      path.startsWith('/add') ||
+      path.startsWith('/auth')
+    ) {
+      return NextResponse.redirect(new URL(path + request.nextUrl.search, APP))
+    }
+    // Root shows the waitlist; other static marketing pages serve normally.
+    if (path === '/') {
+      return NextResponse.rewrite(new URL('/waitlist.html', request.url))
+    }
+    return NextResponse.next()
+  }
 
   // Public marketing pages (landing, blog, legal, assets) need no auth work —
   // skip the Supabase round-trip entirely so they stay fast.
