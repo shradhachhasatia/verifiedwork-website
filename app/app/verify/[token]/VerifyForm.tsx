@@ -77,7 +77,7 @@ export default function VerifyForm({ token, req }: { token: string; req: Request
     if (!canSubmit) return
     setSubmitting(true)
     setError('')
-    const result = await submitVerification(token, { contribution, outcomeAcc, sentence: sentence.trim(), rehire })
+    const result = await submitVerification(token, { contribution, outcomeAcc, sentence: sentence.trim(), rehire, validatorName: req.validator_name })
     setSubmitting(false)
     if ('error' in result) { setError(result.error); return }
     setDone(true)

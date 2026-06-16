@@ -94,6 +94,16 @@ function friendlyAuthError(error: { message?: string; status?: number } | null):
   return 'Something went wrong on our end. Please try again in a moment.'
 }
 
+function getInboxUrl(email: string): string {
+  const domain = email.split('@')[1]?.toLowerCase() ?? ''
+  if (domain === 'gmail.com' || domain === 'googlemail.com') return 'https://mail.google.com'
+  if (['outlook.com', 'hotmail.com', 'live.com', 'msn.com'].includes(domain)) return 'https://outlook.live.com'
+  if (domain === 'yahoo.com' || domain === 'ymail.com') return 'https://mail.yahoo.com'
+  if (['icloud.com', 'me.com', 'mac.com'].includes(domain)) return 'https://www.icloud.com/mail'
+  if (domain === 'protonmail.com' || domain === 'proton.me') return 'https://mail.proton.me'
+  return ''
+}
+
 export default function LoginPage() {
   const [email, setEmail] = useState('')
   const [touched, setTouched] = useState(false)
@@ -154,6 +164,7 @@ export default function LoginPage() {
 
   /* ---------- "check your inbox" ---------- */
   if (sent) {
+    const inboxUrl = getInboxUrl(email.trim())
     return (
       <main className="app-main">
         <div className="auth wrap wrap-sm">
@@ -164,6 +175,16 @@ export default function LoginPage() {
             Click it to finish signing in.
           </p>
           <div className="auth-card">
+            {inboxUrl && (
+              <a
+                href={inboxUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-primary block"
+              >
+                Open inbox
+              </a>
+            )}
             <button className="btn btn-secondary block" disabled={sending} onClick={sendMagicLink}>
               {sending ? <><span className="btn-spin" style={{ borderColor: 'rgba(0,0,0,.15)', borderTopColor: 'var(--green)' }} /> Resending…</> : 'Resend link'}
             </button>

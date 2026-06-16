@@ -108,3 +108,99 @@ export async function sendVerificationEmail({
 
   if (error) throw new Error(error.message)
 }
+
+export async function sendVerifiedEmail({
+  to,
+  ownerName,
+  validatorName,
+  roleTitle,
+  company,
+  profileUrl,
+}: {
+  to: string
+  ownerName: string
+  validatorName: string
+  roleTitle: string
+  company: string
+  profileUrl: string
+}) {
+  const ownerFirst = ownerName.split(' ')[0]
+  const validatorFirst = validatorName.split(' ')[0]
+
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Your work at ${company} is verified</title>
+</head>
+<body style="margin:0;padding:0;background:#f3f4f6;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f3f4f6;padding:40px 16px;">
+  <tr><td align="center">
+    <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
+
+      <!-- wordmark -->
+      <tr><td style="padding-bottom:28px;text-align:center;">
+        <span style="font-size:17px;font-weight:700;letter-spacing:-.015em;color:#1a1a1a;">
+          verified<span style="display:inline-flex;align-items:center;justify-content:center;width:11px;height:11px;border-radius:50%;background:#2D6A4F;margin:0 2px;vertical-align:middle;">&#10003;</span>work
+        </span>
+      </td></tr>
+
+      <!-- card -->
+      <tr><td style="background:#ffffff;border-radius:20px;border:1px solid #e5e7eb;overflow:hidden;">
+
+        <div style="height:5px;background:#2D6A4F;"></div>
+
+        <table width="100%" cellpadding="0" cellspacing="0" style="padding:36px 36px 0;">
+          <tr><td>
+            <p style="margin:0 0 8px;font-size:12px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:#2D6A4F;">Verified</p>
+            <h1 style="margin:0 0 14px;font-size:24px;font-weight:700;letter-spacing:-.025em;color:#1a1a1a;line-height:1.2;">
+              Your work at ${company} is verified
+            </h1>
+            <p style="margin:0 0 28px;font-size:15px;color:#6b7280;line-height:1.55;">
+              ${validatorFirst} just verified your work as <strong style="color:#1a1a1a;">${roleTitle}</strong> at <strong style="color:#1a1a1a;">${company}</strong>. It&rsquo;s now stamped on your profile.
+            </p>
+          </td></tr>
+        </table>
+
+        <!-- detail row -->
+        <table width="100%" cellpadding="0" cellspacing="0" style="padding:0 36px 28px;">
+          <tr><td style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:14px;padding:20px 22px;">
+            <p style="margin:0 0 4px;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#9ca3af;">Verified by</p>
+            <p style="margin:0;font-size:15px;font-weight:600;color:#1a1a1a;">${validatorName}</p>
+          </td></tr>
+        </table>
+
+        <!-- cta -->
+        <table width="100%" cellpadding="0" cellspacing="0" style="padding:0 36px 36px;">
+          <tr><td align="center">
+            <a href="${profileUrl}" style="display:inline-block;background:#2D6A4F;color:#ffffff;font-size:15px;font-weight:600;letter-spacing:-.01em;text-decoration:none;padding:15px 32px;border-radius:999px;">
+              View your profile &rarr;
+            </a>
+          </td></tr>
+        </table>
+
+      </td></tr>
+
+      <!-- footer -->
+      <tr><td style="padding-top:22px;text-align:center;">
+        <p style="margin:0;font-size:12px;color:#9ca3af;line-height:1.6;">
+          You&rsquo;re receiving this because your work was verified on verifiedwork.co
+        </p>
+      </td></tr>
+
+    </table>
+  </td></tr>
+</table>
+</body>
+</html>`
+
+  const { error } = await resend.emails.send({
+    from: FROM,
+    to,
+    subject: `Your work at ${company} is verified`,
+    html,
+  })
+
+  if (error) throw new Error(error.message)
+}
