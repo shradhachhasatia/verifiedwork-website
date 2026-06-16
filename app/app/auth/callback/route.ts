@@ -10,8 +10,6 @@ export async function GET(request: Request) {
     const { data: { user }, error } = await supabase.auth.exchangeCodeForSession(code)
 
     if (!error && user) {
-      // Best-effort: create the users row on first login. If this is skipped
-      // (e.g. while the session is still settling), onboarding upserts it.
       const email = user.email ?? ''
       const fullName = user.user_metadata?.full_name as string | undefined
       const nameParts = fullName?.trim().split(/\s+/) ?? email.split('@')[0].split('.')
@@ -20,12 +18,19 @@ export async function GET(request: Request) {
       const rand = Math.random().toString(36).slice(2, 7)
       const slug = [first, last, rand].filter(Boolean).join('-')
 
+      const { data: existing } = await supabase
+        .from('users')
+        .select('onboarded')
+        .eq('id', user.id)
+        .single()
+
       await supabase.from('users').upsert(
         { id: user.id, email, full_name: fullName ?? null, slug },
         { onConflict: 'id', ignoreDuplicates: true },
       )
 
-      return NextResponse.redirect(`${origin}/dashboard`)
+      const dest = existing?.onboarded ? '/dashboard' : '/onboarding'
+      return NextResponse.redirect(`${origin}${dest}`)
     }
   }
 

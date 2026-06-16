@@ -1,7 +1,7 @@
 import { Resend } from 'resend'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
-const FROM = process.env.RESEND_FROM ?? 'verify@verifiedwork.co'
+const FROM = process.env.RESEND_FROM ?? 'admin@verifiedwork.co'
 
 export async function sendVerificationEmail({
   to,
@@ -39,9 +39,7 @@ export async function sendVerificationEmail({
 
       <!-- wordmark -->
       <tr><td style="padding-bottom:28px;text-align:center;">
-        <span style="font-size:17px;font-weight:700;letter-spacing:-.015em;color:#1a1a1a;">
-          verified<span style="display:inline-flex;align-items:center;justify-content:center;width:11px;height:11px;border-radius:50%;background:#2D6A4F;margin:0 2px;vertical-align:middle;">&#10003;</span>work
-        </span>
+        <span style="font-size:17px;font-weight:700;letter-spacing:-.015em;color:#1a1a1a;">verified<span style="display:inline-block;width:13px;height:13px;line-height:13px;text-align:center;border-radius:50%;background:#2D6A4F;color:#fff;font-size:9px;font-weight:700;vertical-align:middle;margin:0 1px;">✓</span><span style="font-weight:400;color:#6b7280;">work</span></span>
       </td></tr>
 
       <!-- card -->
@@ -141,9 +139,7 @@ export async function sendVerifiedEmail({
 
       <!-- wordmark -->
       <tr><td style="padding-bottom:28px;text-align:center;">
-        <span style="font-size:17px;font-weight:700;letter-spacing:-.015em;color:#1a1a1a;">
-          verified<span style="display:inline-flex;align-items:center;justify-content:center;width:11px;height:11px;border-radius:50%;background:#2D6A4F;margin:0 2px;vertical-align:middle;">&#10003;</span>work
-        </span>
+        <span style="font-size:17px;font-weight:700;letter-spacing:-.015em;color:#1a1a1a;">verified<span style="display:inline-block;width:13px;height:13px;line-height:13px;text-align:center;border-radius:50%;background:#2D6A4F;color:#fff;font-size:9px;font-weight:700;vertical-align:middle;margin:0 1px;">✓</span><span style="font-weight:400;color:#6b7280;">work</span></span>
       </td></tr>
 
       <!-- card -->

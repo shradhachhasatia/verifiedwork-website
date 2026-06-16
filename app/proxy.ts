@@ -19,7 +19,8 @@ export async function proxy(request: NextRequest) {
       path.startsWith('/dashboard') ||
       path.startsWith('/onboarding') ||
       path.startsWith('/add') ||
-      path.startsWith('/auth')
+      path.startsWith('/auth') ||
+      path.startsWith('/settings')
     ) {
       return NextResponse.redirect(new URL(path + request.nextUrl.search, APP))
     }
@@ -66,7 +67,7 @@ export async function proxy(request: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser()
 
   // Redirect unauthenticated users away from the app's protected routes
-  if (!user && (path.startsWith('/dashboard') || path.startsWith('/onboarding'))) {
+  if (!user && (path.startsWith('/dashboard') || path.startsWith('/onboarding') || path.startsWith('/settings'))) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
 
