@@ -24,9 +24,12 @@ function WizBar({ current, total, label, onBack }: { current: number; total: num
   )
 }
 
+const urlOk = (v: string) => /^https?:\/\/.+\..+/i.test(v.trim())
+
 function ArtifactInput({ value, onChange }: { value: Artifact | null; onChange: (a: Artifact | null) => void }) {
   const [type, setType] = useState<'link' | 'image' | 'file'>(value ? value.type : 'link')
   const [link, setLink] = useState(value && value.type === 'link' ? value.value : '')
+  const [linkErr, setLinkErr] = useState('')
   const fileRef = useRef<HTMLInputElement>(null)
   const tabs = [
     { k: 'link' as const, l: 'Link', i: 'link' as const },
@@ -37,6 +40,13 @@ function ArtifactInput({ value, onChange }: { value: Artifact | null; onChange: 
     const f = e.target.files?.[0]
     if (!f) return
     onChange({ type: f.type.startsWith('image/') ? 'image' : 'file', value: URL.createObjectURL(f), name: f.name, file: f })
+  }
+  function attachLink() {
+    const v = link.trim()
+    if (!v) return
+    if (!urlOk(v)) { setLinkErr('Must be a valid URL starting with https://'); return }
+    setLinkErr('')
+    onChange({ type: 'link', value: v, name: v })
   }
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
@@ -53,12 +63,15 @@ function ArtifactInput({ value, onChange }: { value: Artifact | null; onChange: 
             ? <img src={value.value} alt="" />
             : <span className="ic"><Icon name={value.type === 'link' ? 'link' : 'fileText'} size={20} /></span>}
           <span className="nm">{value.name || value.value}</span>
-          <button className="rm" type="button" onClick={() => { onChange(null); setLink('') }} aria-label="Remove"><Icon name="x" size={15} /></button>
+          <button className="rm" type="button" onClick={() => { onChange(null); setLink(''); setLinkErr('') }} aria-label="Remove"><Icon name="x" size={15} /></button>
         </div>
       ) : type === 'link' ? (
-        <div style={{ display: 'flex', gap: 8 }}>
-          <input className="input" placeholder="https://your-work.com/case-study" value={link} onChange={e => setLink(e.target.value)} />
-          <button className="btn btn-secondary btn-sm" type="button" disabled={!link.trim()} onClick={() => onChange({ type: 'link', value: link.trim(), name: link.trim() })}>Attach</button>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+          <div style={{ display: 'flex', gap: 8 }}>
+            <input className={'input' + (linkErr ? ' err' : '')} placeholder="https://your-work.com/case-study" value={link} onChange={e => { setLink(e.target.value); if (linkErr) setLinkErr('') }} onKeyDown={e => e.key === 'Enter' && attachLink()} />
+            <button className="btn btn-secondary btn-sm" type="button" disabled={!link.trim()} onClick={attachLink}>Attach</button>
+          </div>
+          {linkErr && <span className="field-err">{linkErr}</span>}
         </div>
       ) : (
         <>
@@ -88,6 +101,8 @@ export default function AddProjectWizard({ userId, selfEmail }: Props) {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
   const [sent, setSent] = useState(false)
+  const [emailTouched, setEmailTouched] = useState(false)
+  const [vLinkTouched, setVLinkTouched] = useState(false)
 
   const set = (k: keyof typeof f, v: string) => setF(p => ({ ...p, [k]: v }))
 
@@ -215,13 +230,32 @@ export default function AddProjectWizard({ userId, selfEmail }: Props) {
           <div className="field"><label className="field-lbl">Their role / title at the time</label>
             <input className="input" value={f.vRole} onChange={e => set('vRole', e.target.value)} placeholder="e.g. Founder, Professor, Manager" /></div>
           <div className="field"><label className="field-lbl">Their email</label>
-            <input className={'input' + (isSelf ? ' err' : '')} type="email" value={f.vEmail} onChange={e => set('vEmail', e.target.value)} placeholder="their@email.com" />
+            <input
+              className={'input' + (isSelf || (emailTouched && f.vEmail && !emailOk(f.vEmail)) ? ' err' : '')}
+              type="email"
+              value={f.vEmail}
+              onChange={e => { set('vEmail', e.target.value); if (emailTouched) setEmailTouched(true) }}
+              onBlur={() => setEmailTouched(true)}
+              placeholder="their@email.com"
+            />
             {isSelf
               ? <span className="field-err">You can&apos;t verify your own work — use someone else&apos;s email.</span>
+              : emailTouched && f.vEmail && !emailOk(f.vEmail)
+              ? <span className="field-err">That doesn&apos;t look like a valid email address.</span>
               : tier && <span className="tier-preview"><span className={'status ' + (tier.kind === 'peer' ? 'pending' : 'verified')}>{tier.kind !== 'peer' && <CheckDot size={13} />}{tier.label}</span><span className="helper">This is the badge this entry will earn.</span></span>}
           </div>
           <div className="field"><label className="field-lbl">Their LinkedIn <span style={{ textTransform: 'none', letterSpacing: 0, color: 'var(--green)' }}>· recommended</span></label>
-            <input className="input" value={f.vLink} onChange={e => set('vLink', e.target.value)} placeholder="linkedin.com/in/…" /></div>
+            <input
+              className={'input' + (vLinkTouched && f.vLink && !/^https?:\/\/(www\.)?linkedin\.com\//i.test(f.vLink) ? ' err' : '')}
+              value={f.vLink}
+              onChange={e => { set('vLink', e.target.value); if (vLinkTouched) setVLinkTouched(true) }}
+              onBlur={() => setVLinkTouched(true)}
+              placeholder="https://linkedin.com/in/…"
+            />
+            {vLinkTouched && f.vLink && !/^https?:\/\/(www\.)?linkedin\.com\//i.test(f.vLink) && (
+              <span className="field-err">Must be a LinkedIn URL, e.g. https://linkedin.com/in/name</span>
+            )}
+          </div>
           <div className="field"><label className="field-lbl">Personal note <span style={{ textTransform: 'none', letterSpacing: 0, color: 'var(--grey-2)' }}>· optional</span></label>
             <textarea className="textarea" value={f.vNote} maxLength={240} onChange={e => set('vNote', e.target.value)} placeholder="Hey — could you confirm this? Takes ~90 seconds. Thanks!" style={{ minHeight: 80 }} /></div>
 

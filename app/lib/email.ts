@@ -107,6 +107,42 @@ export async function sendVerificationEmail({
   if (error) throw new Error(error.message)
 }
 
+export async function sendAccountDeletedEmail({ to, name }: { to: string; name: string }) {
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /></head>
+<body style="margin:0;padding:0;background:#f3f4f6;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f3f4f6;padding:40px 16px;">
+  <tr><td align="center">
+    <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
+      <tr><td style="padding-bottom:28px;text-align:center;">
+        <span style="font-size:17px;font-weight:700;letter-spacing:-.015em;color:#1a1a1a;">verified<span style="display:inline-block;width:13px;height:13px;line-height:13px;text-align:center;border-radius:50%;background:#2D6A4F;color:#fff;font-size:9px;font-weight:700;vertical-align:middle;margin:0 1px;">✓</span><span style="font-weight:400;color:#6b7280;">work</span></span>
+      </td></tr>
+      <tr><td style="background:#ffffff;border-radius:20px;border:1px solid #e5e7eb;overflow:hidden;">
+        <div style="height:5px;background:#1a1a1a;"></div>
+        <table width="100%" cellpadding="0" cellspacing="0" style="padding:36px 36px 40px;">
+          <tr><td>
+            <h1 style="margin:0 0 14px;font-size:22px;font-weight:700;color:#1a1a1a;">Your account has been deleted</h1>
+            <p style="margin:0;font-size:15px;color:#6b7280;line-height:1.6;">Hi ${name}, your verifiedwork account and all associated data have been permanently removed. If this was a mistake, you can create a new account at any time.</p>
+          </td></tr>
+        </table>
+      </td></tr>
+      <tr><td style="padding-top:22px;text-align:center;">
+        <p style="margin:0;font-size:12px;color:#9ca3af;">You received this because your account was just deleted.</p>
+      </td></tr>
+    </table>
+  </td></tr>
+</table>
+</body></html>`
+
+  const { error } = await resend.emails.send({
+    from: FROM, to,
+    subject: 'Your verifiedwork account has been deleted',
+    html,
+  })
+  if (error) throw new Error(error.message)
+}
+
 export async function sendVerifiedEmail({
   to,
   ownerName,

@@ -11,7 +11,7 @@ export default async function SettingsPage() {
 
   const { data: profile } = await supabase
     .from('users')
-    .select('full_name, title, location, linkedin_url, photo_url, onboarded')
+    .select('full_name, title, location, linkedin_url, photo_url, slug, onboarded')
     .eq('id', user.id)
     .single()
 
@@ -27,6 +27,7 @@ export default async function SettingsPage() {
       </header>
       <SettingsView
         userId={user.id}
+        slug={profile.slug ?? ''}
         initial={{
           full_name: profile.full_name ?? '',
           title: profile.title ?? '',
