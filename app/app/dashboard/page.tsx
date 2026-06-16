@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { Wordmark } from '@/components/Icon'
-import LogoutButton from './LogoutButton'
+import AccountActions from './AccountActions'
 import DashboardView, { type Entry } from './DashboardView'
 
 export default async function DashboardPage() {
@@ -34,7 +34,7 @@ export default async function DashboardPage() {
       <header className="app-head">
         <div className="inner">
           <Link href="/dashboard" aria-label="verified.work" style={{ textDecoration: 'none' }}><Wordmark /></Link>
-          <LogoutButton />
+          <AccountActions />
         </div>
       </header>
       <DashboardView firstName={firstName} entries={(entries ?? []) as Entry[]} />
