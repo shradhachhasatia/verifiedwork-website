@@ -76,6 +76,18 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL('/dashboard', request.url))
   }
 
+  // Never let the browser cache signed-in pages. Without this the back button
+  // (bfcache) can resurrect the dashboard/settings after sign-out or account
+  // deletion, making it look like neither "stuck".
+  if (
+    path.startsWith('/dashboard') ||
+    path.startsWith('/onboarding') ||
+    path.startsWith('/settings') ||
+    path.startsWith('/add')
+  ) {
+    supabaseResponse.headers.set('Cache-Control', 'no-store, max-age=0, must-revalidate')
+  }
+
   return supabaseResponse
 }
 

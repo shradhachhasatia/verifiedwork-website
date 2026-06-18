@@ -1,16 +1,15 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 
 export default function AccountActions() {
-  const router = useRouter()
-
   async function handleSignOut() {
     const supabase = createClient()
     await supabase.auth.signOut()
-    router.refresh()
-    router.push('/login')
+    // Full document load (not router.push) so Next's client cache is wiped and
+    // the back button can't restore the signed-in dashboard. `replace` also
+    // drops this page from history so "back" never lands on it.
+    window.location.replace('/login')
   }
 
   return (

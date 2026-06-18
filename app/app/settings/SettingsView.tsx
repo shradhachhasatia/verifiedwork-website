@@ -1,7 +1,6 @@
 'use client'
 
 import { useRef, useState } from 'react'
-import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { updateProfile, deleteAccount } from './actions'
 import { Icon } from '@/components/Icon'
@@ -21,7 +20,6 @@ type Props = {
 }
 
 export default function SettingsView({ userId, slug, initial }: Props) {
-  const router = useRouter()
   const [name, setName] = useState(initial.full_name)
   const [title, setTitle] = useState(initial.title)
   const [location, setLocation] = useState(initial.location)
@@ -96,7 +94,9 @@ export default function SettingsView({ userId, slug, initial }: Props) {
     if ('error' in result) { setDeleting(false); setError(result.error); return }
     const supabase = createClient()
     await supabase.auth.signOut()
-    router.push('/login')
+    // Full document load (not router.push) so the deleted account's pages are
+    // gone from the browser cache immediately — no stale dashboard on "back".
+    window.location.replace('/login')
   }
 
   return (
@@ -198,8 +198,7 @@ export default function SettingsView({ userId, slug, initial }: Props) {
             onClick={async () => {
               const supabase = createClient()
               await supabase.auth.signOut()
-              router.refresh()
-              router.push('/login')
+              window.location.replace('/login')
             }}
           >
             Sign out
