@@ -41,14 +41,16 @@ export async function deleteAccount(): Promise<{ error: string } | { ok: true }>
 
   const { data: profile } = await supabase
     .from('users')
-    .select('full_name, email')
+    .select('full_name')
     .eq('id', user.id)
     .single()
 
-  if (profile?.email) {
+  // Email comes from the auth session, not the users table — that column is no
+  // longer exposed to the API role for privacy.
+  if (user.email) {
     await sendAccountDeletedEmail({
-      to: profile.email,
-      name: profile.full_name?.split(' ')[0] ?? 'there',
+      to: user.email,
+      name: profile?.full_name?.split(' ')[0] ?? 'there',
     }).catch(() => {})
   }
 

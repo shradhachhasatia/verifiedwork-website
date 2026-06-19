@@ -69,6 +69,9 @@ export async function createEntry(
     return { error: "We couldn't save your project just now. Please try again." }
   }
 
+  // Generate the verification token here so we never have to read it back out
+  // of the database — that column is no longer exposed to the API role.
+  const token = crypto.randomUUID()
   const tier = badgeTier(input.vEmail)
   const { error: valErr } = await supabase.from('validators').insert({
     entry_id: entry.id,
@@ -79,6 +82,7 @@ export async function createEntry(
     linkedin: input.vLink.trim() || null,
     note: input.vNote.trim() || null,
     is_institutional: tier ? tier.kind !== 'peer' : false,
+    token,
   })
 
   if (valErr) {
@@ -86,18 +90,11 @@ export async function createEntry(
     return { error: "We couldn't save the validator details. Please try again." }
   }
 
-  // Fetch the token we need to build the verification link
-  const { data: validator } = await supabase
-    .from('validators')
-    .select('token')
-    .eq('entry_id', entry.id)
-    .single()
-
-  if (validator?.token) {
+  {
     const hdrs = await headers()
     const host = hdrs.get('host') ?? 'localhost:3000'
     const proto = host.startsWith('localhost') ? 'http' : 'https'
-    const verifyUrl = `${proto}://${host}/verify/${validator.token}`
+    const verifyUrl = `${proto}://${host}/verify/${token}`
 
     const { data: profile } = await supabase
       .from('users')
