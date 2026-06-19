@@ -6,16 +6,11 @@ import { NextResponse, type NextRequest } from 'next/server'
 // references `__dirname`, which is undefined on the Edge runtime and crashed
 // every request with MIDDLEWARE_INVOCATION_FAILED.
 export async function proxy(request: NextRequest) {
-  const host = (request.headers.get('host') || '').toLowerCase()
   const path = request.nextUrl.pathname
-  const isMarketingHost = host === 'verifiedwork.co' || host === 'www.verifiedwork.co'
 
-  // verifiedwork.co is now the canonical home for everything - the app runs
-  // here natively (no cross-domain hop to *.vercel.app). The root of the
-  // marketing domain still shows the waitlist.
-  if (isMarketingHost && path === '/') {
-    return NextResponse.rewrite(new URL('/waitlist.html', request.url))
-  }
+  // verifiedwork.co is the canonical home for everything - the marketing
+  // landing page and the app both run here natively (no cross-domain hop to
+  // *.vercel.app, and no waitlist gate on the root).
 
   // Public marketing pages (landing, blog, legal, assets) need no auth work -
   // skip the Supabase round-trip entirely so they stay fast.
