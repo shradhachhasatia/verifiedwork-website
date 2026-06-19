@@ -66,14 +66,25 @@ export async function proxy(request: NextRequest) {
   // Refresh session - do not add logic between createServerClient and getUser
   const { data: { user } } = await supabase.auth.getUser()
 
+  // getUser() may have refreshed the session and queued new auth cookies on
+  // supabaseResponse. A plain NextResponse.redirect would drop them, losing the
+  // refreshed session and bouncing the user on the next request (worst on
+  // browsers with stricter cookie handling). Carry the cookies onto the
+  // redirect instead, exactly as the Supabase SSR guide requires.
+  const redirectTo = (dest: string) => {
+    const res = NextResponse.redirect(new URL(dest, request.url))
+    supabaseResponse.cookies.getAll().forEach((c) => res.cookies.set(c))
+    return res
+  }
+
   // Redirect unauthenticated users away from the app's protected routes
-  if (!user && (path.startsWith('/dashboard') || path.startsWith('/onboarding') || path.startsWith('/settings'))) {
-    return NextResponse.redirect(new URL('/login', request.url))
+  if (!user && (path.startsWith('/dashboard') || path.startsWith('/onboarding') || path.startsWith('/settings') || path.startsWith('/add'))) {
+    return redirectTo('/login')
   }
 
   // Redirect authenticated users away from /login
   if (user && request.nextUrl.pathname === '/login') {
-    return NextResponse.redirect(new URL('/dashboard', request.url))
+    return redirectTo('/dashboard')
   }
 
   // Never let the browser cache signed-in pages. Without this the back button

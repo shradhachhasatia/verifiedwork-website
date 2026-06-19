@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 
 /* Same validation the mockup used - flags anything that isn't a real address. */
@@ -78,18 +78,17 @@ export default function LoginPage() {
   const [touched, setTouched] = useState(false)
   const [sending, setSending] = useState(false)
   const [sent, setSent] = useState(false)
-  const [error, setError] = useState('')
+  // Read the callback's ?error= once, at mount, instead of in an effect (which
+  // triggers an extra render and is flagged by react-hooks lint).
+  const [error, setError] = useState(() => {
+    if (typeof window === 'undefined') return ''
+    return new URLSearchParams(window.location.search).get('error')
+      ? "We couldn't finish signing you in - that link may have expired. Please request a new one."
+      : ''
+  })
 
   const ok = emailOk(email)
   const showFieldErr = touched && email.trim().length > 0 && !ok
-
-  // Surface a friendly message if the auth callback bounced us back with ?error=
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search)
-    if (params.get('error')) {
-      setError("We couldn't finish signing you in - that link may have expired. Please request a new one.")
-    }
-  }, [])
 
   async function sendMagicLink() {
     if (!ok) {

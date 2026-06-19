@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { Wordmark, CheckDot } from '@/components/Icon'
@@ -48,13 +49,13 @@ export default async function ProfilePage({ params }: { params: Promise<{ slug: 
       <header className="app-head">
         <div className="inner">
           <Wordmark />
-          <a
+          <Link
             href="/login"
             className="btn btn-secondary btn-sm pill"
             style={{ fontSize: 13, minHeight: 36 }}
           >
             Get yours
-          </a>
+          </Link>
         </div>
       </header>
 

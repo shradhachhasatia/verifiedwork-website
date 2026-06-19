@@ -158,7 +158,6 @@ export async function sendVerifiedEmail({
   company: string
   profileUrl: string
 }) {
-  const ownerFirst = ownerName.split(' ')[0]
   const validatorFirst = validatorName.split(' ')[0]
 
   const html = `<!DOCTYPE html>
