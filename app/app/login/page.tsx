@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 
-/* Same validation the mockup used — flags anything that isn't a real address. */
+/* Same validation the mockup used - flags anything that isn't a real address. */
 const emailOk = (v: string) => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v.trim())
 
 /* ---------- icons (ported from the mockup) ---------- */
@@ -15,17 +15,6 @@ function MarkIcon() {
         <path className="wp" d="M 50 53 L 69 77 L 88 23" />
       </svg>
     </div>
-  )
-}
-
-function GoogleG({ size = 18 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 48 48" aria-hidden="true">
-      <path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z" />
-      <path fill="#FF3D00" d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z" />
-      <path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238C29.211 35.091 26.715 36 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z" />
-      <path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303c-.792 2.237-2.231 4.166-4.087 5.571l6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z" />
-    </svg>
   )
 }
 
@@ -53,24 +42,7 @@ function InboxMark() {
   )
 }
 
-function GoogleConnecting() {
-  return (
-    <div className="modal-back">
-      <div className="gmodal">
-        <div className="gspin">
-          <div className="g-logo"><GoogleG size={26} /></div>
-          <div className="spinner" />
-          <div>
-            <div className="ttl">Connecting to Google…</div>
-            <div className="sub">Verifying your account</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-/* Turn raw backend/auth errors into something a person can act on —
+/* Turn raw backend/auth errors into something a person can act on -
    we never surface the underlying message or status code to the user. */
 function friendlyAuthError(error: { message?: string; status?: number } | null): string {
   const status = error?.status
@@ -85,11 +57,8 @@ function friendlyAuthError(error: { message?: string; status?: number } | null):
   if (msg.includes('signups not allowed') || msg.includes('not allowed') || msg.includes('disabled')) {
     return "We couldn't sign you in with that email. Try a different one or contact support."
   }
-  if (msg.includes('provider') || msg.includes('oauth')) {
-    return 'Google sign-in is temporarily unavailable. Please continue with your email instead.'
-  }
   if (msg.includes('network') || msg.includes('fetch') || msg.includes('failed to')) {
-    return 'Network hiccup — check your connection and try again.'
+    return 'Network hiccup - check your connection and try again.'
   }
   return 'Something went wrong on our end. Please try again in a moment.'
 }
@@ -108,7 +77,6 @@ export default function LoginPage() {
   const [email, setEmail] = useState('')
   const [touched, setTouched] = useState(false)
   const [sending, setSending] = useState(false)
-  const [googleConnecting, setGoogleConnecting] = useState(false)
   const [sent, setSent] = useState(false)
   const [error, setError] = useState('')
 
@@ -119,7 +87,7 @@ export default function LoginPage() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     if (params.get('error')) {
-      setError("We couldn't finish signing you in — that link may have expired. Please request a new one.")
+      setError("We couldn't finish signing you in - that link may have expired. Please request a new one.")
     }
   }, [])
 
@@ -142,23 +110,6 @@ export default function LoginPage() {
       setError(friendlyAuthError(error))
     } else {
       setSent(true)
-    }
-  }
-
-  async function continueWithGoogle() {
-    setGoogleConnecting(true)
-    setError('')
-
-    const supabase = createClient()
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: { redirectTo: `${window.location.origin}/auth/callback` },
-    })
-
-    // On success the browser is redirected to Google, so we only land here on error.
-    if (error) {
-      setGoogleConnecting(false)
-      setError(friendlyAuthError(error))
     }
   }
 
@@ -208,21 +159,14 @@ export default function LoginPage() {
   /* ---------- sign in / sign up ---------- */
   return (
     <main className="app-main">
-      {googleConnecting && <GoogleConnecting />}
       <div className="auth wrap wrap-sm">
         <MarkIcon />
         <h1>Create your verified profile</h1>
         <p className="auth-sub">
-          Showcase the work you actually did — endorsed by the people who were there.
+          Showcase the work you actually did - endorsed by the people who were there.
         </p>
 
         <div className="auth-card">
-          <button className="btn btn-google block" disabled={googleConnecting} onClick={continueWithGoogle}>
-            <GoogleG size={18} /> Continue with Google
-          </button>
-
-          <div className="divider-or">or</div>
-
           <input
             className={'input' + (showFieldErr ? ' err' : '')}
             type="email"
@@ -254,7 +198,7 @@ export default function LoginPage() {
 
         <p className="auth-legal">
           By continuing you agree to our <a href="/terms.html">Terms</a> and{' '}
-          <a href="/privacy.html">Privacy policy</a>. Any email works — no corporate address needed.
+          <a href="/privacy.html">Privacy policy</a>. Any email works - no corporate address needed.
         </p>
       </div>
     </main>

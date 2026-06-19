@@ -1,6 +1,6 @@
 # verifiedwork-website
 
-The marketing site **and** interactive product prototype for **verified.work** —
+The marketing site **and** interactive product prototype for **verified.work** -
 a verified professional profile platform built on intent-based hiring.
 
 > Human validation in an AI world.
@@ -9,8 +9,8 @@ a verified professional profile platform built on intent-based hiring.
 
 | File | What it is |
 |---|---|
-| `index.html` | **The landing page** (front door). One marketing page — no waitlist. Hero with a self-verifying **profile motion graphic** (work entries slide in and get stamped *Verified* on a loop), a word-cycling headline, a **"How verified.work helps you"** section, a 3-step how-it-works, a **product screenshots** showcase (browser-framed mockups of the profile, validator flow and add-work), the **research articles** (expandable stat cards), and **Try verifiedwork for free** CTAs into the app. |
-| `app.html` | **The product prototype.** A responsive web app (no device frame) built in the same design language. Starts **blank** — your real data, no mock projects. |
+| `index.html` | **The landing page** (front door). One marketing page - no waitlist. Hero with a self-verifying **profile motion graphic** (work entries slide in and get stamped *Verified* on a loop), a word-cycling headline, a **"How verified.work helps you"** section, a 3-step how-it-works, a **product screenshots** showcase (browser-framed mockups of the profile, validator flow and add-work), the **research articles** (expandable stat cards), and **Try verifiedwork for free** CTAs into the app. |
+| `app.html` | **The product prototype.** A responsive web app (no device frame) built in the same design language. Starts **blank** - your real data, no mock projects. |
 | `careers.html`, `privacy.html`, `terms.html`, `blog/` | Supporting pages. |
 | `favicon.*`, `og-image.*`, `apple-touch-icon.png` | Brand + social assets. |
 | `assets/` | The V/W app icon and the standalone verification check mark. |
@@ -20,15 +20,15 @@ a verified professional profile platform built on intent-based hiring.
 A single self-contained React app (React + Babel via CDN) with a hash router, so
 every screen is linkable (`app.html#/dashboard`, `#/profile`, `#/validate`, …).
 
-**Candidate flow** — auth (with a simulated *Continue with Google* account chooser
+**Candidate flow** - auth (with a simulated *Continue with Google* account chooser
 + email magic link) → onboarding → **dashboard** (projects with verified / pending
 status, expandable) → add project → invite validator → request sent.
 
-**Validator / endorser flow** (`#/validate`) — the standalone experience for the
+**Validator / endorser flow** (`#/validate`) - the standalone experience for the
 person *asked* to verify someone: the request intro, four conversational steps, and
 the signature **verification stamp** → "Endorsement published."
 
-**User profile** (`#/profile`) — a rich public + owner profile: identity header with
+**User profile** (`#/profile`) - a rich public + owner profile: identity header with
 inline **edit mode**, stat strip, contribution badges, **expandable verified-work
 cards** (full quote, endorser, outcome receipt, artifact link), and an endorsements
 wall.
@@ -51,13 +51,13 @@ monospace). Fluid `clamp()` type, scroll-reveal animations, and the verification
 stamp (`scale 0.6 → 1.08 → 1.0`). Respects `prefers-reduced-motion`.
 
 > The Google sign-in is a **prototype simulation** (one click → a brief
-> "Connecting to Google…" → you're in) — no real Google account or backend is
+> "Connecting to Google…" → you're in) - no real Google account or backend is
 > involved. Real Google Identity Services later needs an OAuth Client ID and a
 > backend to verify tokens.
 
 ## Running
 
-Static files — open `index.html`, or serve the folder:
+Static files - open `index.html`, or serve the folder:
 
 ```
 python3 -m http.server

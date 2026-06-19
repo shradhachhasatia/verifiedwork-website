@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
-      // The old static mockup is gone — send any stale links into the app.
+      // The old static mockup is gone - send any stale links into the app.
       { source: "/app.html", destination: "/login", permanent: false },
     ];
   },

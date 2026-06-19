@@ -78,7 +78,7 @@ function ArtifactInput({ value, onChange }: { value: Artifact | null; onChange: 
           <div className="drop" onClick={() => fileRef.current?.click()}>
             <Icon name={type === 'image' ? 'image' : 'upload'} size={22} />
             <div style={{ fontWeight: 600, color: 'var(--ink-2)' }}>{type === 'image' ? 'Add an image' : 'Attach a file'}</div>
-            <div style={{ fontSize: 13 }}>Click to choose — others can open or download it</div>
+            <div style={{ fontSize: 13 }}>Click to choose - others can open or download it</div>
           </div>
           <input ref={fileRef} type="file" accept={type === 'image' ? 'image/*' : undefined} style={{ display: 'none' }} onChange={onFile} />
         </>
@@ -186,7 +186,7 @@ export default function AddProjectWizard({ userId, selfEmail }: Props) {
             <input className="input" value={f.title} onChange={e => set('title', e.target.value)} placeholder="What did you work on?" autoFocus /></div>
           <div className="field"><label className="field-lbl">Company / organisation</label>
             <input className="input" value={f.company} onChange={e => set('company', e.target.value)} placeholder="Where? (a startup, client, college…)" /></div>
-          <div className="field"><label className="field-lbl">How long — period</label>
+          <div className="field"><label className="field-lbl">How long - period</label>
             <div className="row2">
               <select className="input select" value={f.startYear} onChange={e => set('startYear', e.target.value)}>
                 <option value="">Start year</option>{YEARS.map(y => <option key={y} value={y}>{y}</option>)}
@@ -220,7 +220,7 @@ export default function AddProjectWizard({ userId, selfEmail }: Props) {
 
       {step === 3 && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
-          <div className="callout"><Icon name="info" size={18} /><p>Any email works — Gmail, university or corporate. The badge is <b>honest about how it was verified.</b></p></div>
+          <div className="callout"><Icon name="info" size={18} /><p>Any email works - Gmail, university or corporate. The badge is <b>honest about how it was verified.</b></p></div>
           <div className="row2">
             <div className="field"><label className="field-lbl">Their name</label>
               <input className="input" value={f.vName} onChange={e => set('vName', e.target.value)} placeholder="Who can confirm this?" /></div>
@@ -239,7 +239,7 @@ export default function AddProjectWizard({ userId, selfEmail }: Props) {
               placeholder="their@email.com"
             />
             {isSelf
-              ? <span className="field-err">You can&apos;t verify your own work — use someone else&apos;s email.</span>
+              ? <span className="field-err">You can&apos;t verify your own work - use someone else&apos;s email.</span>
               : emailTouched && f.vEmail && !emailOk(f.vEmail)
               ? <span className="field-err">That doesn&apos;t look like a valid email address.</span>
               : tier && <span className="tier-preview"><span className={'status ' + (tier.kind === 'peer' ? 'pending' : 'verified')}>{tier.kind !== 'peer' && <CheckDot size={13} />}{tier.label}</span><span className="helper">This is the badge this entry will earn.</span></span>}
@@ -257,7 +257,7 @@ export default function AddProjectWizard({ userId, selfEmail }: Props) {
             )}
           </div>
           <div className="field"><label className="field-lbl">Personal note <span style={{ textTransform: 'none', letterSpacing: 0, color: 'var(--grey-2)' }}>· optional</span></label>
-            <textarea className="textarea" value={f.vNote} maxLength={240} onChange={e => set('vNote', e.target.value)} placeholder="Hey — could you confirm this? Takes ~90 seconds. Thanks!" style={{ minHeight: 80 }} /></div>
+            <textarea className="textarea" value={f.vNote} maxLength={240} onChange={e => set('vNote', e.target.value)} placeholder="Hey - could you confirm this? Takes ~90 seconds. Thanks!" style={{ minHeight: 80 }} /></div>
 
           {error && <span className="field-err">{error}</span>}
 

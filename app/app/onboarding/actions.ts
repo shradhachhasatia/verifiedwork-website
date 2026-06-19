@@ -57,7 +57,7 @@ export async function completeOnboarding(
 
   if (error) {
     if (error.code === '23505') {
-      return { error: 'That profile link is already taken — try another.' }
+      return { error: 'That profile link is already taken - try another.' }
     }
     return { error: "We couldn't save your profile just now. Please try again." }
   }

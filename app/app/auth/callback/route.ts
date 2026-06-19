@@ -11,10 +11,10 @@ export async function GET(request: Request) {
   const supabase = await createClient()
 
   // Two sign-in paths land here:
-  //   • `code`       — PKCE (OAuth + same-device magic link). The code verifier
+  //   • `code`       - PKCE (OAuth + same-device magic link). The code verifier
   //                    lives in this browser's cookies, so it only completes on
   //                    the device that started the sign-in.
-  //   • `token_hash` — emailed one-time token. Verifies server-side with no
+  //   • `token_hash` - emailed one-time token. Verifies server-side with no
   //                    browser-stored secret, so the magic link works even when
   //                    opened on a *different* device (e.g. requested on a
   //                    laptop, opened on a phone). Requires the Supabase email

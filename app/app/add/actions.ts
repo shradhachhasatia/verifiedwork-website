@@ -45,7 +45,7 @@ export async function createEntry(
     return { error: 'Please add a valid name, role and email for your validator.' }
   }
   if (input.vEmail.trim().toLowerCase() === (user.email ?? '').toLowerCase()) {
-    return { error: "You can't verify your own work — use someone else's email." }
+    return { error: "You can't verify your own work - use someone else's email." }
   }
 
   const { data: entry, error: entryErr } = await supabase
@@ -115,7 +115,7 @@ export async function createEntry(
       metrics: input.outcome.trim(),
       verifyUrl,
     }).catch(() => {
-      // Email failure doesn't block the user — entry is saved, email can be retried
+      // Email failure doesn't block the user - entry is saved, email can be retried
     })
   }
 

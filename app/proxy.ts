@@ -13,7 +13,7 @@ export async function proxy(request: NextRequest) {
   // (.vercel.app) domain. Serve different content per host from one deployment.
   if (host === 'verifiedwork.co' || host === 'www.verifiedwork.co') {
     const APP = 'https://verifiedwork-website.vercel.app'
-    // App routes don't belong on the marketing domain — hand them to the app.
+    // App routes don't belong on the marketing domain - hand them to the app.
     if (
       path === '/login' ||
       path.startsWith('/dashboard') ||
@@ -31,7 +31,7 @@ export async function proxy(request: NextRequest) {
     return NextResponse.next()
   }
 
-  // Public marketing pages (landing, blog, legal, assets) need no auth work —
+  // Public marketing pages (landing, blog, legal, assets) need no auth work -
   // skip the Supabase round-trip entirely so they stay fast.
   if (
     path === '/' ||
@@ -63,7 +63,7 @@ export async function proxy(request: NextRequest) {
     }
   )
 
-  // Refresh session — do not add logic between createServerClient and getUser
+  // Refresh session - do not add logic between createServerClient and getUser
   const { data: { user } } = await supabase.auth.getUser()
 
   // Redirect unauthenticated users away from the app's protected routes

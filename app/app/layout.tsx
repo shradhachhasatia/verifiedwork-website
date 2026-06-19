@@ -17,9 +17,9 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "verified.work — the app",
+  title: "verified.work - the app",
   description:
-    "Your verified professional profile — endorsed by the people who were there.",
+    "Your verified professional profile - endorsed by the people who were there.",
 };
 
 export default function RootLayout({

@@ -445,7 +445,7 @@ input { font-family: inherit; }
   color: var(--grey);
 }
 .hero-title .word {
-  /* simplified — just fades in, no per-word delay to avoid layout jank */
+  /* simplified - just fades in, no per-word delay to avoid layout jank */
   display: inline;
 }
 
@@ -572,7 +572,7 @@ input { font-family: inherit; }
 .reveal-delay-4 { transition-delay: 320ms; }
 
 /* ============================================================
-   Problem section — split copy + stacked document cards
+   Problem section - split copy + stacked document cards
    ============================================================ */
 .problem { padding: var(--gap-section) 0; overflow: hidden; }
 .problem-grid {
@@ -656,7 +656,7 @@ input { font-family: inherit; }
 .doc-stack.in .dc-3 { transform: translateY(158px) rotate(-1.5deg); z-index: 3; transition-delay: 220ms; }
 
 /* ============================================================
-   How it works — minimal
+   How it works - minimal
    ============================================================ */
 .how {
   padding: var(--gap-section) 0;
@@ -745,7 +745,7 @@ input { font-family: inherit; }
 }
 
 /* ============================================================
-   Proof — research carousel
+   Proof - research carousel
    ============================================================ */
 .proof { padding: var(--gap-section) 0; }
 .proof-head { text-align: center; margin-bottom: clamp(38px, 5vw, 56px); }
@@ -1112,7 +1112,7 @@ input { font-family: inherit; }
     </span>
     <div class="hero-icon-wrap" id="hero-icon" aria-hidden="true">
       <svg viewBox="0 0 100 100">
-        <!-- Continuous W (option C — chiseled, bevel joins) -->
+        <!-- Continuous W (option C - chiseled, bevel joins) -->
         <path class="v-path" d="M 12 30 L 31 77 L 50 53"/>
         <path class="w-path" d="M 50 53 L 69 77 L 88 23"/>
       </svg>
@@ -1245,7 +1245,7 @@ input { font-family: inherit; }
 </section>
 
 <!-- =========================================================
-     PROOF — research carousel
+     PROOF - research carousel
      ========================================================= -->
 <section class="proof" id="proof">
   <div class="container">
@@ -1428,7 +1428,7 @@ input { font-family: inherit; }
 </section>
 
 <!-- =========================================================
-     TRUST STRIP — removed
+     TRUST STRIP - removed
      ========================================================= -->
 
 <!-- =========================================================
@@ -1488,7 +1488,7 @@ input { font-family: inherit; }
 
 <script>
 /* ============================================================
-   Open at the top — the waitlist widget can autofocus its input
+   Open at the top - the waitlist widget can autofocus its input
    and pull the page down to the footer signup on load.
    ============================================================ */
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
@@ -1551,7 +1551,7 @@ function measureWord(text) {
 }
 
 // Lock the slot to the widest word so the heading never changes size
-// as the word cycles — otherwise the whole page shifts up and down.
+// as the word cycles - otherwise the whole page shifts up and down.
 function lockCycleWidth() {
   let max = 0;
   cycleWords.forEach((w) => { max = Math.max(max, measureWord(w)); });
@@ -1571,7 +1571,7 @@ function cycleNext() {
   cycleEl.classList.add('out');
   setTimeout(() => {
     // Reposition below the slot with NO transition, so the new word doesn't
-    // visibly travel down from the "out" position — this kills the glitch.
+    // visibly travel down from the "out" position - this kills the glitch.
     cycleEl.style.transition = 'none';
     cycleEl.textContent = cycleWords[nextIdx];
     cycleEl.classList.remove('out');

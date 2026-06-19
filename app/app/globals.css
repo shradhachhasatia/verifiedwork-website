@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* ============================================================
-   verified.work design system — ported from the static mockup
+   verified.work design system - ported from the static mockup
    so the real app keeps the exact same look & feel.
    Fonts come from next/font (see layout.tsx) via the
    --font-inter / --font-space CSS variables.
@@ -71,7 +71,7 @@ a{color:inherit;}
 .lede{font-size:var(--fs-lede);color:var(--grey);line-height:1.55;margin:0;}
 .muted{color:var(--grey);}
 
-/* buttons — black pill primary (green hover); green reserved for verification */
+/* buttons - black pill primary (green hover); green reserved for verification */
 .btn{appearance:none;border:1px solid transparent;border-radius:11px;font-weight:600;font-size:14.5px;
   letter-spacing:-.005em;display:inline-flex;align-items:center;justify-content:center;gap:8px;
   min-height:46px;padding:0 20px;transition:background 150ms,border-color 150ms,color 150ms,transform 80ms,box-shadow 150ms;}

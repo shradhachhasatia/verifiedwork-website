@@ -95,7 +95,7 @@ export default function SettingsView({ userId, slug, initial }: Props) {
     const supabase = createClient()
     await supabase.auth.signOut()
     // Full document load (not router.push) so the deleted account's pages are
-    // gone from the browser cache immediately — no stale dashboard on "back".
+    // gone from the browser cache immediately - no stale dashboard on "back".
     window.location.replace('/login')
   }
 

@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
   if (!user) return { title: 'verified.work' }
   return {
-    title: `${user.full_name} — verified.work`,
+    title: `${user.full_name} - verified.work`,
     description: `${user.full_name}'s verified professional profile on verified.work`,
   }
 }
