@@ -1,15 +1,10 @@
 <!DOCTYPE html>
 <!--
-  verified.work — Marketing / announcement email template
-  Send via Resend (or any ESP). Replace the {{ ... }} placeholders before sending:
-    {{preheader}}      - hidden preview line shown in the inbox list
-    {{first_name}}     - recipient's first name (fallback: "there")
-    {{eyebrow}}        - small label above the headline, e.g. "Product update"
-    {{headline}}       - the big headline
-    {{body}}           - main paragraph(s)
-    {{cta_text}}       - button label, e.g. "Build your profile"
-    {{cta_url}}        - where the button links
-    {{unsubscribe_url}}- one-click unsubscribe link
+  verified.work — Launch / invite marketing email (copy filled in)
+  Only two things are still dynamic per recipient:
+    {{first_name}}      - recipient's first name (set a fallback of "there")
+    {{unsubscribe_url}} - one-click unsubscribe (Resend can auto-insert this)
+  Swap the button URL to https://verifiedwork.co once that domain is live.
   Brand: ink #1A1A1A · grey #6B7280 · green #2D6A4F · surface #f3f4f6
 -->
 <html lang="en">
@@ -17,12 +12,12 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="color-scheme" content="light" />
-<title>{{headline}}</title>
+<title>Your work happened. Now prove it.</title>
 </head>
 <body style="margin:0;padding:0;background:#f3f4f6;-webkit-font-smoothing:antialiased;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
 
   <!-- hidden preview text -->
-  <div style="display:none;max-height:0;overflow:hidden;opacity:0;mso-hide:all;">{{preheader}}</div>
+  <div style="display:none;max-height:0;overflow:hidden;opacity:0;mso-hide:all;">The profile employers can actually trust &mdash; backed by the people who worked with you.</div>
 
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f3f4f6;padding:40px 16px;">
     <tr><td align="center">
@@ -39,15 +34,18 @@
 
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="padding:38px 38px 0;">
             <tr><td>
-              <p style="margin:0 0 10px;font-size:12px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:#2D6A4F;">{{eyebrow}}</p>
+              <p style="margin:0 0 10px;font-size:12px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:#2D6A4F;">You're invited</p>
               <h1 style="margin:0 0 16px;font-size:26px;font-weight:700;letter-spacing:-.025em;color:#1a1a1a;line-height:1.2;">
-                {{headline}}
+                Your work happened. Now prove it.
               </h1>
               <p style="margin:0 0 18px;font-size:15px;color:#374151;line-height:1.6;">
                 Hi {{first_name}},
               </p>
+              <p style="margin:0 0 18px;font-size:15px;color:#6b7280;line-height:1.6;">
+                Resumes are easy to write and, in an AI world, everyone sounds impressive. verified.work is built differently: you add the real projects you shipped, and the people who were actually there endorse them &mdash; so every claim on your profile is backed by a human who vouched for it.
+              </p>
               <p style="margin:0 0 28px;font-size:15px;color:#6b7280;line-height:1.6;">
-                {{body}}
+                It takes about two minutes to start. Add your first project, invite one person to verify it, and you'll have a profile employers can actually trust.
               </p>
             </td></tr>
           </table>
@@ -55,9 +53,9 @@
           <!-- cta -->
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="padding:0 38px 14px;">
             <tr><td>
-              <!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" href="{{cta_url}}" style="height:48px;v-text-anchor:middle;width:240px;" arcsize="100%" fillcolor="#1a1a1a" stroke="f"><center style="color:#ffffff;font-family:sans-serif;font-size:15px;font-weight:600;"><![endif]-->
-              <a href="{{cta_url}}" style="display:inline-block;background:#1a1a1a;color:#ffffff;font-size:15px;font-weight:600;letter-spacing:-.01em;text-decoration:none;padding:15px 34px;border-radius:999px;">
-                {{cta_text}}
+              <!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" href="https://verifiedwork-website.vercel.app/login" style="height:48px;v-text-anchor:middle;width:260px;" arcsize="100%" fillcolor="#1a1a1a" stroke="f"><center style="color:#ffffff;font-family:sans-serif;font-size:15px;font-weight:600;"><![endif]-->
+              <a href="https://verifiedwork-website.vercel.app/login" style="display:inline-block;background:#1a1a1a;color:#ffffff;font-size:15px;font-weight:600;letter-spacing:-.01em;text-decoration:none;padding:15px 34px;border-radius:999px;">
+                Build your verified profile
               </a>
               <!--[if mso]></center></v:roundrect><![endif]-->
             </td></tr>
