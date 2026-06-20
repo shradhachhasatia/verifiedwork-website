@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<!--
+  verified.work — Marketing / announcement email template
+  Send via Resend (or any ESP). Replace the {{ ... }} placeholders before sending:
+    {{preheader}}      - hidden preview line shown in the inbox list
+    {{first_name}}     - recipient's first name (fallback: "there")
+    {{eyebrow}}        - small label above the headline, e.g. "Product update"
+    {{headline}}       - the big headline
+    {{body}}           - main paragraph(s)
+    {{cta_text}}       - button label, e.g. "Build your profile"
+    {{cta_url}}        - where the button links
+    {{unsubscribe_url}}- one-click unsubscribe link
+  Brand: ink #1A1A1A · grey #6B7280 · green #2D6A4F · surface #f3f4f6
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="color-scheme" content="light" />
+<title>{{headline}}</title>
+</head>
+<body style="margin:0;padding:0;background:#f3f4f6;-webkit-font-smoothing:antialiased;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+
+  <!-- hidden preview text -->
+  <div style="display:none;max-height:0;overflow:hidden;opacity:0;mso-hide:all;">{{preheader}}</div>
+
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f3f4f6;padding:40px 16px;">
+    <tr><td align="center">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
+
+        <!-- wordmark -->
+        <tr><td style="padding-bottom:28px;text-align:center;">
+          <span style="font-size:18px;font-weight:700;letter-spacing:-.015em;color:#1a1a1a;">verified<span style="display:inline-block;width:14px;height:14px;line-height:14px;text-align:center;border-radius:50%;background:#2D6A4F;color:#fff;font-size:9px;font-weight:700;vertical-align:middle;margin:0 1px;">&#10003;</span><span style="font-weight:400;color:#6b7280;">work</span></span>
+        </td></tr>
+
+        <!-- card -->
+        <tr><td style="background:#ffffff;border-radius:20px;border:1px solid #e5e7eb;overflow:hidden;">
+          <div style="height:5px;background:#2D6A4F;"></div>
+
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="padding:38px 38px 0;">
+            <tr><td>
+              <p style="margin:0 0 10px;font-size:12px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:#2D6A4F;">{{eyebrow}}</p>
+              <h1 style="margin:0 0 16px;font-size:26px;font-weight:700;letter-spacing:-.025em;color:#1a1a1a;line-height:1.2;">
+                {{headline}}
+              </h1>
+              <p style="margin:0 0 18px;font-size:15px;color:#374151;line-height:1.6;">
+                Hi {{first_name}},
+              </p>
+              <p style="margin:0 0 28px;font-size:15px;color:#6b7280;line-height:1.6;">
+                {{body}}
+              </p>
+            </td></tr>
+          </table>
+
+          <!-- cta -->
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="padding:0 38px 14px;">
+            <tr><td>
+              <!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" href="{{cta_url}}" style="height:48px;v-text-anchor:middle;width:240px;" arcsize="100%" fillcolor="#1a1a1a" stroke="f"><center style="color:#ffffff;font-family:sans-serif;font-size:15px;font-weight:600;"><![endif]-->
+              <a href="{{cta_url}}" style="display:inline-block;background:#1a1a1a;color:#ffffff;font-size:15px;font-weight:600;letter-spacing:-.01em;text-decoration:none;padding:15px 34px;border-radius:999px;">
+                {{cta_text}}
+              </a>
+              <!--[if mso]></center></v:roundrect><![endif]-->
+            </td></tr>
+          </table>
+
+          <!-- divider + tagline -->
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="padding:24px 38px 38px;">
+            <tr><td style="border-top:1px solid #f0f0f0;padding-top:22px;">
+              <p style="margin:0;font-size:13px;color:#9ca3af;line-height:1.6;font-style:italic;">
+                Human validation in an AI world.
+              </p>
+            </td></tr>
+          </table>
+        </td></tr>
+
+        <!-- footer -->
+        <tr><td style="padding-top:24px;text-align:center;">
+          <p style="margin:0 0 8px;font-size:12px;color:#9ca3af;line-height:1.6;">
+            <a href="https://verifiedwork.co" style="color:#6b7280;text-decoration:none;">verifiedwork.co</a>
+            &nbsp;&middot;&nbsp;
+            <a href="{{unsubscribe_url}}" style="color:#6b7280;text-decoration:underline;">Unsubscribe</a>
+          </p>
+          <p style="margin:0;font-size:11px;color:#c4c8ce;line-height:1.5;">
+            You're receiving this because you signed up at verified.work.
+          </p>
+        </td></tr>
+
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>
