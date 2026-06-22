@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Icon, CheckDot } from '@/components/Icon'
 import { periodLabel, durationLabel, dateToYear } from '@/lib/format'
+import { deleteEntry } from './actions'
 
 type Validator = { name: string | null; role: string | null }
 type Verification = { sentence: string | null; rehire: string | null }
@@ -40,11 +41,25 @@ function ArtifactView({ url }: { url: string }) {
   )
 }
 
-function ProjectCard({ e, open, onToggle }: { e: Entry; open: boolean; onToggle: () => void }) {
+function ProjectCard({ e, open, onToggle, onDelete }: { e: Entry; open: boolean; onToggle: () => void; onDelete: (id: string) => Promise<void> }) {
   const status = e.status === 'verified' ? 'verified' : e.status === 'pending' ? 'pending' : 'unverified'
   const validator = e.validators?.[0]
   const verification = e.verifications?.[0]
   const period = periodLabel(dateToYear(e.start_date), e.end_date ? dateToYear(e.end_date) : 'Present')
+  const [confirm, setConfirm] = useState(false)
+  const [deleting, setDeleting] = useState(false)
+  const [err, setErr] = useState('')
+
+  async function handleDelete() {
+    setDeleting(true)
+    setErr('')
+    try {
+      await onDelete(e.id)
+    } catch {
+      setDeleting(false)
+      setErr("Couldn't delete. Please try again.")
+    }
+  }
 
   return (
     <div className={'xcard' + (open ? ' open' : '')}>
@@ -76,6 +91,36 @@ function ProjectCard({ e, open, onToggle }: { e: Entry; open: boolean; onToggle:
             )}
           </div>
           {e.artifact_url && <ArtifactView url={e.artifact_url} />}
+
+          <div style={{ borderTop: '1px solid var(--line)', paddingTop: 14, marginTop: 2 }}>
+            {!confirm ? (
+              <button
+                className="btn btn-ghost btn-sm"
+                style={{ color: '#dc2626', fontSize: 13 }}
+                onClick={() => setConfirm(true)}
+              >
+                <Icon name="trash" size={14} /> Delete project
+              </button>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                <p className="muted" style={{ fontSize: 13, margin: 0 }}>
+                  Delete this project and its verification? This can&apos;t be undone.
+                </p>
+                <div style={{ display: 'flex', gap: 8 }}>
+                  <button className="btn btn-ghost btn-sm" onClick={() => setConfirm(false)} disabled={deleting}>Cancel</button>
+                  <button
+                    className="btn btn-sm pill"
+                    style={{ background: '#dc2626', color: '#fff' }}
+                    onClick={handleDelete}
+                    disabled={deleting}
+                  >
+                    {deleting ? <><span className="btn-spin" style={{ borderColor: 'rgba(255,255,255,.3)', borderTopColor: '#fff' }} /> Deleting…</> : 'Yes, delete'}
+                  </button>
+                </div>
+                {err && <span className="field-err">{err}</span>}
+              </div>
+            )}
+          </div>
         </div>
       </div></div>
     </div>
@@ -84,10 +129,18 @@ function ProjectCard({ e, open, onToggle }: { e: Entry; open: boolean; onToggle:
 
 export default function DashboardView({ firstName, entries }: { firstName: string; entries: Entry[] }) {
   const router = useRouter()
+  const [items, setItems] = useState<Entry[]>(entries)
   const [openId, setOpenId] = useState<string | null>(entries[0]?.id ?? null)
-  const verified = entries.filter(e => e.status === 'verified').length
+  const verified = items.filter(e => e.status === 'verified').length
 
-  if (entries.length === 0) {
+  async function handleDelete(id: string) {
+    const result = await deleteEntry(id)
+    if ('error' in result) throw new Error(result.error)
+    setItems(prev => prev.filter(e => e.id !== id)) // remove instantly
+    router.refresh() // re-sync with the server
+  }
+
+  if (items.length === 0) {
     return (
       <div className="screen"><div className="wrap wrap-lg" style={{ paddingTop: 'clamp(28px,5vw,48px)' }}>
         <span className="eyebrow">Your workspace</span>
@@ -102,7 +155,7 @@ export default function DashboardView({ firstName, entries }: { firstName: strin
     )
   }
 
-  const pct = Math.min(100, 30 + Math.round(verified / entries.length * 70))
+  const pct = Math.min(100, 30 + Math.round(verified / items.length * 70))
   return (
     <div className="screen"><div className="wrap wrap-lg" style={{ paddingTop: 'clamp(28px,5vw,48px)', paddingBottom: 40 }}>
       <div className="dash-hd">
@@ -112,13 +165,13 @@ export default function DashboardView({ firstName, entries }: { firstName: strin
       </div>
       <div className="complete">
         <div><div style={{ fontWeight: 700, marginBottom: 4 }}>Profile {pct}% complete</div>
-          <div className="muted" style={{ fontSize: 13.5 }}>{verified} verified · {entries.length - verified} awaiting</div></div>
+          <div className="muted" style={{ fontSize: 13.5 }}>{verified} verified · {items.length - verified} awaiting</div></div>
         <div className="bar"><i style={{ width: pct + '%' }} /></div>
       </div>
-      <div className="sec-head"><span className="eyebrow">Your work</span><span className="n">{entries.length}</span><span className="ln" /></div>
+      <div className="sec-head"><span className="eyebrow">Your work</span><span className="n">{items.length}</span><span className="ln" /></div>
       <div className="stack">
-        {entries.map(e => (
-          <ProjectCard key={e.id} e={e} open={openId === e.id} onToggle={() => setOpenId(o => o === e.id ? null : e.id)} />
+        {items.map(e => (
+          <ProjectCard key={e.id} e={e} open={openId === e.id} onToggle={() => setOpenId(o => o === e.id ? null : e.id)} onDelete={handleDelete} />
         ))}
       </div>
     </div></div>
