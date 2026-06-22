@@ -1,6 +1,8 @@
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+// Fallback keeps `next build` from throwing when the key isn't present at
+// build time; the real key is injected from the environment at runtime.
+const resend = new Resend(process.env.RESEND_API_KEY || 're_build_placeholder')
 const FROM = process.env.RESEND_FROM ?? 'admin@verifiedwork.co'
 
 export async function sendVerificationEmail({
@@ -230,6 +232,68 @@ export async function sendVerifiedEmail({
     from: FROM,
     to,
     subject: `Your work at ${company} is verified`,
+    html,
+  })
+
+  if (error) throw new Error(error.message)
+}
+
+/* Magic-link / sign-in email, sent through Resend via the Supabase
+   "Send Email" auth hook. Supabase mints the token; we send the mail. */
+export async function sendMagicLinkEmail({ to, link }: { to: string; link: string }) {
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sign in to verified.work</title>
+</head>
+<body style="margin:0;padding:0;background:#f3f4f6;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f3f4f6;padding:40px 16px;">
+  <tr><td align="center">
+    <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
+
+      <tr><td style="padding-bottom:28px;text-align:center;">
+        <span style="font-size:18px;font-weight:700;letter-spacing:-.015em;color:#1a1a1a;">verified<span style="display:inline-block;width:14px;height:14px;line-height:14px;text-align:center;border-radius:50%;background:#2D6A4F;color:#fff;font-size:9px;font-weight:700;vertical-align:middle;margin:0 1px;">&#10003;</span><span style="font-weight:400;color:#6b7280;">work</span></span>
+      </td></tr>
+
+      <tr><td style="background:#ffffff;border-radius:20px;border:1px solid #e5e7eb;overflow:hidden;">
+        <div style="height:5px;background:#2D6A4F;"></div>
+        <table width="100%" cellpadding="0" cellspacing="0" style="padding:38px 38px 0;">
+          <tr><td>
+            <p style="margin:0 0 10px;font-size:12px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:#2D6A4F;">Sign in</p>
+            <h1 style="margin:0 0 14px;font-size:24px;font-weight:700;letter-spacing:-.025em;color:#1a1a1a;line-height:1.2;">Your link to verified.work</h1>
+            <p style="margin:0 0 28px;font-size:15px;color:#6b7280;line-height:1.6;">Click the button below to finish signing in. This link works on any device and expires in 60 minutes.</p>
+          </td></tr>
+        </table>
+        <table width="100%" cellpadding="0" cellspacing="0" style="padding:0 38px 8px;">
+          <tr><td align="center">
+            <a href="${link}" style="display:inline-block;background:#1a1a1a;color:#ffffff;font-size:15px;font-weight:600;letter-spacing:-.01em;text-decoration:none;padding:15px 34px;border-radius:999px;">Sign in to verified.work</a>
+          </td></tr>
+        </table>
+        <table width="100%" cellpadding="0" cellspacing="0" style="padding:18px 38px 38px;">
+          <tr><td>
+            <p style="margin:0;font-size:12.5px;color:#9ca3af;line-height:1.6;">Or paste this link into your browser:<br/>
+              <a href="${link}" style="color:#2D6A4F;word-break:break-all;">${link}</a>
+            </p>
+          </td></tr>
+        </table>
+      </td></tr>
+
+      <tr><td style="padding-top:22px;text-align:center;">
+        <p style="margin:0;font-size:12px;color:#9ca3af;line-height:1.6;">If you didn&rsquo;t request this, you can safely ignore this email.</p>
+      </td></tr>
+
+    </table>
+  </td></tr>
+</table>
+</body>
+</html>`
+
+  const { error } = await resend.emails.send({
+    from: FROM,
+    to,
+    subject: 'Sign in to verified.work',
     html,
   })
 
