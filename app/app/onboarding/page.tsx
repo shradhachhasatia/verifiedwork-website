@@ -20,7 +20,6 @@ export default async function OnboardingPage() {
   return (
     <main className="app-main">
       <OnboardingWizard
-        userId={user.id}
         initialName={profile?.full_name ?? ''}
         initialPhotoUrl={profile?.photo_url ?? null}
       />

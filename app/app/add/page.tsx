@@ -19,7 +19,7 @@ export default async function AddPage() {
 
   return (
     <main className="app-main">
-      <AddProjectWizard userId={user.id} selfEmail={user.email ?? ''} />
+      <AddProjectWizard selfEmail={user.email ?? ''} />
     </main>
   )
 }

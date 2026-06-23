@@ -3,6 +3,7 @@
 import { useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import { createUploadUrl } from '@/lib/storage-actions'
 import { Icon, CheckDot } from '@/components/Icon'
 import {
   YEARS, REL_OPTIONS, emailOk, badgeTier, periodLabel, durationLabel,
@@ -87,9 +88,9 @@ function ArtifactInput({ value, onChange }: { value: Artifact | null; onChange: 
   )
 }
 
-type Props = { userId: string; selfEmail: string }
+type Props = { selfEmail: string }
 
-export default function AddProjectWizard({ userId, selfEmail }: Props) {
+export default function AddProjectWizard({ selfEmail }: Props) {
   const router = useRouter()
   const [step, setStep] = useState(1)
   const [f, setF] = useState({
@@ -127,16 +128,21 @@ export default function AddProjectWizard({ userId, selfEmail }: Props) {
     if (artifact?.file) {
       const supabase = createClient()
       const ext = (artifact.file.name.split('.').pop() || 'bin').toLowerCase().replace(/[^a-z0-9]/g, '')
-      const path = `${userId}/${Date.now()}.${ext}`
+      const signed = await createUploadUrl('artifacts', ext)
+      if ('error' in signed) {
+        setSubmitting(false)
+        setError("We couldn't upload your artifact. Remove it or try a link instead.")
+        return
+      }
       const { error: upErr } = await supabase.storage
         .from('artifacts')
-        .upload(path, artifact.file, { upsert: true, contentType: artifact.file.type })
+        .uploadToSignedUrl(signed.path, signed.token, artifact.file, { contentType: artifact.file.type })
       if (upErr) {
         setSubmitting(false)
         setError("We couldn't upload your artifact. Remove it or try a link instead.")
         return
       }
-      artifactUrl = supabase.storage.from('artifacts').getPublicUrl(path).data.publicUrl
+      artifactUrl = supabase.storage.from('artifacts').getPublicUrl(signed.path).data.publicUrl
     } else if (artifact?.type === 'link') {
       artifactUrl = artifact.value
     }

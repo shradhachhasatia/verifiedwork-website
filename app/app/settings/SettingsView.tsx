@@ -2,13 +2,13 @@
 
 import { useRef, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
+import { createUploadUrl } from '@/lib/storage-actions'
 import { updateProfile, deleteAccount } from './actions'
 import { Icon } from '@/components/Icon'
 
 const linkedinOk = (v: string) => !v.trim() || /^https?:\/\/(www\.)?linkedin\.com\//i.test(v.trim())
 
 type Props = {
-  userId: string
   slug: string
   initial: {
     full_name: string
@@ -19,7 +19,7 @@ type Props = {
   }
 }
 
-export default function SettingsView({ userId, slug, initial }: Props) {
+export default function SettingsView({ slug, initial }: Props) {
   const [name, setName] = useState(initial.full_name)
   const [title, setTitle] = useState(initial.title)
   const [location, setLocation] = useState(initial.location)
@@ -67,13 +67,14 @@ export default function SettingsView({ userId, slug, initial }: Props) {
       setUploading(true)
       const supabase = createClient()
       const ext = (photoFile.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '')
-      const path = `${userId}/${Date.now()}.${ext}`
+      const signed = await createUploadUrl('avatars', ext)
+      if ('error' in signed) { setUploading(false); setSaving(false); setError("Couldn't upload photo. Try again."); return }
       const { error: upErr } = await supabase.storage
         .from('avatars')
-        .upload(path, photoFile, { upsert: true, contentType: photoFile.type })
+        .uploadToSignedUrl(signed.path, signed.token, photoFile, { contentType: photoFile.type })
       setUploading(false)
       if (upErr) { setSaving(false); setError("Couldn't upload photo. Try again."); return }
-      finalPhotoUrl = supabase.storage.from('avatars').getPublicUrl(path).data.publicUrl
+      finalPhotoUrl = supabase.storage.from('avatars').getPublicUrl(signed.path).data.publicUrl
       setPhotoUrl(finalPhotoUrl)
       setPhotoFile(null)
     }
