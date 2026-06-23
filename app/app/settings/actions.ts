@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
+import { storagePathFromPublicUrl } from '@/lib/storage'
 import { sendAccountDeletedEmail } from '@/lib/email'
 
 export type SettingsInput = {
@@ -41,7 +42,7 @@ export async function deleteAccount(): Promise<{ error: string } | { ok: true }>
 
   const { data: profile } = await supabase
     .from('users')
-    .select('full_name')
+    .select('full_name, photo_url')
     .eq('id', user.id)
     .single()
 
@@ -52,6 +53,27 @@ export async function deleteAccount(): Promise<{ error: string } | { ok: true }>
       to: user.email,
       name: profile?.full_name?.split(' ')[0] ?? 'there',
     }).catch(() => {})
+  }
+
+  // Remove the user's Storage files before their rows disappear. The DB rows
+  // (entries, validators, verifications) cascade when the account is deleted,
+  // but Storage objects would otherwise be left orphaned. We derive the paths
+  // from the saved public URLs so this needs only the owner DELETE policy.
+  const { data: entries } = await supabase
+    .from('entries')
+    .select('artifact_url')
+    .eq('user_id', user.id)
+
+  const artifactPaths = (entries ?? [])
+    .map((e) => storagePathFromPublicUrl(e.artifact_url, 'artifacts'))
+    .filter((p): p is string => p !== null)
+  if (artifactPaths.length) {
+    await supabase.storage.from('artifacts').remove(artifactPaths)
+  }
+
+  const avatarPath = storagePathFromPublicUrl(profile?.photo_url, 'avatars')
+  if (avatarPath) {
+    await supabase.storage.from('avatars').remove([avatarPath])
   }
 
   const { error } = await supabase.rpc('delete_current_user')
