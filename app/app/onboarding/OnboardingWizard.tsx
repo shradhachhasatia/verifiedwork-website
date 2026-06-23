@@ -2,6 +2,7 @@
 
 import { useRef, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
+import { createUploadUrl } from '@/lib/storage-actions'
 import { completeOnboarding } from './actions'
 
 /* ---------- small bits ported from the mockup ---------- */
@@ -64,9 +65,9 @@ function WizBar({ current, total, label, onBack }: { current: number; total: num
   )
 }
 
-type Props = { userId: string; initialName: string; initialPhotoUrl: string | null }
+type Props = { initialName: string; initialPhotoUrl: string | null }
 
-export default function OnboardingWizard({ userId, initialName, initialPhotoUrl }: Props) {
+export default function OnboardingWizard({ initialName, initialPhotoUrl }: Props) {
   const [step, setStep] = useState(1)
   const [name, setName] = useState(initialName || '')
   const [title, setTitle] = useState('')
@@ -114,21 +115,29 @@ export default function OnboardingWizard({ userId, initialName, initialPhotoUrl 
     let finalPhotoUrl = photoUrl
 
     // Upload the chosen photo (if any) into the user's own avatars folder.
+    // The signed URL is minted server-side (where the session lives); the
+    // browser then uploads straight to Storage with that one-time token.
     if (photoFile) {
       setUploadingPhoto(true)
       const supabase = createClient()
       const ext = (photoFile.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '')
-      const path = `${userId}/${Date.now()}.${ext}`
+      const signed = await createUploadUrl('avatars', ext)
+      if ('error' in signed) {
+        setUploadingPhoto(false)
+        setSubmitting(false)
+        setError("We couldn't upload your photo. You can skip it for now and add one later.")
+        return
+      }
       const { error: upErr } = await supabase.storage
         .from('avatars')
-        .upload(path, photoFile, { upsert: true, contentType: photoFile.type })
+        .uploadToSignedUrl(signed.path, signed.token, photoFile, { contentType: photoFile.type })
       setUploadingPhoto(false)
       if (upErr) {
         setSubmitting(false)
         setError("We couldn't upload your photo. You can skip it for now and add one later.")
         return
       }
-      finalPhotoUrl = supabase.storage.from('avatars').getPublicUrl(path).data.publicUrl
+      finalPhotoUrl = supabase.storage.from('avatars').getPublicUrl(signed.path).data.publicUrl
     }
 
     const result = await completeOnboarding({

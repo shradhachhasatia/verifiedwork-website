@@ -26,7 +26,6 @@ export default async function SettingsPage() {
         </div>
       </header>
       <SettingsView
-        userId={user.id}
         slug={profile.slug ?? ''}
         initial={{
           full_name: profile.full_name ?? '',

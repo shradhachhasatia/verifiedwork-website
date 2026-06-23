@@ -35,25 +35,30 @@ export async function completeOnboarding(
     return { error: 'Your profile link can only use letters, numbers and hyphens.' }
   }
 
-  // Upsert (not update): the auth callback's row-creation can be skipped while
-  // the session is still being established, so the row may not exist yet. In
-  // this server action the user is fully authenticated, so RLS lets us create
-  // or update their own row safely.
-  const { error } = await supabase
+  // The auth callback creates the row, but it may not exist yet if the user
+  // reached onboarding another way, so handle both cases. We deliberately avoid
+  // `.upsert()` here: an INSERT ... ON CONFLICT requires table-level SELECT,
+  // which is intentionally withheld so the private `email` column stays hidden
+  // from the API role. A plain UPDATE (no email) and a plain INSERT both work
+  // under the per-column grants the app actually has.
+  const { data: existing } = await supabase
     .from('users')
-    .upsert(
-      {
-        id: user.id,
-        email: user.email ?? '',
-        full_name,
-        title,
-        location: location || null,
-        slug,
-        photo_url: input.photo_url,
-        onboarded: true,
-      },
-      { onConflict: 'id' },
-    )
+    .select('id')
+    .eq('id', user.id)
+    .maybeSingle()
+
+  const profile = {
+    full_name,
+    title,
+    location: location || null,
+    slug,
+    photo_url: input.photo_url,
+    onboarded: true,
+  }
+
+  const { error } = existing
+    ? await supabase.from('users').update(profile).eq('id', user.id)
+    : await supabase.from('users').insert({ id: user.id, email: user.email ?? '', ...profile })
 
   if (error) {
     if (error.code === '23505') {
