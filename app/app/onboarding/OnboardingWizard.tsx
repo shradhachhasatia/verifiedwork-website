@@ -1,9 +1,10 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { createUploadUrl } from '@/lib/storage-actions'
-import { completeOnboarding } from './actions'
+import { Icon, LinkedInLogo } from '@/components/Icon'
+import { completeOnboarding, checkSlug, suggestSlug } from './actions'
 
 /* ---------- small bits ported from the mockup ---------- */
 function CameraIcon({ size = 22 }: { size?: number }) {
@@ -72,7 +73,11 @@ export default function OnboardingWizard({ initialName, initialPhotoUrl }: Props
   const [name, setName] = useState(initialName || '')
   const [title, setTitle] = useState('')
   const [loc, setLoc] = useState('')
+  const [linkedin, setLinkedin] = useState('')
+  const [website, setWebsite] = useState('')
   const [handle, setHandle] = useState('')
+  const [handleTouched, setHandleTouched] = useState(false)
+  const [slugStatus, setSlugStatus] = useState<'idle' | 'checking' | 'available' | 'taken'>('idle')
   const [photoUrl, setPhotoUrl] = useState<string | null>(initialPhotoUrl)
   const [photoPreview, setPhotoPreview] = useState<string | null>(initialPhotoUrl)
   const [photoFile, setPhotoFile] = useState<File | null>(null)
@@ -81,8 +86,34 @@ export default function OnboardingWizard({ initialName, initialPhotoUrl }: Props
   const [error, setError] = useState('')
   const photoRef = useRef<HTMLInputElement>(null)
 
-  const autoHandle = name.toLowerCase().replace(/[^a-z0-9]/g, '')
-  const h = handle || autoHandle
+  const h = handle
+  const linkedinErr = !!linkedin.trim() && !/^https?:\/\/(www\.)?linkedin\.com\//i.test(linkedin.trim())
+
+  // When the user first reaches step 2, suggest a handle that's actually free
+  // (so two "shradhachhasatia"s don't collide), unless they've typed their own.
+  useEffect(() => {
+    if (step !== 2 || handleTouched || handle) return
+    let cancelled = false
+    const base = name.toLowerCase().replace(/[^a-z0-9]/g, '') || 'user'
+    suggestSlug(base).then(({ slug }) => {
+      if (!cancelled) setHandle(slug)
+    })
+    return () => { cancelled = true }
+  }, [step, handleTouched, handle, name])
+
+  // Live availability check (debounced) so taken handles are caught before submit.
+  useEffect(() => {
+    const s = h.trim()
+    if (!s) { setSlugStatus('idle'); return }
+    setSlugStatus('checking')
+    let cancelled = false
+    const t = setTimeout(() => {
+      checkSlug(s).then(({ available }) => {
+        if (!cancelled) setSlugStatus(available ? 'available' : 'taken')
+      })
+    }, 350)
+    return () => { cancelled = true; clearTimeout(t) }
+  }, [h])
 
   function onPhoto(e: React.ChangeEvent<HTMLInputElement>) {
     const f = e.target.files?.[0]
@@ -108,7 +139,8 @@ export default function OnboardingWizard({ initialName, initialPhotoUrl }: Props
   }
 
   async function create() {
-    if (!h) return
+    if (!h || slugStatus === 'taken' || slugStatus === 'checking') return
+    if (linkedinErr) { setError('Your LinkedIn link should be a linkedin.com URL.'); return }
     setSubmitting(true)
     setError('')
 
@@ -146,6 +178,8 @@ export default function OnboardingWizard({ initialName, initialPhotoUrl }: Props
       location: loc.trim(),
       slug: h,
       photo_url: finalPhotoUrl,
+      linkedin_url: linkedin.trim(),
+      website_url: website.trim(),
     })
 
     // On success the action redirects; we only get here on a handled error.
@@ -182,9 +216,33 @@ export default function OnboardingWizard({ initialName, initialPhotoUrl }: Props
               <label className="field-lbl">City / country</label>
               <input className="input" value={loc} onChange={e => setLoc(e.target.value)} placeholder="e.g. Bengaluru, India" />
             </div>
+            <div className="field">
+              <label className="field-lbl" style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                <LinkedInLogo size={14} /> LinkedIn <span className="muted" style={{ fontWeight: 400 }}>· optional</span>
+              </label>
+              <input
+                className={'input' + (linkedinErr ? ' err' : '')}
+                value={linkedin}
+                onChange={e => setLinkedin(e.target.value)}
+                placeholder="https://linkedin.com/in/yourname"
+                type="url"
+              />
+              {linkedinErr && <span className="field-err">Must be a linkedin.com URL, e.g. https://linkedin.com/in/yourname</span>}
+            </div>
+            <div className="field">
+              <label className="field-lbl" style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                <Icon name="globe" size={14} /> Company / personal website <span className="muted" style={{ fontWeight: 400 }}>· optional</span>
+              </label>
+              <input
+                className="input"
+                value={website}
+                onChange={e => setWebsite(e.target.value)}
+                placeholder="e.g. yourcompany.com"
+              />
+            </div>
             <button
               className="btn btn-primary block"
-              disabled={!name.trim() || !title.trim()}
+              disabled={!name.trim() || !title.trim() || linkedinErr}
               onClick={() => { setError(''); setStep(2) }}
             >
               Continue
@@ -200,12 +258,15 @@ export default function OnboardingWizard({ initialName, initialPhotoUrl }: Props
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <span className="lblf muted" style={{ fontSize: 14 }}>verified.work/</span>
                 <input
-                  className="input"
+                  className={'input' + (slugStatus === 'taken' ? ' err' : '')}
                   value={h}
-                  onChange={e => setHandle(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ''))}
+                  onChange={e => { setHandleTouched(true); setHandle(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '')) }}
                   placeholder="yourname"
                 />
               </div>
+              {slugStatus === 'checking' && <span className="muted" style={{ fontSize: 12.5, marginTop: 6 }}>Checking availability…</span>}
+              {slugStatus === 'available' && <span style={{ fontSize: 12.5, marginTop: 6, color: 'var(--green)', display: 'inline-flex', alignItems: 'center', gap: 5 }}><Icon name="check" size={13} /> verified.work/{h} is available</span>}
+              {slugStatus === 'taken' && <span className="field-err">That link is taken. Try another - e.g. {h}-2.</span>}
             </div>
             <div className="field">
               <label className="field-lbl">Profile photo · optional</label>
@@ -235,7 +296,7 @@ export default function OnboardingWizard({ initialName, initialPhotoUrl }: Props
 
             {error && <span className="field-err">{error}</span>}
 
-            <button className="btn btn-primary block" disabled={!h || submitting} onClick={create}>
+            <button className="btn btn-primary block" disabled={!h || submitting || slugStatus === 'taken' || slugStatus === 'checking'} onClick={create}>
               {submitting
                 ? <><span className="btn-spin" /> {uploadingPhoto ? 'Uploading photo…' : 'Creating profile…'}</>
                 : 'Create my profile'}

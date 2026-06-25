@@ -5,6 +5,7 @@ type IconName =
   | 'plus' | 'crown' | 'layers' | 'handshake' | 'info' | 'inbox' | 'share'
   | 'mapPin' | 'shield' | 'fileText' | 'logout' | 'grid' | 'user' | 'send'
   | 'link' | 'image' | 'paperclip' | 'upload' | 'trash' | 'camera' | 'calendar'
+  | 'globe'
 
 // Icon set ported from the static mockup so the look matches exactly.
 export function Icon({
@@ -44,10 +45,20 @@ export function Icon({
     trash: <><polyline points="3 6 5 6 21 6" {...P} /><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" {...P} /></>,
     camera: <><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" {...P} /><circle cx="12" cy="13" r="3" {...P} /></>,
     calendar: <><rect x="3" y="4" width="18" height="18" rx="2" {...P} /><line x1="16" y1="2" x2="16" y2="6" {...P} /><line x1="8" y1="2" x2="8" y2="6" {...P} /><line x1="3" y1="10" x2="21" y2="10" {...P} /></>,
+    globe: <><circle cx="12" cy="12" r="10" {...P} /><path d="M2 12h20" {...P} /><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" {...P} /></>,
   }
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" style={{ display: 'block', flexShrink: 0, ...style }} aria-hidden="true">
       {paths[name]}
+    </svg>
+  )
+}
+
+// LinkedIn brand glyph (filled). Pass a color to override the default brand blue.
+export function LinkedInLogo({ size = 16, color = '#0A66C2' }: { size?: number; color?: string }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill={color} style={{ display: 'block', flexShrink: 0 }} aria-hidden="true">
+      <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z" />
     </svg>
   )
 }

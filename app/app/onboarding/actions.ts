@@ -6,12 +6,52 @@ import { createClient } from '@/lib/supabase/server'
 /* Slug rules mirror the mockup input mask: lowercase letters, numbers, hyphens. */
 const slugOk = (v: string) => /^[a-z0-9](?:[a-z0-9-]{0,38}[a-z0-9])?$/.test(v)
 
+const linkedinOk = (v: string) => /^https?:\/\/(www\.)?linkedin\.com\//i.test(v)
+
+/* Accept a bare domain or a full URL; returns a normalised https URL or null. */
+function normalizeUrl(v: string): string | null {
+  const t = v.trim()
+  if (!t) return null
+  const withProto = /^https?:\/\//i.test(t) ? t : `https://${t}`
+  try {
+    const u = new URL(withProto)
+    if (!u.hostname.includes('.')) return null
+    return u.toString()
+  } catch {
+    return null
+  }
+}
+
 export type OnboardingInput = {
   full_name: string
   title: string
   location: string
   slug: string
   photo_url: string | null
+  linkedin_url: string
+  website_url: string
+}
+
+/* Is this handle free? Runs through a SECURITY DEFINER function so it can see
+   handles taken by users who haven't finished onboarding yet (RLS hides those
+   from a normal query). */
+export async function checkSlug(slug: string): Promise<{ available: boolean }> {
+  const s = slug.trim().toLowerCase()
+  if (!slugOk(s)) return { available: false }
+  const supabase = await createClient()
+  const { data, error } = await supabase.rpc('slug_available', { p_slug: s })
+  if (error) return { available: true } // don't block on a check failure; the unique index is the backstop
+  return { available: data === true }
+}
+
+/* Suggest a free handle derived from a base (e.g. the person's name). */
+export async function suggestSlug(base: string): Promise<{ slug: string }> {
+  const supabase = await createClient()
+  const { data, error } = await supabase.rpc('suggest_slug', { p_base: base })
+  if (error || typeof data !== 'string') {
+    return { slug: base.toLowerCase().replace(/[^a-z0-9-]/g, '') }
+  }
+  return { slug: data }
 }
 
 /* Returns a friendly error string, or redirects to the dashboard on success.
@@ -29,10 +69,19 @@ export async function completeOnboarding(
   const title = input.title.trim()
   const location = input.location.trim()
   const slug = input.slug.trim().toLowerCase()
+  const linkedin_raw = input.linkedin_url.trim()
+  const website_raw = input.website_url.trim()
 
   if (!full_name || !title) return { error: 'Please add your name and title.' }
   if (!slugOk(slug)) {
     return { error: 'Your profile link can only use letters, numbers and hyphens.' }
+  }
+  if (linkedin_raw && !linkedinOk(linkedin_raw)) {
+    return { error: 'Your LinkedIn link should be a linkedin.com URL.' }
+  }
+  const website_url = website_raw ? normalizeUrl(website_raw) : null
+  if (website_raw && !website_url) {
+    return { error: "That website address doesn't look right. Try e.g. yoursite.com." }
   }
 
   // The auth callback creates the row, but it may not exist yet if the user
@@ -53,6 +102,8 @@ export async function completeOnboarding(
     location: location || null,
     slug,
     photo_url: input.photo_url,
+    linkedin_url: linkedin_raw || null,
+    website_url,
     onboarded: true,
   }
 
