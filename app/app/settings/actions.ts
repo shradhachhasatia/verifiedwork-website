@@ -10,7 +10,24 @@ export type SettingsInput = {
   title: string
   location: string
   linkedin_url: string
+  website_url: string
   photo_url: string | null
+}
+
+const linkedinOk = (v: string) => /^https?:\/\/(www\.)?linkedin\.com\//i.test(v)
+
+/* Accept a bare domain or a full URL; returns a normalised https URL or null. */
+function normalizeUrl(v: string): string | null {
+  const t = v.trim()
+  if (!t) return null
+  const withProto = /^https?:\/\//i.test(t) ? t : `https://${t}`
+  try {
+    const u = new URL(withProto)
+    if (!u.hostname.includes('.')) return null
+    return u.toString()
+  } catch {
+    return null
+  }
 }
 
 export async function updateProfile(input: SettingsInput): Promise<{ error: string } | { ok: true }> {
@@ -18,13 +35,24 @@ export async function updateProfile(input: SettingsInput): Promise<{ error: stri
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: 'Session expired. Please sign in again.' }
 
+  const linkedin = input.linkedin_url.trim()
+  if (linkedin && !linkedinOk(linkedin)) {
+    return { error: 'Your LinkedIn link should be a linkedin.com URL.' }
+  }
+  const websiteRaw = input.website_url.trim()
+  const website = websiteRaw ? normalizeUrl(websiteRaw) : null
+  if (websiteRaw && !website) {
+    return { error: "That website address doesn't look right. Try e.g. yoursite.com." }
+  }
+
   const { error } = await supabase
     .from('users')
     .update({
       full_name: input.full_name.trim() || null,
       title: input.title.trim() || null,
       location: input.location.trim() || null,
-      linkedin_url: input.linkedin_url.trim() || null,
+      linkedin_url: linkedin || null,
+      website_url: website,
       photo_url: input.photo_url,
     })
     .eq('id', user.id)

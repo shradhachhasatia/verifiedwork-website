@@ -4,7 +4,7 @@ import { useRef, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { createUploadUrl } from '@/lib/storage-actions'
 import { updateProfile, deleteAccount } from './actions'
-import { Icon } from '@/components/Icon'
+import { Icon, LinkedInLogo } from '@/components/Icon'
 
 const linkedinOk = (v: string) => !v.trim() || /^https?:\/\/(www\.)?linkedin\.com\//i.test(v.trim())
 
@@ -15,6 +15,7 @@ type Props = {
     title: string
     location: string
     linkedin_url: string
+    website_url: string
     photo_url: string | null
   }
 }
@@ -24,6 +25,7 @@ export default function SettingsView({ slug, initial }: Props) {
   const [title, setTitle] = useState(initial.title)
   const [location, setLocation] = useState(initial.location)
   const [linkedin, setLinkedin] = useState(initial.linkedin_url)
+  const [website, setWebsite] = useState(initial.website_url)
   const [linkedinTouched, setLinkedinTouched] = useState(false)
   const [photoUrl, setPhotoUrl] = useState<string | null>(initial.photo_url)
   const [photoPreview, setPhotoPreview] = useState<string | null>(initial.photo_url)
@@ -82,6 +84,7 @@ export default function SettingsView({ slug, initial }: Props) {
     const result = await updateProfile({
       full_name: name, title, location,
       linkedin_url: linkedin.trim(),
+      website_url: website.trim(),
       photo_url: finalPhotoUrl,
     })
     setSaving(false)
@@ -169,7 +172,9 @@ export default function SettingsView({ slug, initial }: Props) {
             <input className="input" value={location} onChange={e => setLocation(e.target.value)} placeholder="e.g. Bengaluru, India" />
           </div>
           <div className="field">
-            <label className="field-lbl">LinkedIn URL <span className="muted" style={{ fontWeight: 400 }}>· optional</span></label>
+            <label className="field-lbl" style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+              <LinkedInLogo size={14} /> LinkedIn <span className="muted" style={{ fontWeight: 400 }}>· optional</span>
+            </label>
             <input
               className={'input' + (linkedinErr ? ' err' : '')}
               value={linkedin}
@@ -179,6 +184,17 @@ export default function SettingsView({ slug, initial }: Props) {
               type="url"
             />
             {linkedinErr && <span className="field-err">Must be a linkedin.com URL, e.g. https://linkedin.com/in/yourname</span>}
+          </div>
+          <div className="field">
+            <label className="field-lbl" style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+              <Icon name="globe" size={14} /> Company / personal website <span className="muted" style={{ fontWeight: 400 }}>· optional</span>
+            </label>
+            <input
+              className="input"
+              value={website}
+              onChange={e => setWebsite(e.target.value)}
+              placeholder="e.g. yourcompany.com"
+            />
           </div>
         </div>
 

@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
-import { Wordmark, CheckDot } from '@/components/Icon'
+import { Wordmark, CheckDot, Icon, LinkedInLogo } from '@/components/Icon'
 import { periodLabel, dateToYear, durationLabel } from '@/lib/format'
 
 const cap = (s: string | null) => (s ? s[0].toUpperCase() + s.slice(1) : '')
@@ -28,7 +28,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ slug: 
 
   const { data: profile } = await supabase
     .from('users')
-    .select('id, full_name, title, location, photo_url, linkedin_url')
+    .select('id, full_name, title, location, photo_url, linkedin_url, website_url')
     .eq('slug', slug)
     .single()
 
@@ -36,7 +36,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ slug: 
 
   const { data: entries } = await supabase
     .from('entries')
-    .select('id, role_title, company, start_date, end_date, contribution, work_done, metrics, validators(name, role), verifications(sentence, rehire)')
+    .select('id, role_title, company, start_date, end_date, contribution, work_done, metrics, validators(name, role, linkedin), verifications(sentence, rehire)')
     .eq('user_id', profile.id)
     .eq('status', 'verified')
     .order('start_date', { ascending: false })
@@ -82,24 +82,43 @@ export default async function ProfilePage({ params }: { params: Promise<{ slug: 
                   {profile.title}{profile.location ? ` · ${profile.location}` : ''}
                 </p>
               )}
-              {profile.linkedin_url && (
-                <a
-                  href={profile.linkedin_url}
-                  target="_blank"
-                  rel="noopener noreferrer nofollow"
-                  style={{
-                    display: 'inline-flex', alignItems: 'center', gap: 7,
-                    marginTop: 12, padding: '7px 14px 7px 11px', borderRadius: 999,
-                    border: '1px solid var(--line)', background: 'var(--white)',
-                    color: '#0A66C2', fontSize: 13.5, fontWeight: 600,
-                    textDecoration: 'none', lineHeight: 1,
-                  }}
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="#0A66C2" aria-hidden="true">
-                    <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z" />
-                  </svg>
-                  View LinkedIn
-                </a>
+              {(profile.linkedin_url || profile.website_url) && (
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 12 }}>
+                  {profile.linkedin_url && (
+                    <a
+                      href={profile.linkedin_url}
+                      target="_blank"
+                      rel="noopener noreferrer nofollow"
+                      style={{
+                        display: 'inline-flex', alignItems: 'center', gap: 7,
+                        padding: '7px 14px 7px 11px', borderRadius: 999,
+                        border: '1px solid var(--line)', background: 'var(--white)',
+                        color: '#0A66C2', fontSize: 13.5, fontWeight: 600,
+                        textDecoration: 'none', lineHeight: 1,
+                      }}
+                    >
+                      <LinkedInLogo size={16} />
+                      LinkedIn
+                    </a>
+                  )}
+                  {profile.website_url && (
+                    <a
+                      href={profile.website_url}
+                      target="_blank"
+                      rel="noopener noreferrer nofollow"
+                      style={{
+                        display: 'inline-flex', alignItems: 'center', gap: 7,
+                        padding: '7px 14px 7px 11px', borderRadius: 999,
+                        border: '1px solid var(--line)', background: 'var(--white)',
+                        color: 'var(--black)', fontSize: 13.5, fontWeight: 600,
+                        textDecoration: 'none', lineHeight: 1,
+                      }}
+                    >
+                      <Icon name="globe" size={15} />
+                      Website
+                    </a>
+                  )}
+                </div>
               )}
             </div>
             <div style={{ textAlign: 'center' }}>
@@ -120,7 +139,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ slug: 
           ) : (
             <div className="stack">
               {all.map(e => {
-                const validator = e.validators?.[0] as { name: string | null; role: string | null } | undefined
+                const validator = e.validators?.[0] as { name: string | null; role: string | null; linkedin: string | null } | undefined
                 const verification = e.verifications?.[0] as { sentence: string | null; rehire: string | null } | undefined
                 const period = periodLabel(dateToYear(e.start_date), e.end_date ? dateToYear(e.end_date) : 'Present')
                 const duration = durationLabel(dateToYear(e.start_date), e.end_date ? dateToYear(e.end_date) : 'Present')
@@ -153,7 +172,14 @@ export default async function ProfilePage({ params }: { params: Promise<{ slug: 
                       {validator && (
                         <div className="receipt-row" style={{ borderTop: 0, paddingTop: 0 }}>
                           <span className="k">Verified by</span>
-                          <span className="v">{validator.name}{validator.role ? `, ${validator.role}` : ''}</span>
+                          <span className="v" style={{ display: 'inline-flex', alignItems: 'center', gap: 7, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+                            {validator.name}{validator.role ? `, ${validator.role}` : ''}
+                            {validator.linkedin && (
+                              <a href={validator.linkedin} target="_blank" rel="noopener noreferrer nofollow" aria-label={`${validator.name ?? 'Validator'} on LinkedIn`} style={{ display: 'inline-flex' }}>
+                                <LinkedInLogo size={15} />
+                              </a>
+                            )}
+                          </span>
                         </div>
                       )}
                       {verification?.rehire && (

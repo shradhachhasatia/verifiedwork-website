@@ -23,7 +23,7 @@ export default async function DashboardPage() {
 
   const { data: entries } = await supabase
     .from('entries')
-    .select('id, role_title, company, start_date, end_date, contribution, metrics, artifact_url, status, validators(name, role), verifications(sentence, rehire)')
+    .select('id, role_title, company, start_date, end_date, contribution, metrics, artifact_url, status, validators(name, role, linkedin), verifications(sentence, rehire)')
     .eq('user_id', user.id)
     .order('created_at', { ascending: false })
 

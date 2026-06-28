@@ -11,7 +11,7 @@ export default async function SettingsPage() {
 
   const { data: profile } = await supabase
     .from('users')
-    .select('full_name, title, location, linkedin_url, photo_url, slug, onboarded')
+    .select('full_name, title, location, linkedin_url, website_url, photo_url, slug, onboarded')
     .eq('id', user.id)
     .single()
 
@@ -32,6 +32,7 @@ export default async function SettingsPage() {
           title: profile.title ?? '',
           location: profile.location ?? '',
           linkedin_url: profile.linkedin_url ?? '',
+          website_url: profile.website_url ?? '',
           photo_url: profile.photo_url ?? null,
         }}
       />

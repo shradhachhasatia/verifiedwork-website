@@ -2,11 +2,11 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Icon, CheckDot } from '@/components/Icon'
+import { Icon, CheckDot, LinkedInLogo } from '@/components/Icon'
 import { periodLabel, durationLabel, dateToYear } from '@/lib/format'
 import { deleteEntry } from './actions'
 
-type Validator = { name: string | null; role: string | null }
+type Validator = { name: string | null; role: string | null; linkedin: string | null }
 type Verification = { sentence: string | null; rehire: string | null }
 
 export type Entry = {
@@ -85,7 +85,7 @@ function ProjectCard({ e, open, onToggle, onDelete }: { e: Entry; open: boolean;
           )}
           <div>
             {e.metrics && <div className="receipt-row" style={{ borderTop: 0 }}><span className="k">Outcome</span><span className="v">{e.metrics}</span></div>}
-            <div className="receipt-row"><span className="k">Validator</span><span className="v">{validator?.name}{validator?.role ? `, ${validator.role}` : ''}</span></div>
+            <div className="receipt-row"><span className="k">Validator</span><span className="v" style={{ display: 'inline-flex', alignItems: 'center', gap: 7, flexWrap: 'wrap', justifyContent: 'flex-end' }}>{validator?.name}{validator?.role ? `, ${validator.role}` : ''}{validator?.linkedin && (<a href={validator.linkedin} target="_blank" rel="noopener noreferrer nofollow" aria-label={`${validator.name ?? 'Validator'} on LinkedIn`} style={{ display: 'inline-flex' }}><LinkedInLogo size={15} /></a>)}</span></div>
             {status === 'verified' && verification?.rehire && (
               <div className="receipt-row"><span className="k">Work again</span><span className="v" style={{ color: 'var(--green)' }}>{verification.rehire}</span></div>
             )}
