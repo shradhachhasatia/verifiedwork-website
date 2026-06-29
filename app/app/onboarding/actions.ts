@@ -30,6 +30,7 @@ export type OnboardingInput = {
   photo_url: string | null
   linkedin_url: string
   website_url: string
+  website_label: string
 }
 
 /* Is this handle free? Runs through a SECURITY DEFINER function so it can see
@@ -104,6 +105,7 @@ export async function completeOnboarding(
     photo_url: input.photo_url,
     linkedin_url: linkedin_raw || null,
     website_url,
+    website_label: website_url ? (input.website_label === 'personal' ? 'personal' : 'company') : null,
     onboarded: true,
   }
 

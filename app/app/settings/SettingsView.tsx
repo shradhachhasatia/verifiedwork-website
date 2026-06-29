@@ -16,6 +16,7 @@ type Props = {
     location: string
     linkedin_url: string
     website_url: string
+    website_label: string
     photo_url: string | null
   }
 }
@@ -26,6 +27,7 @@ export default function SettingsView({ slug, initial }: Props) {
   const [location, setLocation] = useState(initial.location)
   const [linkedin, setLinkedin] = useState(initial.linkedin_url)
   const [website, setWebsite] = useState(initial.website_url)
+  const [websiteLabel, setWebsiteLabel] = useState<'company' | 'personal'>(initial.website_label === 'personal' ? 'personal' : 'company')
   const [linkedinTouched, setLinkedinTouched] = useState(false)
   const [photoUrl, setPhotoUrl] = useState<string | null>(initial.photo_url)
   const [photoPreview, setPhotoPreview] = useState<string | null>(initial.photo_url)
@@ -85,6 +87,7 @@ export default function SettingsView({ slug, initial }: Props) {
       full_name: name, title, location,
       linkedin_url: linkedin.trim(),
       website_url: website.trim(),
+      website_label: websiteLabel,
       photo_url: finalPhotoUrl,
     })
     setSaving(false)
@@ -187,14 +190,27 @@ export default function SettingsView({ slug, initial }: Props) {
           </div>
           <div className="field">
             <label className="field-lbl" style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
-              <Icon name="globe" size={14} /> Company / personal website <span className="muted" style={{ fontWeight: 400 }}>· optional</span>
+              <Icon name="globe" size={14} /> Website <span className="muted" style={{ fontWeight: 400 }}>· optional</span>
             </label>
-            <input
-              className="input"
-              value={website}
-              onChange={e => setWebsite(e.target.value)}
-              placeholder="e.g. yourcompany.com"
-            />
+            <div style={{ display: 'flex', gap: 8 }}>
+              <select
+                className="input"
+                style={{ maxWidth: 130, flexShrink: 0 }}
+                value={websiteLabel}
+                onChange={e => setWebsiteLabel(e.target.value as 'company' | 'personal')}
+                aria-label="Website type"
+              >
+                <option value="company">Company</option>
+                <option value="personal">Personal</option>
+              </select>
+              <input
+                className="input"
+                style={{ flex: 1 }}
+                value={website}
+                onChange={e => setWebsite(e.target.value)}
+                placeholder="e.g. yourcompany.com"
+              />
+            </div>
           </div>
         </div>
 

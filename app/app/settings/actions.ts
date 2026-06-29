@@ -11,6 +11,7 @@ export type SettingsInput = {
   location: string
   linkedin_url: string
   website_url: string
+  website_label: string
   photo_url: string | null
 }
 
@@ -53,6 +54,7 @@ export async function updateProfile(input: SettingsInput): Promise<{ error: stri
       location: input.location.trim() || null,
       linkedin_url: linkedin || null,
       website_url: website,
+      website_label: website ? (input.website_label === 'personal' ? 'personal' : 'company') : null,
       photo_url: input.photo_url,
     })
     .eq('id', user.id)

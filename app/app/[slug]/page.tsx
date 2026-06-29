@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
@@ -5,6 +6,16 @@ import { Wordmark, CheckDot, Icon, LinkedInLogo } from '@/components/Icon'
 import { periodLabel, dateToYear, durationLabel } from '@/lib/format'
 
 const cap = (s: string | null) => (s ? s[0].toUpperCase() + s.slice(1) : '')
+const isImage = (url: string) => /\.(png|jpe?g|gif|webp|svg|avif)(\?|$)/i.test(url)
+
+function Detail({ label, children, accent }: { label: string; children: ReactNode; accent?: boolean }) {
+  return (
+    <div>
+      <div className="lblf muted" style={{ fontSize: 11.5, letterSpacing: '.04em', textTransform: 'uppercase', marginBottom: 4 }}>{label}</div>
+      <p style={{ margin: 0, fontSize: 14.5, lineHeight: 1.55, color: accent ? 'var(--green)' : 'var(--black)', fontWeight: accent ? 600 : 400 }}>{children}</p>
+    </div>
+  )
+}
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
@@ -28,7 +39,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ slug: 
 
   const { data: profile } = await supabase
     .from('users')
-    .select('id, full_name, title, location, photo_url, linkedin_url, website_url')
+    .select('id, full_name, title, location, photo_url, linkedin_url, website_url, website_label')
     .eq('slug', slug)
     .single()
 
@@ -36,7 +47,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ slug: 
 
   const { data: entries } = await supabase
     .from('entries')
-    .select('id, role_title, company, start_date, end_date, contribution, work_done, metrics, validators(name, role, linkedin), verifications(sentence, rehire)')
+    .select('id, role_title, company, start_date, end_date, contribution, problem_solved, work_done, metrics, artifact_url, validators(name, role, linkedin), verifications(sentence, rehire)')
     .eq('user_id', profile.id)
     .eq('status', 'verified')
     .order('start_date', { ascending: false })
@@ -115,7 +126,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ slug: 
                       }}
                     >
                       <Icon name="globe" size={15} />
-                      Website
+                      {profile.website_label === 'personal' ? 'Personal website' : profile.website_label === 'company' ? 'Company website' : 'Website'}
                     </a>
                   )}
                 </div>
@@ -160,6 +171,26 @@ export default async function ProfilePage({ params }: { params: Promise<{ slug: 
                       </div>
                       <span className="status verified"><CheckDot size={13} /> Verified</span>
                     </div>
+
+                    {(e.problem_solved || e.work_done || e.metrics) && (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+                        {e.problem_solved && <Detail label="The problem">{e.problem_solved}</Detail>}
+                        {e.work_done && <Detail label="What I did">{e.work_done}</Detail>}
+                        {e.metrics && <Detail label="Outcome" accent>{e.metrics}</Detail>}
+                      </div>
+                    )}
+
+                    {e.artifact_url && (
+                      isImage(e.artifact_url) ? (
+                        <a href={e.artifact_url} target="_blank" rel="noopener noreferrer">
+                          <img src={e.artifact_url} alt="Project artifact" style={{ borderRadius: 12, border: '1px solid var(--line)', maxHeight: 180, width: 'auto' }} />
+                        </a>
+                      ) : (
+                        <a className="tlink" href={e.artifact_url} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, alignSelf: 'flex-start' }}>
+                          <Icon name="link" size={14} /> View proof / artifact <Icon name="arrowUpRight" size={14} />
+                        </a>
+                      )
+                    )}
 
                     {verification?.sentence && (
                       <div className="quotebox">
