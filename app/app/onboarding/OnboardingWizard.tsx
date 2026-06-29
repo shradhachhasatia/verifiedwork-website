@@ -75,6 +75,7 @@ export default function OnboardingWizard({ initialName, initialPhotoUrl }: Props
   const [loc, setLoc] = useState('')
   const [linkedin, setLinkedin] = useState('')
   const [website, setWebsite] = useState('')
+  const [websiteLabel, setWebsiteLabel] = useState<'company' | 'personal'>('company')
   const [handle, setHandle] = useState('')
   const [handleTouched, setHandleTouched] = useState(false)
   const [slugStatus, setSlugStatus] = useState<'idle' | 'checking' | 'available' | 'taken'>('idle')
@@ -180,6 +181,7 @@ export default function OnboardingWizard({ initialName, initialPhotoUrl }: Props
       photo_url: finalPhotoUrl,
       linkedin_url: linkedin.trim(),
       website_url: website.trim(),
+      website_label: websiteLabel,
     })
 
     // On success the action redirects; we only get here on a handled error.
@@ -231,14 +233,27 @@ export default function OnboardingWizard({ initialName, initialPhotoUrl }: Props
             </div>
             <div className="field">
               <label className="field-lbl" style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
-                <Icon name="globe" size={14} /> Company / personal website <span className="muted" style={{ fontWeight: 400 }}>· optional</span>
+                <Icon name="globe" size={14} /> Website <span className="muted" style={{ fontWeight: 400 }}>· optional</span>
               </label>
-              <input
-                className="input"
-                value={website}
-                onChange={e => setWebsite(e.target.value)}
-                placeholder="e.g. yourcompany.com"
-              />
+              <div style={{ display: 'flex', gap: 8 }}>
+                <select
+                  className="input"
+                  style={{ maxWidth: 130, flexShrink: 0 }}
+                  value={websiteLabel}
+                  onChange={e => setWebsiteLabel(e.target.value as 'company' | 'personal')}
+                  aria-label="Website type"
+                >
+                  <option value="company">Company</option>
+                  <option value="personal">Personal</option>
+                </select>
+                <input
+                  className="input"
+                  style={{ flex: 1 }}
+                  value={website}
+                  onChange={e => setWebsite(e.target.value)}
+                  placeholder="e.g. yourcompany.com"
+                />
+              </div>
             </div>
             <button
               className="btn btn-primary block"
