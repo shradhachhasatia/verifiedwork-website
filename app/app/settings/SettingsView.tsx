@@ -4,6 +4,7 @@ import { useRef, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { createUploadUrl } from '@/lib/storage-actions'
 import { updateProfile, deleteAccount } from './actions'
+import { signOut } from '@/lib/auth-actions'
 import { Icon, LinkedInLogo } from '@/components/Icon'
 
 const linkedinOk = (v: string) => !v.trim() || /^https?:\/\/(www\.)?linkedin\.com\//i.test(v.trim())
@@ -225,17 +226,11 @@ export default function SettingsView({ slug, initial }: Props) {
         <div style={{ marginTop: 40, paddingTop: 24, borderTop: '1px solid var(--line)', display: 'flex', flexDirection: 'column', gap: 12 }}>
           <p className="field-lbl" style={{ marginBottom: 2 }}>Account</p>
 
-          <button
-            className="btn btn-secondary btn-sm pill"
-            style={{ alignSelf: 'flex-start' }}
-            onClick={async () => {
-              const supabase = createClient()
-              await supabase.auth.signOut()
-              window.location.replace('/login')
-            }}
-          >
-            Sign out
-          </button>
+          <form action={signOut} style={{ alignSelf: 'flex-start' }}>
+            <button className="btn btn-secondary btn-sm pill" type="submit">
+              Sign out
+            </button>
+          </form>
 
           {!confirmDelete ? (
             <button
