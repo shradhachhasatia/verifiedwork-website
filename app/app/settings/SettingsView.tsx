@@ -222,6 +222,19 @@ export default function SettingsView({ slug, initial }: Props) {
           {saving ? <><span className="btn-spin" /> {uploading ? 'Uploading…' : 'Saving…'}</> : 'Save changes'}
         </button>
 
+        {/* Feedback */}
+        <a
+          href="/feedback"
+          className="card card-pad"
+          style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginTop: 8, textDecoration: 'none', color: 'inherit' }}
+        >
+          <div>
+            <p style={{ margin: 0, fontWeight: 600, fontSize: 15 }}>Share feedback</p>
+            <p className="muted" style={{ margin: '2px 0 0', fontSize: 13 }}>Report a bug or suggest an idea — it goes straight to the team.</p>
+          </div>
+          <Icon name="arrowUpRight" size={18} />
+        </a>
+
         {/* Sign out + delete */}
         <div style={{ marginTop: 40, paddingTop: 24, borderTop: '1px solid var(--line)', display: 'flex', flexDirection: 'column', gap: 12 }}>
           <p className="field-lbl" style={{ marginBottom: 2 }}>Account</p>

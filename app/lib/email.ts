@@ -4,6 +4,70 @@ import { Resend } from 'resend'
 // build time; the real key is injected from the environment at runtime.
 const resend = new Resend(process.env.RESEND_API_KEY || 're_build_placeholder')
 const FROM = process.env.RESEND_FROM ?? 'admin@verifiedwork.co'
+// Where product feedback is delivered. Set FEEDBACK_TO in the env to route it
+// to your personal inbox; defaults to the project address otherwise.
+const FEEDBACK_TO = process.env.FEEDBACK_TO ?? FROM
+
+const esc = (s: string) =>
+  s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+
+export async function sendFeedbackEmail({
+  category,
+  message,
+  fromName,
+  fromEmail,
+  page,
+}: {
+  category: string
+  message: string
+  fromName: string
+  fromEmail: string
+  page?: string
+}) {
+  const who = fromEmail
+    ? `${fromName ? esc(fromName) + ' ' : ''}&lt;${esc(fromEmail)}&gt;`
+    : 'Anonymous'
+  const body = esc(message).replace(/\n/g, '<br/>')
+
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /></head>
+<body style="margin:0;padding:0;background:#f3f4f6;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f3f4f6;padding:40px 16px;">
+  <tr><td align="center">
+    <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
+      <tr><td style="padding-bottom:28px;text-align:center;">
+        <span style="font-size:17px;font-weight:700;letter-spacing:-.015em;color:#1a1a1a;">verified<span style="display:inline-block;width:13px;height:13px;line-height:13px;text-align:center;border-radius:50%;background:#2D6A4F;color:#fff;font-size:9px;font-weight:700;vertical-align:middle;margin:0 1px;">&#10003;</span><span style="font-weight:400;color:#6b7280;">work</span></span>
+      </td></tr>
+      <tr><td style="background:#ffffff;border-radius:20px;border:1px solid #e5e7eb;overflow:hidden;">
+        <div style="height:5px;background:#2D6A4F;"></div>
+        <table width="100%" cellpadding="0" cellspacing="0" style="padding:34px 36px 36px;">
+          <tr><td>
+            <p style="margin:0 0 8px;font-size:12px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:#2D6A4F;">New feedback &middot; ${esc(category)}</p>
+            <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:14px;padding:20px 22px;margin:8px 0 20px;">
+              <p style="margin:0;font-size:15px;color:#1a1a1a;line-height:1.6;">${body}</p>
+            </div>
+            <p style="margin:0 0 4px;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#9ca3af;">From</p>
+            <p style="margin:0 0 14px;font-size:14px;color:#374151;">${who}</p>
+            ${page ? `<p style="margin:0;font-size:12px;color:#9ca3af;">Sent from ${esc(page)}</p>` : ''}
+          </td></tr>
+        </table>
+      </td></tr>
+    </table>
+  </td></tr>
+</table>
+</body></html>`
+
+  const { error } = await resend.emails.send({
+    from: FROM,
+    to: FEEDBACK_TO,
+    subject: `New feedback (${category})${fromName ? ' from ' + fromName : ''}`,
+    html,
+    ...(fromEmail ? { replyTo: fromEmail } : {}),
+  })
+
+  if (error) throw new Error(error.message)
+}
 
 export async function sendVerificationEmail({
   to,
