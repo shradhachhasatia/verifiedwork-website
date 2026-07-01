@@ -35,6 +35,7 @@ export default async function DashboardPage() {
         <div className="inner">
           <Link href="/dashboard" aria-label="verified.work" style={{ textDecoration: 'none' }}><Wordmark /></Link>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <a href="/feedback" className="btn btn-ghost btn-sm">Feedback</a>
             <a href="/settings" className="btn btn-ghost btn-sm" style={{ padding: '6px 8px' }} aria-label="Settings">
               <Icon name="user" size={16} />
             </a>
