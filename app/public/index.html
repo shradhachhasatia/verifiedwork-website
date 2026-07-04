@@ -132,6 +132,44 @@ button{font-family:inherit;cursor:pointer;}
 .entry .badge .k svg{width:8px;height:8px;}
 .entry .endorser{margin-top:10px;padding-top:10px;border-top:1px solid var(--line-faint);font-size:12.5px;color:var(--grey);}
 
+/* ---------- Interactive builder ---------- */
+.build{margin-top:30px;max-width:460px;opacity:0;transform:translateY(12px);animation:rise .7s var(--ease-out) .48s forwards;}
+.build-row{display:flex;gap:10px;flex-wrap:wrap;}
+.build-field{flex:1;min-width:150px;display:flex;flex-direction:column;gap:6px;}
+.build-field label{font-family:var(--label);font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--grey);}
+.build-field input{border:1px solid var(--line-strong);border-radius:12px;padding:12px 14px;font-size:15px;background:#fff;width:100%;transition:border-color .15s,box-shadow .15s;}
+.build-field input:focus{outline:0;border-color:var(--green);box-shadow:0 0 0 3px var(--green-ring);}
+
+/* profile card header */
+.pfp{display:flex;align-items:center;gap:12px;padding-bottom:14px;border-bottom:1px solid var(--line-faint);}
+.pfp-avatar{width:52px;height:52px;border-radius:50%;background:var(--black);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;flex-shrink:0;}
+.pfp-meta{min-width:0;}
+.pfp-name{font-weight:700;font-size:17px;letter-spacing:-.01em;}
+.pfp-role{font-size:13.5px;color:var(--grey);margin-top:1px;}
+.pfp-handle{font-size:12px;color:var(--green);margin-top:3px;}
+.strength-label{display:flex;justify-content:space-between;font-size:11.5px;color:var(--grey);margin-bottom:6px;letter-spacing:.02em;}
+.strength-bar{height:6px;border-radius:999px;background:var(--surface-3);overflow:hidden;}
+.strength-fill{height:100%;width:20%;background:linear-gradient(90deg,var(--green),var(--green-2));border-radius:999px;transition:width 1s var(--ease-out);}
+
+/* verify stamp + entry motion */
+.stamp{position:absolute;top:10px;right:12px;width:46px;height:46px;transform:rotate(-8deg) scale(.4);opacity:0;pointer-events:none;}
+.stamp.on{animation:stampIn .6s var(--ease-stamp) forwards;}
+.stamp circle{fill:var(--green);}
+.stamp path{fill:none;stroke:#fff;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:22;stroke-dashoffset:22;}
+.stamp.on path{animation:drawck .5s var(--ease-out) .25s forwards;}
+@keyframes stampIn{0%{transform:rotate(-8deg) scale(.4);opacity:0;}60%{transform:rotate(-8deg) scale(1.14);opacity:1;}100%{transform:rotate(-8deg) scale(1);opacity:1;}}
+@keyframes drawck{to{stroke-dashoffset:0;}}
+.entry.slidein{animation:entryIn .7s var(--ease-out) both;}
+@keyframes entryIn{from{opacity:0;transform:translateY(16px) scale(.985);}to{opacity:1;transform:none;}}
+.entry .endorser{opacity:0;transition:opacity .5s var(--ease-out);}
+.entry.isverified .endorser{opacity:1;}
+.entry.isverified .badge.verified{animation:badgePop .55s var(--ease-stamp);}
+@keyframes badgePop{0%{transform:scale(.5);opacity:0;}60%{transform:scale(1.12);}100%{transform:scale(1);opacity:1;}}
+.replay{display:inline-flex;align-items:center;gap:6px;font-family:var(--label);font-size:12.5px;font-weight:600;color:var(--grey-3);
+  background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 13px;align-self:flex-start;transition:border-color .15s,color .15s;}
+.replay:hover{border-color:var(--green);color:var(--green);}
+.replay svg{width:13px;height:13px;}
+
 /* ---------- Section header ---------- */
 .sec{padding:var(--gap-section) 0;}
 .sec.alt{background:var(--surface-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
@@ -242,7 +280,7 @@ button{font-family:inherit;cursor:pointer;}
     <span class="work">work</span></a>
   <div class="nav-r">
     <span class="nav-links">
-      <a href="#how">How it works</a><a href="#why">Why it matters</a><a href="#research">Research</a>
+      <a href="#how">How it works</a><a href="/demo">Validator demo</a><a href="#research">Research</a>
     </span>
     <a class="nav-signin" href="/login">Sign in</a>
     <a class="btn btn-dark" href="/login">Try free</a>
@@ -252,41 +290,50 @@ button{font-family:inherit;cursor:pointer;}
 <!-- HERO -->
 <header class="hero" id="top"><div class="container hero-grid">
   <div>
-    <p class="hero-label">For interns, freelancers, and founders who did <strong>real work</strong>.</p>
-    <h1 class="h1">Your work happened.<br><em>Now it can be proven.</em></h1>
-    <p class="hero-sub">Showcase the projects, internships and gigs you actually did - <b>verified by the people who were there.</b> Not what your CV claims.</p>
-    <div class="hero-cta">
-      <a class="btn btn-dark btn-lg" href="/login">Try verifiedwork for free <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></a>
-      <a class="btn btn-out" href="#how">See how it works</a>
+    <p class="hero-label">Build your verified profile · <strong>free</strong></p>
+    <h1 class="h1">See your <em>verified</em> profile come to life.</h1>
+    <p class="hero-sub">Type your name and watch it happen — add real work, get it <b>endorsed by someone who was there</b>, and share one link recruiters actually trust.</p>
+    <div class="build">
+      <div class="build-row">
+        <div class="build-field"><label for="bName">Your name</label><input id="bName" type="text" placeholder="e.g. Alex Rivera" maxlength="32" autocomplete="off" spellcheck="false"></div>
+        <div class="build-field"><label for="bRole">Your role</label><input id="bRole" type="text" placeholder="e.g. Product Designer" maxlength="40" autocomplete="off" spellcheck="false"></div>
+      </div>
     </div>
+    <div class="hero-cta">
+      <a class="btn btn-dark btn-lg" href="/login">Claim your profile — free <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></a>
+      <a class="btn btn-out" href="/demo">See the validator demo</a>
+    </div>
+    <p style="margin-top:16px;font-size:13.5px;color:var(--grey)">Free · any email works · no credit card</p>
   </div>
 
-  <!-- sample entries -->
-  <div class="demo" aria-hidden="true">
+  <!-- live profile card -->
+  <div class="demo">
     <div class="demo-inner">
-      <div class="demo-card">
-        <div class="entry">
+      <div class="demo-card" id="pcard">
+        <div class="pfp">
+          <span class="pfp-avatar" id="pAvatar">AR</span>
+          <div class="pfp-meta">
+            <div class="pfp-name" id="pName">Alex Rivera</div>
+            <div class="pfp-role" id="pRole">Product Designer</div>
+            <div class="pfp-handle lblf" id="pHandle">verified.work/alexrivera</div>
+          </div>
+        </div>
+        <div>
+          <div class="strength-label lblf"><span>Profile strength</span><span id="pStrengthPct">20%</span></div>
+          <div class="strength-bar"><div class="strength-fill" id="pStrength"></div></div>
+        </div>
+        <div class="entry" id="pEntry" style="position:relative">
           <div class="entry-top">
             <div class="et">
               <div class="t">Redesigned onboarding for 40k users</div>
-              <div class="m">Bloom Agency · Internship · Jun–Aug 2024</div>
+              <div class="m">Bloom Agency · Internship · 2024</div>
             </div>
-            <span class="badge verified"><span class="k"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Verified</span>
+            <span class="badge pending" id="pBadge">Pending</span>
           </div>
-          <div class="et"><div class="detail">Reduced drop-off by 18% - confirmed by design lead.</div></div>
-          <div class="endorser">Endorsed by <b>Priya Mehta</b>, Design Lead · verified via work email</div>
+          <div class="et"><div class="detail">Cut sign-up drop-off by 18%.</div></div>
+          <div class="endorser" id="pEndorser">Endorsed by <b>Priya Mehta</b>, Design Lead · verified via work email</div>
         </div>
-        <div class="entry">
-          <div class="entry-top">
-            <div class="et">
-              <div class="t">Built payment integration for e-commerce client</div>
-              <div class="m">Freelance · Mar 2025</div>
-            </div>
-            <span class="badge verified"><span class="k"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Verified</span>
-          </div>
-          <div class="et"><div class="detail">Stripe + webhook setup, shipped in 3 weeks.</div></div>
-          <div class="endorser">Endorsed by <b>James O.</b>, Founder · verified via personal email</div>
-        </div>
+        <button class="replay lblf" id="pReplay" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg> Replay</button>
       </div>
     </div>
   </div>
@@ -372,7 +419,7 @@ button{font-family:inherit;cursor:pointer;}
     </div>
     <nav class="foot-cols" aria-label="Footer">
       <div class="foot-col"><h4>Product</h4><ul>
-        <li><a href="/login">Try free</a></li><li><a href="/login">Validator demo</a></li><li><a href="#how">How it works</a></li></ul></div>
+        <li><a href="/login">Try free</a></li><li><a href="/demo">Validator demo</a></li><li><a href="#how">How it works</a></li></ul></div>
       <div class="foot-col"><h4>Company</h4><ul>
         <li><a href="careers.html">Careers</a></li><li><a href="blog/">Blog</a></li><li><a href="mailto:admin@verifiedwork.co">Contact</a></li></ul></div>
       <div class="foot-col"><h4>Legal</h4><ul>
@@ -455,6 +502,48 @@ button{font-family:inherit;cursor:pointer;}
 
   go(0);
   startAuto();
+})();
+
+/* interactive hero: build-your-profile-live */
+(function(){
+  var nameEl=document.getElementById('bName'), roleEl=document.getElementById('bRole');
+  if(!nameEl) return;
+  var pName=document.getElementById('pName'), pRole=document.getElementById('pRole'),
+      pHandle=document.getElementById('pHandle'), pAvatar=document.getElementById('pAvatar'),
+      pEntry=document.getElementById('pEntry'), pBadge=document.getElementById('pBadge'),
+      pStrength=document.getElementById('pStrength'),
+      pStrengthPct=document.getElementById('pStrengthPct'), pReplay=document.getElementById('pReplay');
+  var DEF_NAME='Alex Rivera', DEF_ROLE='Product Designer';
+  var CHECK='<span class="k"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Verified';
+  function initials(n){ var p=n.trim().split(/\s+/).filter(Boolean); if(!p.length) return '?'; return (p[0][0]+(p[1]?p[1][0]:'')).toUpperCase(); }
+  function slug(n){ return n.toLowerCase().replace(/[^a-z0-9]/g,'') || 'yourname'; }
+  function sync(){
+    var n=(nameEl.value.trim()||DEF_NAME), r=(roleEl.value.trim()||DEF_ROLE);
+    pName.textContent=n; pRole.textContent=r; pAvatar.textContent=initials(n);
+    pHandle.textContent='verified.work/'+slug(n);
+  }
+  nameEl.addEventListener('input',sync); roleEl.addEventListener('input',sync);
+  var timers=[];
+  function clear(){ timers.forEach(clearTimeout); timers=[]; }
+  function setStrength(p){ pStrength.style.width=p+'%'; pStrengthPct.textContent=p+'%'; }
+  function run(){
+    clear();
+    pEntry.classList.remove('isverified','slidein');
+    pBadge.className='badge pending'; pBadge.innerHTML='Pending'; setStrength(20);
+    void pEntry.offsetWidth; pEntry.classList.add('slidein');
+    timers.push(setTimeout(function(){ setStrength(58); },720));
+    timers.push(setTimeout(function(){
+      pBadge.className='badge verified'; pBadge.innerHTML=CHECK;
+      pEntry.classList.add('isverified'); setStrength(100);
+    },1700));
+  }
+  pReplay.addEventListener('click',run);
+  sync();
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    pBadge.className='badge verified'; pBadge.innerHTML=CHECK; pEntry.classList.add('isverified'); setStrength(100);
+  } else {
+    setStrength(20); setTimeout(run,900);
+  }
 })();
 </script>
 </body>
