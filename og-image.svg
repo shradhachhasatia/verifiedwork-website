@@ -26,10 +26,10 @@
   <!-- subline -->
   <text x="82" y="520" font-size="29" font-weight="400" fill="#6B7280">Hiring based on what you've done. Not what your CV says.</text>
 
-  <!-- waitlist pill -->
+  <!-- cta pill -->
   <g transform="translate(82, 552)">
-    <rect width="236" height="48" rx="24" fill="#1A1A1A"/>
-    <text x="118" y="31" font-size="19" font-weight="600" fill="#FFFFFF" text-anchor="middle">Join the waitlist</text>
+    <rect width="300" height="48" rx="24" fill="#1A1A1A"/>
+    <text x="150" y="31" font-size="19" font-weight="600" fill="#FFFFFF" text-anchor="middle">Get your verified profile</text>
   </g>
 
   <text x="1118" y="588" font-size="22" font-weight="500" fill="#9CA3AF" text-anchor="end">verifiedwork.co</text>

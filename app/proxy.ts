@@ -10,7 +10,7 @@ export async function proxy(request: NextRequest) {
 
   // verifiedwork.co is the canonical home for everything - the marketing
   // landing page and the app both run here natively (no cross-domain hop to
-  // *.vercel.app, and no waitlist gate on the root).
+  // *.vercel.app).
 
   // Public marketing pages (landing, blog, legal, assets) need no auth work -
   // skip the Supabase round-trip entirely so they stay fast.

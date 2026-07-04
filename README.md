@@ -9,7 +9,7 @@ a verified professional profile platform built on intent-based hiring.
 
 | File | What it is |
 |---|---|
-| `index.html` | **The landing page** (front door). One marketing page - no waitlist. Hero with a self-verifying **profile motion graphic** (work entries slide in and get stamped *Verified* on a loop), a word-cycling headline, a **"How verified.work helps you"** section, a 3-step how-it-works, a **product screenshots** showcase (browser-framed mockups of the profile, validator flow and add-work), the **research articles** (expandable stat cards), and **Try verifiedwork for free** CTAs into the app. |
+| `index.html` | **The landing page** (front door). A single marketing page. Hero with a self-verifying **profile motion graphic** (work entries slide in and get stamped *Verified* on a loop), a word-cycling headline, a **"How verified.work helps you"** section, a 3-step how-it-works, a **product screenshots** showcase (browser-framed mockups of the profile, validator flow and add-work), the **research articles** (expandable stat cards), and **Try verifiedwork for free** CTAs into the app. |
 | `app.html` | **The product prototype.** A responsive web app (no device frame) built in the same design language. Starts **blank** - your real data, no mock projects. |
 | `careers.html`, `privacy.html`, `terms.html`, `blog/` | Supporting pages. |
 | `favicon.*`, `og-image.*`, `apple-touch-icon.png` | Brand + social assets. |

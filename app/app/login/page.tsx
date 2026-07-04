@@ -115,6 +115,14 @@ export default function LoginPage() {
       ? "We couldn't finish signing you in - that link may have expired. Please request a new one."
       : ''
   })
+  // New vs returning user. Auth is passwordless (the same OTP / Google call
+  // handles both), so this only drives the copy - but it gives returning users
+  // a clear "Sign in" instead of a signup-only screen.
+  const [mode, setMode] = useState<'signup' | 'signin'>(() => {
+    if (typeof window === 'undefined') return 'signup'
+    return new URLSearchParams(window.location.search).get('mode') === 'signin' ? 'signin' : 'signup'
+  })
+  const isSignin = mode === 'signin'
 
   const ok = emailOk(email)
   const showFieldErr = touched && email.trim().length > 0 && !ok
@@ -205,9 +213,17 @@ export default function LoginPage() {
       {googleConnecting && <GoogleConnecting />}
       <div className="auth wrap wrap-sm">
         <MarkIcon />
-        <h1>Create your verified profile</h1>
+
+        <div className="auth-seg" role="tablist" aria-label="Sign up or sign in">
+          <button role="tab" aria-selected={!isSignin} className={isSignin ? '' : 'on'} onClick={() => { setMode('signup'); setError('') }}>Sign up</button>
+          <button role="tab" aria-selected={isSignin} className={isSignin ? 'on' : ''} onClick={() => { setMode('signin'); setError('') }}>Sign in</button>
+        </div>
+
+        <h1>{isSignin ? 'Welcome back' : 'Create your verified profile'}</h1>
         <p className="auth-sub">
-          Showcase the work you actually did - endorsed by the people who were there.
+          {isSignin
+            ? 'Sign in to your verified.work profile.'
+            : 'Showcase the work you actually did - endorsed by the people who were there.'}
         </p>
 
         <div className="auth-card">
@@ -236,7 +252,7 @@ export default function LoginPage() {
           )}
 
           <button className="btn btn-primary block" disabled={!ok || sending} onClick={sendMagicLink}>
-            {sending ? <><span className="btn-spin" /> Sending link…</> : 'Continue with email'}
+            {sending ? <><span className="btn-spin" /> Sending link…</> : isSignin ? 'Sign in with email' : 'Sign up with email'}
           </button>
         </div>
 
@@ -245,6 +261,18 @@ export default function LoginPage() {
             <InfoIcon /> <span>{error}</span>
           </div>
         )}
+
+        <p className="auth-switch">
+          {isSignin ? (
+            <>New to verified.work?{' '}
+              <button type="button" className="linklike" onClick={() => { setMode('signup'); setError('') }}>Create an account</button>
+            </>
+          ) : (
+            <>Already have an account?{' '}
+              <button type="button" className="linklike" onClick={() => { setMode('signin'); setError('') }}>Sign in</button>
+            </>
+          )}
+        </p>
 
         <p className="auth-legal">
           By continuing you agree to our <a href="/terms.html">Terms</a> and{' '}
