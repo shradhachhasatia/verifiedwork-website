@@ -8,6 +8,18 @@ import { NextResponse, type NextRequest } from 'next/server'
 export async function proxy(request: NextRequest) {
   const path = request.nextUrl.pathname
 
+  // Recover a stray sign-in: if an OAuth `code` or magic-link `token_hash`+`type`
+  // lands anywhere other than the callback - which happens when Supabase falls
+  // back to the Site URL (`/`) because the exact callback URL isn't in its
+  // Redirect URLs allow-list - forward it to /auth/callback so the login still
+  // completes, instead of dumping the user on the homepage.
+  const sp = request.nextUrl.searchParams
+  if (path !== '/auth/callback' && (sp.has('code') || (sp.has('token_hash') && sp.has('type')))) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/auth/callback'
+    return NextResponse.redirect(url)
+  }
+
   // verifiedwork.co is the canonical home for everything - the marketing
   // landing page and the app both run here natively (no cross-domain hop to
   // *.vercel.app).
