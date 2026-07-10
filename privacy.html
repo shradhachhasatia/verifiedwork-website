@@ -16,6 +16,15 @@
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
+  // Privacy-first: deny all storage so GA4 runs cookieless - no cookies and
+  // no personal data are stored on anyone's device. GA still reports
+  // aggregate, non-identifying traffic (pageviews, events, sources).
+  gtag('consent', 'default', {
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    analytics_storage: 'denied'
+  });
   gtag('js', new Date());
   gtag('config', 'G-DYH41RCLYV');
 </script>
@@ -133,7 +142,7 @@
   <p>We never hand your details to other companies for their own marketing. The only exception to any of the above is where we are required to disclose information by law.</p>
 
   <h2 id="cookies">Cookies and analytics</h2>
-  <p>We use essential cookies needed to keep you signed in and for the site to function, plus Google Analytics, which sets cookies to help us understand how the site is used in aggregate. We do not use advertising or cross-site tracking cookies, and we do not use analytics to identify you personally.</p>
+  <p>We use essential cookies needed to keep you signed in and for the site to function. We also use Google Analytics to understand how the site is used in aggregate &mdash; but we run it in a cookieless, privacy-first mode (Google Consent Mode with storage denied), so it sets no analytics cookies and stores no personal data on your device. We do not use advertising or cross-site tracking, and we do not use analytics to identify you personally.</p>
 
   <h2>How long we keep it</h2>
   <p>We keep your information for as long as your account is active. When you delete your account, your profile, projects, validator records, and uploaded files are permanently removed. You can delete your account yourself at any time from Settings.</p>

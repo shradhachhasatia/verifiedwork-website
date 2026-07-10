@@ -19,6 +19,15 @@ export function Analytics() {
       <Script id="ga4-init" strategy="afterInteractive">
         {`window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
+// Privacy-first: deny all storage so GA4 runs cookieless - no cookies and no
+// personal data are stored on anyone's device. GA still reports aggregate,
+// non-identifying traffic (pageviews, events, sources).
+gtag('consent', 'default', {
+  ad_storage: 'denied',
+  ad_user_data: 'denied',
+  ad_personalization: 'denied',
+  analytics_storage: 'denied'
+});
 gtag('js', new Date());
 gtag('config', '${id}');`}
       </Script>
