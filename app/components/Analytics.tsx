@@ -1,10 +1,13 @@
 import Script from 'next/script'
 
-/* Google Analytics 4. Renders nothing unless NEXT_PUBLIC_GA_ID is set, so it's
-   inert in local/dev and preview builds without the env var. A GA Measurement
-   ID (G-XXXXXXXX) is public, not a secret. */
+/* Google Analytics 4. A GA Measurement ID (G-XXXXXXXX) is public, not a secret,
+   so the production ID ships as the default; NEXT_PUBLIC_GA_ID can override it
+   (e.g. a separate property for a staging environment) or disable tracking by
+   setting it to an empty string. */
+const DEFAULT_GA_ID = 'G-DYH41RCLYV'
+
 export function Analytics() {
-  const id = process.env.NEXT_PUBLIC_GA_ID
+  const id = process.env.NEXT_PUBLIC_GA_ID ?? DEFAULT_GA_ID
   if (!id) return null
 
   return (
