@@ -41,7 +41,11 @@ export async function submitFeedback(
 
   try {
     await sendFeedbackEmail({ category, message, fromName, fromEmail })
-  } catch {
+  } catch (err) {
+    // Surface the real reason in the server logs (almost always a Resend
+    // config issue: missing RESEND_API_KEY or an unverified sender domain)
+    // while keeping the user-facing copy friendly.
+    console.error('[feedback] send failed:', err)
     return { error: "We couldn't send your feedback just now. Please try again." }
   }
 
