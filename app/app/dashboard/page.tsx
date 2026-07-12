@@ -2,7 +2,6 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { Wordmark, Icon } from '@/components/Icon'
-import AccountActions from './AccountActions'
 import DashboardView, { type Entry } from './DashboardView'
 
 export default async function DashboardPage() {
@@ -34,13 +33,9 @@ export default async function DashboardPage() {
       <header className="app-head">
         <div className="inner">
           <Link href="/dashboard" aria-label="verified.work" style={{ textDecoration: 'none' }}><Wordmark /></Link>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <a href="/feedback" className="btn btn-ghost btn-sm">Feedback</a>
-            <a href="/settings" className="btn btn-ghost btn-sm" style={{ padding: '6px 8px' }} aria-label="Settings">
-              <Icon name="user" size={16} />
-            </a>
-            <AccountActions />
-          </div>
+          <a href="/settings" className="btn btn-secondary btn-sm" style={{ display: 'inline-flex', alignItems: 'center', gap: 7, borderRadius: 999 }}>
+            <Icon name="user" size={15} /> Account
+          </a>
         </div>
       </header>
       <DashboardView firstName={firstName} entries={(entries ?? []) as Entry[]} />
