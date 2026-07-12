@@ -17,7 +17,7 @@ const RESERVED_HANDLES = new Set([
 const slugOk = (v: string) =>
   /^[a-z0-9][a-z0-9-]{1,28}[a-z0-9]$/.test(v) && !/--/.test(v) && !RESERVED_HANDLES.has(v)
 
-const linkedinOk = (v: string) => /^https?:\/\/(www\.)?linkedin\.com\//i.test(v)
+const linkedinOk = (v: string) => /linkedin\.com/i.test(v)
 
 /* Accept a bare domain or a full URL; returns a normalised https URL or null. */
 function normalizeUrl(v: string): string | null {
@@ -89,7 +89,7 @@ export async function completeOnboarding(
     return { error: 'Please choose a valid profile link: 3-30 letters, numbers or hyphens, and not a reserved word.' }
   }
   if (linkedin_raw && !linkedinOk(linkedin_raw)) {
-    return { error: 'Your LinkedIn link should be a linkedin.com URL.' }
+    return { error: 'Your LinkedIn link should contain linkedin.com.' }
   }
   const website_url = website_raw ? normalizeUrl(website_raw) : null
   if (website_raw && !website_url) {

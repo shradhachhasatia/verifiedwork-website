@@ -109,7 +109,7 @@ export default function OnboardingWizard({ initialName, initialPhotoUrl }: Props
 
   const h = handle
   const handleFmtErr = handleError(h.trim())
-  const linkedinErr = !!linkedin.trim() && !/^https?:\/\/(www\.)?linkedin\.com\//i.test(linkedin.trim())
+  const linkedinErr = !!linkedin.trim() && !/linkedin\.com/i.test(linkedin.trim())
 
   // When the user first reaches step 2, suggest a handle that's actually free
   // (so two "shradhachhasatia"s don't collide), unless they've typed their own.
@@ -163,7 +163,7 @@ export default function OnboardingWizard({ initialName, initialPhotoUrl }: Props
 
   async function create() {
     if (!h || handleFmtErr || slugStatus === 'taken' || slugStatus === 'checking') return
-    if (linkedinErr) { setError('Your LinkedIn link should be a linkedin.com URL.'); return }
+    if (linkedinErr) { setError('Your LinkedIn link should contain linkedin.com.'); return }
     setSubmitting(true)
     setError('')
 
@@ -251,7 +251,7 @@ export default function OnboardingWizard({ initialName, initialPhotoUrl }: Props
                 placeholder="https://linkedin.com/in/yourname"
                 type="url"
               />
-              {linkedinErr && <span className="field-err">Must be a linkedin.com URL, e.g. https://linkedin.com/in/yourname</span>}
+              {linkedinErr && <span className="field-err">Please paste a LinkedIn link (must contain linkedin.com).</span>}
             </div>
             <div className="field">
               <label className="field-lbl" style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>

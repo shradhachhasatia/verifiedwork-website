@@ -7,7 +7,7 @@ import { updateProfile, deleteAccount } from './actions'
 import { signOut } from '@/lib/auth-actions'
 import { Icon, LinkedInLogo } from '@/components/Icon'
 
-const linkedinOk = (v: string) => !v.trim() || /^https?:\/\/(www\.)?linkedin\.com\//i.test(v.trim())
+const linkedinOk = (v: string) => !v.trim() || /linkedin\.com/i.test(v.trim())
 
 type Props = {
   slug: string
@@ -187,7 +187,7 @@ export default function SettingsView({ slug, initial }: Props) {
               placeholder="https://linkedin.com/in/yourname"
               type="url"
             />
-            {linkedinErr && <span className="field-err">Must be a linkedin.com URL, e.g. https://linkedin.com/in/yourname</span>}
+            {linkedinErr && <span className="field-err">Please paste a LinkedIn link (must contain linkedin.com).</span>}
           </div>
           <div className="field">
             <label className="field-lbl" style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>

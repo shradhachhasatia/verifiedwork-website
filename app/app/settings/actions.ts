@@ -15,7 +15,7 @@ export type SettingsInput = {
   photo_url: string | null
 }
 
-const linkedinOk = (v: string) => /^https?:\/\/(www\.)?linkedin\.com\//i.test(v)
+const linkedinOk = (v: string) => /linkedin\.com/i.test(v)
 
 /* Accept a bare domain or a full URL; returns a normalised https URL or null. */
 function normalizeUrl(v: string): string | null {
@@ -38,7 +38,7 @@ export async function updateProfile(input: SettingsInput): Promise<{ error: stri
 
   const linkedin = input.linkedin_url.trim()
   if (linkedin && !linkedinOk(linkedin)) {
-    return { error: 'Your LinkedIn link should be a linkedin.com URL.' }
+    return { error: 'Your LinkedIn link should contain linkedin.com.' }
   }
   const websiteRaw = input.website_url.trim()
   const website = websiteRaw ? normalizeUrl(websiteRaw) : null
