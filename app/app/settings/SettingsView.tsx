@@ -235,43 +235,61 @@ export default function SettingsView({ slug, initial }: Props) {
           <Icon name="arrowUpRight" size={18} />
         </a>
 
-        {/* Sign out + delete */}
-        <div style={{ marginTop: 40, paddingTop: 24, borderTop: '1px solid var(--line)', display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <p className="field-lbl" style={{ marginBottom: 2 }}>Account</p>
+        {/* Account */}
+        <div style={{ marginTop: 40, paddingTop: 28, borderTop: '1px solid var(--line)' }}>
+          <p className="field-lbl" style={{ marginBottom: 12 }}>Account</p>
 
-          <form action={signOut} style={{ alignSelf: 'flex-start' }}>
-            <button className="btn btn-secondary btn-sm pill" type="submit">
-              Sign out
-            </button>
-          </form>
-
-          {!confirmDelete ? (
-            <button
-              className="btn btn-ghost btn-sm"
-              style={{ alignSelf: 'flex-start', color: '#dc2626', fontSize: 13 }}
-              onClick={() => setConfirmDelete(true)}
-            >
-              Delete account
-            </button>
-          ) : (
-            <div className="card card-pad" style={{ borderColor: '#fecaca', background: '#fff5f5' }}>
-              <p style={{ fontSize: 14, fontWeight: 600, color: '#991b1b', marginBottom: 6 }}>Delete your account?</p>
-              <p className="muted" style={{ fontSize: 13, marginBottom: 14 }}>
-                This permanently removes your profile, all projects, and verifications. You&apos;ll get a confirmation email. This cannot be undone.
-              </p>
-              <div style={{ display: 'flex', gap: 8 }}>
-                <button className="btn btn-ghost btn-sm" onClick={() => setConfirmDelete(false)} disabled={deleting}>Cancel</button>
-                <button
-                  className="btn btn-sm pill"
-                  style={{ background: '#dc2626', color: '#fff' }}
-                  onClick={handleDelete}
-                  disabled={deleting}
-                >
-                  {deleting ? <><span className="btn-spin" style={{ borderColor: 'rgba(255,255,255,.3)', borderTopColor: '#fff' }} /> Deleting…</> : 'Yes, delete everything'}
-                </button>
-              </div>
+          {/* Sign out */}
+          <div className="card card-pad" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 14 }}>
+            <div>
+              <p style={{ margin: 0, fontWeight: 600, fontSize: 15 }}>Sign out</p>
+              <p className="muted" style={{ margin: '2px 0 0', fontSize: 13 }}>Sign out of verified.work on this device.</p>
             </div>
-          )}
+            <form action={signOut}>
+              <button className="btn btn-secondary btn-sm pill" type="submit" style={{ display: 'inline-flex', alignItems: 'center', gap: 7 }}>
+                <Icon name="logout" size={15} /> Sign out
+              </button>
+            </form>
+          </div>
+
+          {/* Danger zone */}
+          <div className="card card-pad" style={{ marginTop: 12, borderColor: '#fecaca' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 14 }}>
+              <div>
+                <p style={{ margin: 0, fontWeight: 600, fontSize: 15, color: '#b91c1c' }}>Delete account</p>
+                <p className="muted" style={{ margin: '2px 0 0', fontSize: 13 }}>Permanently remove your profile, projects and verifications.</p>
+              </div>
+              {!confirmDelete && (
+                <button
+                  className="btn btn-sm"
+                  style={{ flex: '0 0 auto', borderRadius: 999, background: 'transparent', color: '#dc2626', border: '1px solid #fca5a5' }}
+                  onClick={() => setConfirmDelete(true)}
+                >
+                  Delete
+                </button>
+              )}
+            </div>
+
+            {confirmDelete && (
+              <div style={{ marginTop: 16, paddingTop: 16, borderTop: '1px solid #fecaca' }}>
+                <p style={{ fontSize: 14, fontWeight: 600, color: '#991b1b', marginBottom: 6 }}>Delete your account?</p>
+                <p className="muted" style={{ fontSize: 13, marginBottom: 14 }}>
+                  This permanently removes your profile, all projects, and verifications. You&apos;ll get a confirmation email. This cannot be undone.
+                </p>
+                <div style={{ display: 'flex', gap: 8 }}>
+                  <button className="btn btn-ghost btn-sm" onClick={() => setConfirmDelete(false)} disabled={deleting}>Cancel</button>
+                  <button
+                    className="btn btn-sm pill"
+                    style={{ background: '#dc2626', color: '#fff' }}
+                    onClick={handleDelete}
+                    disabled={deleting}
+                  >
+                    {deleting ? <><span className="btn-spin" style={{ borderColor: 'rgba(255,255,255,.3)', borderTopColor: '#fff' }} /> Deleting…</> : 'Yes, delete everything'}
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
