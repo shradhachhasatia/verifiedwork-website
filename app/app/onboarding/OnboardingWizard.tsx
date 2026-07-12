@@ -6,6 +6,26 @@ import { createUploadUrl } from '@/lib/storage-actions'
 import { Icon, LinkedInLogo } from '@/components/Icon'
 import { completeOnboarding, checkSlug, suggestSlug } from './actions'
 
+// Handles become verified.work/<name>, so they can't collide with real routes
+// or read as throwaway. Keep this list in step with the app's top-level paths.
+const RESERVED_HANDLES = new Set([
+  'login', 'logout', 'signup', 'signin', 'dashboard', 'settings', 'onboarding',
+  'add', 'demo', 'feedback', 'verify', 'api', 'auth', 'admin', 'app', 'blog',
+  'privacy', 'terms', 'careers', 'about', 'help', 'support', 'contact', 'home',
+  'index', 'profile', 'user', 'users', 'me', 'new', 'edit', 'assets',
+])
+
+/** Returns a human error for an invalid handle, or '' when it's well-formed. */
+function handleError(s: string): string {
+  if (!s) return ''
+  if (s.length < 3) return 'Use at least 3 characters.'
+  if (s.length > 30) return 'Keep it under 30 characters.'
+  if (/^-|-$/.test(s)) return "Can't start or end with a hyphen."
+  if (/--/.test(s)) return 'No double hyphens.'
+  if (RESERVED_HANDLES.has(s)) return 'That name is reserved - try another.'
+  return ''
+}
+
 /* ---------- small bits ported from the mockup ---------- */
 function CameraIcon({ size = 22 }: { size?: number }) {
   const P = {
@@ -88,6 +108,7 @@ export default function OnboardingWizard({ initialName, initialPhotoUrl }: Props
   const photoRef = useRef<HTMLInputElement>(null)
 
   const h = handle
+  const handleFmtErr = handleError(h.trim())
   const linkedinErr = !!linkedin.trim() && !/^https?:\/\/(www\.)?linkedin\.com\//i.test(linkedin.trim())
 
   // When the user first reaches step 2, suggest a handle that's actually free
@@ -105,7 +126,8 @@ export default function OnboardingWizard({ initialName, initialPhotoUrl }: Props
   // Live availability check (debounced) so taken handles are caught before submit.
   useEffect(() => {
     const s = h.trim()
-    if (!s) { setSlugStatus('idle'); return }
+    // Don't check availability for a malformed handle - the format error shows instead.
+    if (!s || handleError(s)) { setSlugStatus('idle'); return }
     setSlugStatus('checking')
     let cancelled = false
     const t = setTimeout(() => {
@@ -140,7 +162,7 @@ export default function OnboardingWizard({ initialName, initialPhotoUrl }: Props
   }
 
   async function create() {
-    if (!h || slugStatus === 'taken' || slugStatus === 'checking') return
+    if (!h || handleFmtErr || slugStatus === 'taken' || slugStatus === 'checking') return
     if (linkedinErr) { setError('Your LinkedIn link should be a linkedin.com URL.'); return }
     setSubmitting(true)
     setError('')
@@ -273,15 +295,18 @@ export default function OnboardingWizard({ initialName, initialPhotoUrl }: Props
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <span className="lblf muted" style={{ fontSize: 14 }}>verified.work/</span>
                 <input
-                  className={'input' + (slugStatus === 'taken' ? ' err' : '')}
+                  className={'input' + (slugStatus === 'taken' || handleFmtErr ? ' err' : '')}
                   value={h}
                   onChange={e => { setHandleTouched(true); setHandle(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '')) }}
                   placeholder="yourname"
+                  maxLength={30}
                 />
               </div>
-              {slugStatus === 'checking' && <span className="muted" style={{ fontSize: 12.5, marginTop: 6 }}>Checking availability…</span>}
-              {slugStatus === 'available' && <span style={{ fontSize: 12.5, marginTop: 6, color: 'var(--green)', display: 'inline-flex', alignItems: 'center', gap: 5 }}><Icon name="check" size={13} /> verified.work/{h} is available</span>}
-              {slugStatus === 'taken' && <span className="field-err">That link is taken. Try another - e.g. {h}-2.</span>}
+              {handleFmtErr ? <span className="field-err">{handleFmtErr}</span>
+                : slugStatus === 'checking' ? <span className="muted" style={{ fontSize: 12.5, marginTop: 6 }}>Checking availability…</span>
+                : slugStatus === 'available' ? <span style={{ fontSize: 12.5, marginTop: 6, color: 'var(--green)', display: 'inline-flex', alignItems: 'center', gap: 5 }}><Icon name="check" size={13} /> verified.work/{h} is available</span>
+                : slugStatus === 'taken' ? <span className="field-err">That link is taken. Try another - e.g. {h}-2.</span>
+                : <span className="muted" style={{ fontSize: 12.5, marginTop: 6 }}>3-30 characters · letters, numbers and hyphens</span>}
             </div>
             <div className="field">
               <label className="field-lbl">Profile photo · optional</label>
@@ -311,7 +336,7 @@ export default function OnboardingWizard({ initialName, initialPhotoUrl }: Props
 
             {error && <span className="field-err">{error}</span>}
 
-            <button className="btn btn-primary block" disabled={!h || submitting || slugStatus === 'taken' || slugStatus === 'checking'} onClick={create}>
+            <button className="btn btn-primary block" disabled={!h || !!handleFmtErr || submitting || slugStatus === 'taken' || slugStatus === 'checking'} onClick={create}>
               {submitting
                 ? <><span className="btn-spin" /> {uploadingPhoto ? 'Uploading photo…' : 'Creating profile…'}</>
                 : 'Create my profile'}

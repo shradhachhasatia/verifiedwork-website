@@ -28,7 +28,7 @@ const REQ = {
   validatorRole: 'Design Lead',
   role: 'Product Designer',
   company: 'Bloom Agency',
-  work: 'Redesigned the onboarding flow end-to-end — research, prototypes and the shipped build.',
+  work: 'Redesigned the onboarding flow end-to-end - research, prototypes and the shipped build.',
   metrics: 'Cut sign-up drop-off by 18%.',
 }
 const FULL_ENDORSEMENT = 'Alex owned our onboarding redesign start to finish and the drop-off numbers were real.'
@@ -130,7 +130,7 @@ export default function DemoView() {
           <span className="eyebrow">Interactive demo</span>
           <h1 className="h1" style={{ marginTop: 12, fontSize: 'clamp(26px,3.2vw,40px)' }}>See how your work gets verified</h1>
           <p className="lede" style={{ maxWidth: '52ch', margin: '12px auto 0' }}>
-            No account needed for the person who vouches for you. Here&apos;s the whole thing, from their side — click through it, or watch it play.
+            No account needed for the person who vouches for you. Here&apos;s the whole thing, from their side - click through it, or watch it play.
           </p>
         </div>
 
@@ -183,7 +183,7 @@ export default function DemoView() {
             <h2 className="h2" style={{ fontSize: 'clamp(22px,2.4vw,32px)' }}>Your turn.</h2>
             <p className="lede" style={{ margin: '10px auto 22px', maxWidth: '40ch' }}>Build your own verified profile and send your first request in minutes.</p>
             <Link href="/login" className="btn btn-primary btn-lg pill">
-              Create your profile — free
+              Create your profile - free
               <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="M12 5l7 7-7 7" /></svg>
             </Link>
           </div>

@@ -3,8 +3,19 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 
-/* Slug rules mirror the mockup input mask: lowercase letters, numbers, hyphens. */
-const slugOk = (v: string) => /^[a-z0-9](?:[a-z0-9-]{0,38}[a-z0-9])?$/.test(v)
+// Handles become verified.work/<slug>, so they must not collide with real
+// routes. Keep this in step with RESERVED_HANDLES in OnboardingWizard.tsx.
+const RESERVED_HANDLES = new Set([
+  'login', 'logout', 'signup', 'signin', 'dashboard', 'settings', 'onboarding',
+  'add', 'demo', 'feedback', 'verify', 'api', 'auth', 'admin', 'app', 'blog',
+  'privacy', 'terms', 'careers', 'about', 'help', 'support', 'contact', 'home',
+  'index', 'profile', 'user', 'users', 'me', 'new', 'edit', 'assets',
+])
+
+/* Slug rules: 3-30 chars, lowercase letters/numbers/hyphens, must start and end
+   alphanumeric, no double hyphens, and not a reserved route name. */
+const slugOk = (v: string) =>
+  /^[a-z0-9][a-z0-9-]{1,28}[a-z0-9]$/.test(v) && !/--/.test(v) && !RESERVED_HANDLES.has(v)
 
 const linkedinOk = (v: string) => /^https?:\/\/(www\.)?linkedin\.com\//i.test(v)
 
@@ -75,7 +86,7 @@ export async function completeOnboarding(
 
   if (!full_name || !title) return { error: 'Please add your name and title.' }
   if (!slugOk(slug)) {
-    return { error: 'Your profile link can only use letters, numbers and hyphens.' }
+    return { error: 'Please choose a valid profile link: 3-30 letters, numbers or hyphens, and not a reserved word.' }
   }
   if (linkedin_raw && !linkedinOk(linkedin_raw)) {
     return { error: 'Your LinkedIn link should be a linkedin.com URL.' }
