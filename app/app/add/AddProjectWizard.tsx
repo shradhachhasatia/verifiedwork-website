@@ -265,14 +265,14 @@ export default function AddProjectWizard({ selfEmail }: Props) {
           </div>
           <div className="field"><label className="field-lbl">Their LinkedIn <span style={{ textTransform: 'none', letterSpacing: 0, color: 'var(--green)' }}>· recommended</span></label>
             <input
-              className={'input' + (vLinkTouched && f.vLink && !/^https?:\/\/(www\.)?linkedin\.com\//i.test(f.vLink) ? ' err' : '')}
+              className={'input' + (vLinkTouched && f.vLink && !/linkedin\.com/i.test(f.vLink) ? ' err' : '')}
               value={f.vLink}
               onChange={e => { set('vLink', e.target.value); if (vLinkTouched) setVLinkTouched(true) }}
               onBlur={() => setVLinkTouched(true)}
               placeholder="https://linkedin.com/in/…"
             />
-            {vLinkTouched && f.vLink && !/^https?:\/\/(www\.)?linkedin\.com\//i.test(f.vLink) && (
-              <span className="field-err">Must be a LinkedIn URL, e.g. https://linkedin.com/in/name</span>
+            {vLinkTouched && f.vLink && !/linkedin\.com/i.test(f.vLink) && (
+              <span className="field-err">Please paste a LinkedIn link (must contain linkedin.com).</span>
             )}
           </div>
           <div className="field"><label className="field-lbl">Personal note <span style={{ textTransform: 'none', letterSpacing: 0, color: 'var(--grey-2)' }}>· optional</span></label>
