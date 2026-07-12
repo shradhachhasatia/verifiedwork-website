@@ -230,7 +230,7 @@ export default function SettingsView({ slug, initial }: Props) {
         >
           <div>
             <p style={{ margin: 0, fontWeight: 600, fontSize: 15 }}>Share feedback</p>
-            <p className="muted" style={{ margin: '2px 0 0', fontSize: 13 }}>Report a bug or suggest an idea — it goes straight to the team.</p>
+            <p className="muted" style={{ margin: '2px 0 0', fontSize: 13 }}>Report a bug or suggest an idea - it goes straight to the team.</p>
           </div>
           <Icon name="arrowUpRight" size={18} />
         </a>

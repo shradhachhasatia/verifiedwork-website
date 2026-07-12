@@ -119,13 +119,13 @@ export default function VerifyForm({ token, req }: { token: string; req: Request
               <span className="k">Role</span>
               <span className="v">{req.role_title} · {req.company}</span>
             </div>
-            <div className="receipt-row">
+            <div className="receipt-row" style={{ flexDirection: 'column', alignItems: 'flex-start', gap: 6 }}>
               <span className="k">What they did</span>
-              <span className="v" style={{ textAlign: 'right', maxWidth: '60%', fontWeight: 400, fontSize: 14, lineHeight: 1.5 }}>{req.work_done}</span>
+              <span className="v" style={{ textAlign: 'left', maxWidth: '100%', fontWeight: 400, fontSize: 14, lineHeight: 1.5 }}>{req.work_done}</span>
             </div>
-            <div className="receipt-row">
+            <div className="receipt-row" style={{ flexDirection: 'column', alignItems: 'flex-start', gap: 6 }}>
               <span className="k">Outcome</span>
-              <span className="v" style={{ textAlign: 'right', maxWidth: '60%', fontWeight: 400, fontSize: 14, lineHeight: 1.5 }}>{req.metrics}</span>
+              <span className="v" style={{ textAlign: 'left', maxWidth: '100%', fontWeight: 400, fontSize: 14, lineHeight: 1.5 }}>{req.metrics}</span>
             </div>
           </div>
 

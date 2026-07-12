@@ -26,6 +26,8 @@ function WizBar({ current, total, label, onBack }: { current: number; total: num
 }
 
 const urlOk = (v: string) => /^https?:\/\/.+\..+/i.test(v.trim())
+const DESC_MAX = 600
+const OUTCOME_MAX = 300
 
 function ArtifactInput({ value, onChange }: { value: Artifact | null; onChange: (a: Artifact | null) => void }) {
   const [type, setType] = useState<'link' | 'image' | 'file'>(value ? value.type : 'link')
@@ -107,8 +109,11 @@ export default function AddProjectWizard({ selfEmail }: Props) {
 
   const set = (k: keyof typeof f, v: string) => setF(p => ({ ...p, [k]: v }))
 
-  const ok1 = f.title.trim() && f.company.trim() && f.startYear
-  const ok2 = f.description.trim() && f.outcome.trim()
+  // A finished project can't end before it began; "Present" is always valid.
+  const periodOk = !f.startYear || f.endYear === 'Present' || +f.endYear >= +f.startYear
+  const ok1 = f.title.trim() && f.company.trim() && f.startYear && periodOk
+  const descOk = f.description.trim().length >= 10
+  const ok2 = descOk && f.outcome.trim()
   const isSelf = emailOk(f.vEmail) && !!selfEmail && f.vEmail.trim().toLowerCase() === selfEmail.toLowerCase()
   const tier = emailOk(f.vEmail) && !isSelf ? badgeTier(f.vEmail) : null
   const ok3 = f.vName.trim() && f.vRole.trim() && emailOk(f.vEmail) && !isSelf
@@ -194,14 +199,20 @@ export default function AddProjectWizard({ selfEmail }: Props) {
             <input className="input" value={f.company} onChange={e => set('company', e.target.value)} placeholder="Where? (a startup, client, college…)" /></div>
           <div className="field"><label className="field-lbl">How long - period</label>
             <div className="row2">
-              <select className="input select" value={f.startYear} onChange={e => set('startYear', e.target.value)}>
+              <select className="input select" value={f.startYear} onChange={e => {
+                // If the new start year is after the current end year, snap end back to Present.
+                const v = e.target.value
+                setF(p => ({ ...p, startYear: v, endYear: p.endYear !== 'Present' && v && +p.endYear < +v ? 'Present' : p.endYear }))
+              }}>
                 <option value="">Start year</option>{YEARS.map(y => <option key={y} value={y}>{y}</option>)}
               </select>
               <select className="input select" value={f.endYear} onChange={e => set('endYear', e.target.value)}>
-                <option value="Present">Present</option>{YEARS.map(y => <option key={y} value={y}>{y}</option>)}
+                <option value="Present">Present</option>
+                {YEARS.filter(y => !f.startYear || +y >= +f.startYear).map(y => <option key={y} value={y}>{y}</option>)}
               </select>
             </div>
-            {f.startYear && <span className="helper"><Icon name="calendar" size={13} style={{ display: 'inline', verticalAlign: '-2px', marginRight: 5 }} />{periodLabel(f.startYear, f.endYear)} · about {durationLabel(f.startYear, f.endYear)}</span>}
+            {f.startYear && periodOk && <span className="helper"><Icon name="calendar" size={13} style={{ display: 'inline', verticalAlign: '-2px', marginRight: 5 }} />{periodLabel(f.startYear, f.endYear)} · about {durationLabel(f.startYear, f.endYear)}</span>}
+            {f.startYear && !periodOk && <span className="field-err">The end year can&apos;t be before the start year.</span>}
           </div>
           <button className="btn btn-primary block" disabled={!ok1} onClick={() => { setError(''); setStep(2) }}>Continue</button>
         </div>
@@ -214,9 +225,11 @@ export default function AddProjectWizard({ selfEmail }: Props) {
               <button key={c} type="button" className={'pill' + (f.contrib === c ? ' sel' : '')} onClick={() => set('contrib', c)}>{c}</button>
             ))}</div></div>
           <div className="field"><label className="field-lbl">What did you do?</label>
-            <textarea className="textarea" value={f.description} onChange={e => set('description', e.target.value)} placeholder="The problem, what you built, how you solved it…" /></div>
+            <textarea className="textarea" value={f.description} maxLength={DESC_MAX} onChange={e => set('description', e.target.value)} placeholder="The problem, what you built, how you solved it…" />
+            <span className="helper">{f.description.length}/{DESC_MAX} · min 10 characters</span></div>
           <div className="field"><label className="field-lbl">What was the outcome?</label>
-            <textarea className="textarea" value={f.outcome} onChange={e => set('outcome', e.target.value)} placeholder="e.g. grew traffic 3×, shipped the backend, cut drop-off 34%" style={{ minHeight: 80 }} /></div>
+            <textarea className="textarea" value={f.outcome} maxLength={OUTCOME_MAX} onChange={e => set('outcome', e.target.value)} placeholder="e.g. grew traffic 3×, shipped the backend, cut drop-off 34%" style={{ minHeight: 80 }} />
+            <span className="helper">{f.outcome.length}/{OUTCOME_MAX}</span></div>
           <div className="field"><label className="field-lbl">Attach an artifact · optional</label>
             <ArtifactInput value={artifact} onChange={setArtifact} />
             <span className="helper">A link, image, or file your validator and viewers can open.</span></div>
