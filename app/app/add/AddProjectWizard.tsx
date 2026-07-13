@@ -71,7 +71,7 @@ function ArtifactInput({ value, onChange }: { value: Artifact | null; onChange: 
       ) : type === 'link' ? (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
           <div style={{ display: 'flex', gap: 8 }}>
-            <input className={'input' + (linkErr ? ' err' : '')} placeholder="https://your-work.com/case-study" value={link} onChange={e => { setLink(e.target.value); if (linkErr) setLinkErr('') }} onKeyDown={e => e.key === 'Enter' && attachLink()} />
+            <input className={'input' + (linkErr ? ' err' : '')} placeholder="https://your-work.com/case-study" value={link} onChange={e => { setLink(e.target.value); if (linkErr) setLinkErr('') }} onKeyDown={e => e.key === 'Enter' && attachLink()} onBlur={() => { if (urlOk(link)) attachLink() }} />
             <button className="btn btn-secondary btn-sm" type="button" disabled={!link.trim()} onClick={attachLink}>Attach</button>
           </div>
           {linkErr && <span className="field-err">{linkErr}</span>}
