@@ -279,6 +279,22 @@ button{font-family:inherit;cursor:pointer;}
   *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;}
   .reveal,.h1,.hero-label,.hero-sub,.hero-cta,.demo{opacity:1 !important;transform:none !important;}
 }
+
+/* pricing */
+.price-wrap{display:flex;justify-content:center;margin-top:44px;}
+.price-card{position:relative;width:100%;max-width:470px;background:var(--white);border:1px solid var(--line);border-radius:24px;box-shadow:0 44px 96px -54px rgba(26,26,26,.4);padding:42px 40px;}
+.price-card .pc-badge{display:inline-flex;align-items:center;gap:8px;background:var(--green-tint);color:var(--green-deep);font-family:var(--label);font-weight:700;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;padding:8px 15px;border-radius:999px;}
+.price-card .pc-price{display:flex;align-items:baseline;gap:14px;margin:24px 0 4px;flex-wrap:wrap;}
+.price-card .pc-old{font-size:34px;font-weight:600;color:var(--grey-2);text-decoration:line-through;}
+.price-card .pc-now{font-family:var(--label);font-size:66px;font-weight:700;letter-spacing:-.03em;color:var(--black);line-height:1;}
+.price-card .pc-per{font-size:16px;color:var(--grey);font-weight:600;}
+.price-card .pc-save{font-size:14.5px;color:var(--green);font-weight:600;}
+.price-card .pc-feat{list-style:none;padding:0;margin:26px 0 30px;display:flex;flex-direction:column;gap:14px;}
+.price-card .pc-feat li{display:flex;align-items:flex-start;gap:11px;font-size:15.5px;color:var(--ink-2);line-height:1.45;}
+.price-card .pc-feat .ci{flex-shrink:0;width:22px;height:22px;border-radius:50%;background:var(--green-tint);display:inline-flex;align-items:center;justify-content:center;margin-top:1px;}
+.price-card .btn{width:100%;background:var(--green);color:#fff;}
+.price-card .btn:hover{background:var(--green-2);}
+.price-card .pc-note{margin:16px 0 0;font-size:12.5px;color:var(--grey);text-align:center;line-height:1.5;}
 </style>
 </head>
 <body>
@@ -290,7 +306,7 @@ button{font-family:inherit;cursor:pointer;}
     <span class="work">work</span></a>
   <div class="nav-r">
     <span class="nav-links">
-      <a href="#how">How it works</a><a href="/demo">Validator demo</a><a href="#research">Research</a>
+      <a href="#how">How it works</a><a href="/demo">Validator demo</a><a href="#research">Research</a><a href="#pricing">Pricing</a>
     </span>
     <a class="nav-signin" href="/login">Sign in</a>
     <a class="btn btn-dark" href="/login">Try free</a>
@@ -402,6 +418,30 @@ button{font-family:inherit;cursor:pointer;}
 </div></section>
 
 <!-- FINAL CTA -->
+
+<!-- PRICING -->
+<section class="sec" id="pricing"><div class="container">
+  <div class="reveal"><div class="sec-eyebrow">Pricing</div>
+    <h2 class="sec-h2">Become a founding member</h2>
+    <p class="sec-lede">Start free. Upgrade once to unlock everything &mdash; at founding-member pricing, before it goes up.</p></div>
+  <div class="price-wrap reveal">
+    <div class="price-card">
+      <span class="pc-badge">&#9733; Founding member</span>
+      <div class="pc-price"><span class="pc-old">$30</span><span class="pc-now">$10</span><span class="pc-per">one-time</span></div>
+      <div class="pc-save">Save $20 &middot; limited founding-member offer</div>
+      <ul class="pc-feat">
+        <li><span class="ci"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2D6A4F" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Your verified profile at verified.work/you</li>
+        <li><span class="ci"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2D6A4F" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Unlimited verified projects</li>
+        <li><span class="ci"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2D6A4F" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Founding-member badge on your profile</li>
+        <li><span class="ci"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2D6A4F" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Priority verification &amp; support</li>
+        <li><span class="ci"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2D6A4F" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Early access to new features</li>
+      </ul>
+      <a class="btn btn-lg" href="/checkout.html">Become a founding member <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></a>
+      <p class="pc-note">One-time payment &middot; Secure checkout via Razorpay &middot; All sales final, no refunds</p>
+    </div>
+  </div>
+</div></section>
+
 <section class="final"><div class="container final-in">
   <h2 class="reveal">Your work deserves proof.</h2>
   <p class="reveal rd1">Build a verified profile in minutes - free, and honest about every endorsement.</p>
@@ -433,10 +473,10 @@ button{font-family:inherit;cursor:pointer;}
       <div class="foot-col"><h4>Company</h4><ul>
         <li><a href="careers.html">Careers</a></li><li><a href="blog/">Blog</a></li><li><a href="mailto:admin@verifiedwork.co">Contact</a></li><li><a href="/feedback">Feedback</a></li></ul></div>
       <div class="foot-col"><h4>Legal</h4><ul>
-        <li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li><li><a href="privacy.html#cookies">Cookies</a></li></ul></div>
+        <li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li><li><a href="terms.html#refunds">Refunds</a></li><li><a href="privacy.html#cookies">Cookies</a></li></ul></div>
     </nav>
   </div>
-  <div class="foot-bot"><span>© 2026 Aavishkar Technologies. All rights reserved.</span><span>verifiedwork.co</span></div>
+  <div class="foot-bot"><span>© 2026 Aavishkar Technologies Pvt Ltd. All rights reserved.</span><span>verifiedwork.co</span></div>
 </div></footer>
 
 <script>

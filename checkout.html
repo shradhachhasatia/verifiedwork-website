@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+<title>Checkout · Founding member — verified.work</title>
+<!-- Google Analytics 4 (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-DYH41RCLYV"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  // Privacy-first: deny all storage so GA4 runs cookieless - no cookies and
+  // no personal data are stored on anyone's device.
+  gtag('consent', 'default', {ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied'});
+  gtag('js', new Date());
+  gtag('config', 'G-DYH41RCLYV');
+</script>
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green:#2D6A4F;--green-2:#40916C;--green-tint:#D8F3DC;--green-deep:#1F4A37;
+  --black:#1A1A1A;--white:#FFFFFF;--grey:#6B7280;--grey-2:#9CA3AF;--ink-2:#374151;
+  --line:#E5E7EB;--line-strong:#D1D5DB;--surface-2:#F9FAFB;
+  --warning:#B5800B;--warning-tint:#FEF3C7;
+  --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --label:'Space Grotesk','Inter',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:var(--font);color:var(--black);background:var(--surface-2);line-height:1.55;-webkit-font-smoothing:antialiased;}
+a{color:inherit;}
+.head{background:rgba(255,255,255,.85);backdrop-filter:saturate(180%) blur(12px);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10;}
+.head .in{max-width:1080px;margin:0 auto;padding:16px clamp(18px,4vw,40px);display:flex;align-items:center;justify-content:space-between;}
+.mark{display:inline-flex;align-items:center;font-weight:700;letter-spacing:-.015em;font-size:19px;text-decoration:none;color:var(--black);}
+.mark .work{font-weight:400;color:var(--grey);}
+.mark .ck{display:inline-flex;align-items:center;justify-content:center;width:13px;height:13px;border-radius:50%;background:var(--green);margin:0 2px;}
+.back{font-size:14px;color:var(--grey);text-decoration:none;font-weight:600;}
+.back:hover{color:var(--black);}
+.wrap{max-width:1000px;margin:0 auto;padding:clamp(28px,5vw,56px) clamp(18px,4vw,40px) 80px;}
+.eyebrow{font-family:var(--label);font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--green);display:inline-flex;align-items:center;gap:10px;}
+.eyebrow::before{content:"";width:26px;height:1.5px;background:var(--green);}
+h1{font-size:clamp(28px,4vw,40px);font-weight:800;letter-spacing:-.03em;margin:14px 0 8px;line-height:1.05;}
+.sub{color:var(--grey);font-size:16px;max-width:52ch;}
+.grid{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;margin-top:36px;align-items:start;}
+@media(max-width:760px){.grid{grid-template-columns:1fr;}}
+.card{background:var(--white);border:1px solid var(--line);border-radius:20px;box-shadow:0 1px 2px rgba(17,24,39,.05);}
+.card-pad{padding:clamp(24px,3vw,32px);}
+.plan-badge{display:inline-flex;align-items:center;gap:8px;background:var(--green-tint);color:var(--green-deep);font-family:var(--label);font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding:7px 14px;border-radius:999px;}
+.feat{list-style:none;margin:22px 0 0;display:flex;flex-direction:column;gap:15px;}
+.feat li{display:flex;align-items:flex-start;gap:12px;font-size:15.5px;color:var(--ink-2);line-height:1.45;}
+.feat .ci{flex-shrink:0;width:22px;height:22px;border-radius:50%;background:var(--green-tint);display:inline-flex;align-items:center;justify-content:center;margin-top:1px;}
+/* order summary */
+.sum h2{font-family:var(--label);font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--grey);margin-bottom:18px;}
+.row{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:11px 0;font-size:15px;}
+.row .lbl{color:var(--ink-2);}
+.row .val{font-weight:600;font-family:var(--label);font-variant-numeric:tabular-nums;}
+.row.disc .val{color:var(--green);}
+.row .strike{color:var(--grey-2);text-decoration:line-through;font-weight:500;margin-right:8px;}
+.divider{height:1px;background:var(--line);margin:8px 0;}
+.total{display:flex;align-items:baseline;justify-content:space-between;padding-top:14px;}
+.total .lbl{font-weight:700;font-size:17px;}
+.total .val{font-family:var(--label);font-weight:700;font-size:32px;letter-spacing:-.02em;}
+.total .cur{font-size:15px;color:var(--grey);font-weight:600;margin-left:4px;}
+.norefund{margin-top:18px;background:var(--warning-tint);border:1px solid #FCE9A6;border-radius:12px;padding:13px 15px;display:flex;gap:10px;align-items:flex-start;font-size:13px;color:#7A5708;line-height:1.5;}
+.norefund svg{flex-shrink:0;margin-top:1px;}
+.consent{display:flex;gap:11px;align-items:flex-start;margin-top:18px;font-size:14px;color:var(--ink-2);line-height:1.45;cursor:pointer;}
+.consent input{margin-top:3px;width:18px;height:18px;accent-color:var(--green);flex-shrink:0;}
+.pay{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;margin-top:20px;background:var(--green);color:#fff;font-weight:600;font-size:16px;border:0;border-radius:999px;padding:16px 24px;text-decoration:none;transition:background .15s,opacity .15s;cursor:pointer;}
+.pay:hover{background:var(--green-2);}
+.pay[aria-disabled="true"]{opacity:.45;pointer-events:none;}
+.trust{margin-top:14px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:12.5px;color:var(--grey);}
+.finel{margin-top:14px;font-size:12px;color:var(--grey-2);text-align:center;line-height:1.6;}
+.finel a{color:var(--grey);text-decoration:underline;text-underline-offset:2px;}
+</style>
+</head>
+<body>
+<header class="head"><div class="in">
+  <a class="mark" href="/"><span>verified</span><span class="ck"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="work">work</span></a>
+  <a class="back" href="/#pricing">&larr; Back</a>
+</div></header>
+
+<main class="wrap">
+  <div class="eyebrow">Checkout</div>
+  <h1>Upgrade to Founding member</h1>
+  <p class="sub">A one-time payment unlocks everything, forever &mdash; at the founding-member price. Card details are entered on Razorpay's secure page.</p>
+
+  <div class="grid">
+    <!-- what's included -->
+    <div class="card card-pad">
+      <span class="plan-badge">&#9733; Founding member</span>
+      <ul class="feat">
+        <li><span class="ci"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2D6A4F" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Your verified profile at verified.work/you</li>
+        <li><span class="ci"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2D6A4F" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Unlimited verified projects</li>
+        <li><span class="ci"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2D6A4F" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Founding-member badge on your profile</li>
+        <li><span class="ci"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2D6A4F" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Priority verification &amp; support</li>
+        <li><span class="ci"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2D6A4F" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Early access to new features</li>
+      </ul>
+    </div>
+
+    <!-- order summary -->
+    <div class="card card-pad sum">
+      <h2>Order summary</h2>
+      <div class="row"><span class="lbl">Founding member <span style="color:var(--grey-2)">· one-time</span></span><span class="val"><span class="strike">$30</span>$10</span></div>
+      <div class="row disc"><span class="lbl">Founding discount</span><span class="val">&minus;$20</span></div>
+      <div class="divider"></div>
+      <div class="total"><span class="lbl">Total due today</span><span><span class="val">$10</span><span class="cur">USD</span></span></div>
+
+      <div class="norefund">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B5800B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span>All payments are final. This purchase is <strong>non-refundable</strong> &mdash; no refunds, cancellations, or exchanges once paid.</span>
+      </div>
+
+      <label class="consent"><input type="checkbox" id="agree"><span>I agree to the <a href="/terms.html" target="_blank">Terms</a> and understand that all payments are final and <a href="/terms.html#refunds" target="_blank">non-refundable</a>.</span></label>
+
+      <a class="pay" id="payBtn" href="https://rzp.io/rzp/verifiedwork" aria-disabled="true">
+        Proceed to secure payment
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+      </a>
+      <div class="trust">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        Payments processed securely by Razorpay
+      </div>
+      <p class="finel">You'll enter your card details on Razorpay's secure page. We never see or store your card information.</p>
+    </div>
+  </div>
+</main>
+
+<script>
+  var agree = document.getElementById('agree');
+  var pay = document.getElementById('payBtn');
+  function sync(){ pay.setAttribute('aria-disabled', agree.checked ? 'false' : 'true'); }
+  agree.addEventListener('change', sync); sync();
+  pay.addEventListener('click', function(e){
+    if(!agree.checked){ e.preventDefault(); agree.focus(); return; }
+    if(window.gtag) gtag('event','begin_checkout',{value:10,currency:'USD',items:[{item_name:'Founding member'}]});
+  });
+</script>
+</body>
+</html>
