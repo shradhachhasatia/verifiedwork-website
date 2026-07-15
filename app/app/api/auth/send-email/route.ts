@@ -8,7 +8,7 @@ export const runtime = 'nodejs'
  * Supabase "Send Email" auth hook.
  * Supabase mints the sign-in token and POSTs it here (signed with the
  * Standard Webhooks scheme); we build the link and send the email through
- * Resend. Supabase's own mailer is never used — so no Supabase email rate
+ * Resend. Supabase's own mailer is never used - so no Supabase email rate
  * limit, and the token-hash link works on any device.
  *
  * Setup: Supabase → Authentication → Hooks → "Send Email" → enable as an

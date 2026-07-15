@@ -70,7 +70,7 @@ export async function createEntry(
   }
 
   // Generate the verification token here so we never have to read it back out
-  // of the database — that column is no longer exposed to the API role.
+  // of the database - that column is no longer exposed to the API role.
   const token = crypto.randomUUID()
   const tier = badgeTier(input.vEmail)
   const { error: valErr } = await supabase.from('validators').insert({
@@ -111,8 +111,11 @@ export async function createEntry(
       workDone: input.description.trim(),
       metrics: input.outcome.trim(),
       verifyUrl,
-    }).catch(() => {
-      // Email failure doesn't block the user - entry is saved, email can be retried
+    }).catch((err) => {
+      // Email failure doesn't block the user - the entry is saved either way -
+      // but log the real reason (almost always a Resend config issue: missing
+      // RESEND_API_KEY or an unverified sender domain) so it's diagnosable.
+      console.error('[verification email] send failed:', err)
     })
   }
 

@@ -76,7 +76,7 @@ export async function deleteAccount(): Promise<{ error: string } | { ok: true }>
     .eq('id', user.id)
     .single()
 
-  // Email comes from the auth session, not the users table — that column is no
+  // Email comes from the auth session, not the users table - that column is no
   // longer exposed to the API role for privacy.
   if (user.email) {
     await sendAccountDeletedEmail({
