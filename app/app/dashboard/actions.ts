@@ -9,7 +9,7 @@ export async function deleteEntry(id: string): Promise<{ error: string } | { ok:
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: 'Session expired. Please sign in again.' }
 
-  // Read the artifact first so we can remove the uploaded file too — deleting
+  // Read the artifact first so we can remove the uploaded file too - deleting
   // the row alone would orphan the object in Storage.
   const { data: entry } = await supabase
     .from('entries')
@@ -19,7 +19,7 @@ export async function deleteEntry(id: string): Promise<{ error: string } | { ok:
     .maybeSingle()
 
   // Remove child rows first (RLS scopes each delete to rows the user owns),
-  // then the entry itself — so it works whether or not the FKs cascade.
+  // then the entry itself - so it works whether or not the FKs cascade.
   await supabase.from('verifications').delete().eq('entry_id', id)
   await supabase.from('validators').delete().eq('entry_id', id)
 
