@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 
 /* Shows the "become a founding member" banner (until they're premium) and a
    one-off toast when they return from Razorpay via /dashboard?upgraded=1. */
-export default function UpgradeBanner({ premium }: { premium: boolean }) {
+export default function UpgradeBanner({ premium, paymentsEnabled }: { premium: boolean; paymentsEnabled: boolean }) {
   const [toast, setToast] = useState<{ kind: 'ok' | 'info' | 'err'; msg: string } | null>(null)
 
   useEffect(() => {
@@ -21,7 +21,7 @@ export default function UpgradeBanner({ premium }: { premium: boolean }) {
 
   return (
     <>
-      {!premium && (
+      {!premium && paymentsEnabled && (
         <div className="wrap wrap-md" style={{ paddingTop: 20 }}>
           <div style={{
             display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap',

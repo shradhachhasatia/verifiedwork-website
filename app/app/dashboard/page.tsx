@@ -44,7 +44,7 @@ export default async function DashboardPage() {
           </div>
         </div>
       </header>
-      <UpgradeBanner premium={!!profile.premium} />
+      <UpgradeBanner premium={!!profile.premium} paymentsEnabled={!!process.env.RAZORPAY_KEY_ID} />
       <DashboardView firstName={firstName} entries={(entries ?? []) as Entry[]} />
     </main>
   )
