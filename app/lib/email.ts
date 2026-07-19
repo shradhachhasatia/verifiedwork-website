@@ -69,6 +69,58 @@ export async function sendFeedbackEmail({
   if (error) throw new Error(error.message)
 }
 
+export async function sendUpgradeEmail({ to, name }: { to: string; name: string }) {
+  const first = (name || '').trim().split(/\s+/)[0]
+  const hi = first ? `Hi ${esc(first)}, ` : ''
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>You're a founding member</title></head>
+<body style="margin:0;padding:0;background:#f3f4f6;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f3f4f6;padding:40px 16px;">
+  <tr><td align="center">
+    <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
+      <tr><td style="padding-bottom:28px;text-align:center;">
+        <span style="font-size:17px;font-weight:700;letter-spacing:-.015em;color:#1a1a1a;">verified<span style="display:inline-block;width:13px;height:13px;line-height:13px;text-align:center;border-radius:50%;background:#2D6A4F;color:#fff;font-size:9px;font-weight:700;vertical-align:middle;margin:0 1px;">&#10003;</span><span style="font-weight:400;color:#6b7280;">work</span></span>
+      </td></tr>
+      <tr><td style="background:#ffffff;border-radius:20px;border:1px solid #e5e7eb;overflow:hidden;">
+        <div style="height:5px;background:#2D6A4F;"></div>
+        <table width="100%" cellpadding="0" cellspacing="0" style="padding:36px 36px 0;">
+          <tr><td>
+            <p style="margin:0 0 8px;font-size:12px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:#2D6A4F;">Founding member</p>
+            <h1 style="margin:0 0 14px;font-size:24px;font-weight:700;letter-spacing:-.025em;color:#1a1a1a;line-height:1.2;">You're a founding member &#127881;</h1>
+            <p style="margin:0 0 28px;font-size:15px;color:#6b7280;line-height:1.55;">${hi}your payment is confirmed and your verified.work account is now on the Founding member plan. Thank you for backing us early.</p>
+          </td></tr>
+        </table>
+        <table width="100%" cellpadding="0" cellspacing="0" style="padding:0 36px 28px;">
+          <tr><td style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:14px;padding:20px 22px;">
+            <p style="margin:0 0 10px;font-size:14px;color:#374151;line-height:1.55;">&#10003;&nbsp; Unlimited verified projects</p>
+            <p style="margin:0 0 10px;font-size:14px;color:#374151;line-height:1.55;">&#10003;&nbsp; Founding-member badge on your profile</p>
+            <p style="margin:0;font-size:14px;color:#374151;line-height:1.55;">&#10003;&nbsp; Early access to new features</p>
+          </td></tr>
+        </table>
+        <table width="100%" cellpadding="0" cellspacing="0" style="padding:0 36px 36px;">
+          <tr><td align="center">
+            <a href="https://verifiedwork.co/dashboard" style="display:inline-block;background:#2D6A4F;color:#ffffff;font-size:15px;font-weight:600;letter-spacing:-.01em;text-decoration:none;padding:15px 32px;border-radius:999px;">Go to your dashboard &rarr;</a>
+          </td></tr>
+        </table>
+      </td></tr>
+      <tr><td style="padding-top:22px;text-align:center;">
+        <p style="margin:0;font-size:12px;color:#9ca3af;line-height:1.6;">This is a one-time purchase. All payments are final and non-refundable.</p>
+      </td></tr>
+    </table>
+  </td></tr>
+</table>
+</body></html>`
+
+  const { error } = await resend.emails.send({
+    from: FROM,
+    to,
+    subject: "You're a verified.work founding member",
+    html,
+  })
+  if (error) throw new Error(error.message)
+}
+
 export async function sendVerificationEmail({
   to,
   validatorName,

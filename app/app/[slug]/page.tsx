@@ -39,7 +39,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ slug: 
 
   const { data: profile } = await supabase
     .from('users')
-    .select('id, full_name, title, location, photo_url, linkedin_url, website_url, website_label')
+    .select('id, full_name, title, location, photo_url, linkedin_url, website_url, website_label, premium')
     .eq('slug', slug)
     .single()
 
@@ -87,6 +87,9 @@ export default async function ProfilePage({ params }: { params: Promise<{ slug: 
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap', marginBottom: 4 }}>
                 <h1 className="h1" style={{ fontSize: 'clamp(24px,3vw,36px)' }}>{profile.full_name}</h1>
                 <span className="status verified"><CheckDot size={13} /> Verified</span>
+                {profile.premium && (
+                  <span className="status" style={{ background: 'var(--green-tint)', color: 'var(--green-deep)', fontFamily: 'var(--label)' }}>&#9733; Founding member</span>
+                )}
               </div>
               {profile.title && (
                 <p className="muted" style={{ margin: 0, fontSize: 15 }}>
