@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { Wordmark, Icon } from '@/components/Icon'
 import DashboardView, { type Entry } from './DashboardView'
+import UpgradeBanner from './UpgradeBanner'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -14,7 +15,7 @@ export default async function DashboardPage() {
   // New users must finish onboarding before they reach the dashboard.
   const { data: profile } = await supabase
     .from('users')
-    .select('full_name, onboarded')
+    .select('full_name, onboarded, premium')
     .eq('id', user.id)
     .single()
 
@@ -33,11 +34,17 @@ export default async function DashboardPage() {
       <header className="app-head">
         <div className="inner">
           <Link href="/dashboard" aria-label="verified.work" style={{ textDecoration: 'none' }}><Wordmark /></Link>
-          <a href="/settings" className="btn btn-secondary btn-sm" style={{ display: 'inline-flex', alignItems: 'center', gap: 7, borderRadius: 999 }}>
-            <Icon name="user" size={15} /> Account
-          </a>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            {profile.premium && (
+              <span className="status verified" style={{ fontFamily: 'var(--label)' }}>&#9733; Founding</span>
+            )}
+            <a href="/settings" className="btn btn-secondary btn-sm" style={{ display: 'inline-flex', alignItems: 'center', gap: 7, borderRadius: 999 }}>
+              <Icon name="user" size={15} /> Account
+            </a>
+          </div>
         </div>
       </header>
+      <UpgradeBanner premium={!!profile.premium} paymentsEnabled={!!process.env.RAZORPAY_KEY_ID} />
       <DashboardView firstName={firstName} entries={(entries ?? []) as Entry[]} />
     </main>
   )

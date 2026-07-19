@@ -30,6 +30,7 @@ export async function proxy(request: NextRequest) {
     path === '/' ||
     path.startsWith('/blog') ||
     path.startsWith('/assets') ||
+    path.startsWith('/api/') ||
     /\.(html|txt|xml|ico|png|svg|jpe?g|gif|webp)$/i.test(path)
   ) {
     return NextResponse.next()
@@ -71,7 +72,7 @@ export async function proxy(request: NextRequest) {
   }
 
   // Redirect unauthenticated users away from the app's protected routes
-  if (!user && (path.startsWith('/dashboard') || path.startsWith('/onboarding') || path.startsWith('/settings') || path.startsWith('/add'))) {
+  if (!user && (path.startsWith('/dashboard') || path.startsWith('/onboarding') || path.startsWith('/settings') || path.startsWith('/add') || path.startsWith('/upgrade'))) {
     return redirectTo('/login')
   }
 
