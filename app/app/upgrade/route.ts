@@ -32,13 +32,14 @@ export async function GET() {
 
   if (profile?.premium) return NextResponse.redirect(`${origin}/dashboard?already=1`)
 
-  // Founding-member pricing unlocks only once they've added a few projects, so
-  // they've actually used the product before paying. Enforced here (not just in
-  // the UI) so it can't be bypassed by hitting /upgrade directly.
+  // Founding-member pricing unlocks only once they have a few *verified*
+  // projects, so they've actually proven work before paying. Enforced here (not
+  // just in the UI) so it can't be bypassed by hitting /upgrade directly.
   const { count } = await supabase
     .from('entries')
     .select('id', { count: 'exact', head: true })
     .eq('user_id', user.id)
+    .eq('status', 'verified')
   if ((count ?? 0) < MIN_PROJECTS_FOR_PREMIUM) {
     return NextResponse.redirect(`${origin}/dashboard?need_projects=1`)
   }
