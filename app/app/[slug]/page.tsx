@@ -62,8 +62,8 @@ export default async function ProfilePage({ params }: { params: Promise<{ slug: 
           <Wordmark />
           <Link
             href="/login"
-            className="btn btn-secondary btn-sm pill"
-            style={{ fontSize: 13, minHeight: 36 }}
+            className="btn btn-secondary pill"
+            style={{ fontSize: 12.5, minHeight: 30, padding: '0 13px' }}
           >
             Get yours
           </Link>
@@ -72,8 +72,8 @@ export default async function ProfilePage({ params }: { params: Promise<{ slug: 
 
       <main style={{ paddingTop: 'var(--nav-h)' }}>
         {/* Hero */}
-        <div style={{ background: 'var(--surface-2)', borderBottom: '1px solid var(--line)', padding: 'clamp(32px,5vw,56px) 0' }}>
-          <div className="wrap wrap-md" style={{ display: 'flex', alignItems: 'center', gap: 24, flexWrap: 'wrap' }}>
+        <div style={{ background: 'var(--surface-2)', borderBottom: '1px solid var(--line)', padding: 'clamp(20px,3vw,32px) 0' }}>
+          <div className="wrap wrap-md" style={{ display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap' }}>
             {profile.photo_url ? (
               <div className="avi" style={{ width: 72, height: 72, flexShrink: 0 }}>
                 <img src={profile.photo_url} alt={profile.full_name ?? ''} />

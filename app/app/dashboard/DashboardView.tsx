@@ -143,13 +143,12 @@ export default function DashboardView({ firstName, entries }: { firstName: strin
   if (items.length === 0) {
     return (
       <div className="screen"><div className="wrap wrap-lg" style={{ paddingTop: 'clamp(28px,5vw,48px)' }}>
-        <span className="eyebrow">Your workspace</span>
-        <h1 className="h1" style={{ marginTop: 14, fontSize: 'clamp(26px,3vw,38px)' }}>Hi{firstName ? `, ${firstName}` : ''}.</h1>
+        <h1 className="h1" style={{ fontSize: 'clamp(26px,3vw,38px)' }}>Hi{firstName ? `, ${firstName}` : ''}.</h1>
         <div className="empty card" style={{ marginTop: 24 }}>
           <span className="ic"><Icon name="layers" size={26} /></span>
           <div><h2 className="h3" style={{ marginBottom: 8 }}>Add your first project</h2>
             <p className="lede" style={{ maxWidth: '40ch' }}>Showcase what you actually built, then invite someone who was there to verify it.</p></div>
-          <button className="btn btn-primary pill" style={{ maxWidth: 260 }} onClick={() => router.push('/add')}><Icon name="plus" size={18} color="#fff" /> Add a project</button>
+          <button className="btn btn-primary btn-sm pill" onClick={() => router.push('/add')}><Icon name="plus" size={16} color="#fff" /> Add a project</button>
         </div>
       </div></div>
     )
@@ -159,8 +158,8 @@ export default function DashboardView({ firstName, entries }: { firstName: strin
   return (
     <div className="screen"><div className="wrap wrap-lg" style={{ paddingTop: 'clamp(28px,5vw,48px)', paddingBottom: 40 }}>
       <div className="dash-hd">
-        <div><span className="eyebrow">Your workspace</span>
-          <h1 className="h1" style={{ marginTop: 12, fontSize: 'clamp(26px,3vw,38px)' }}>Hi{firstName ? `, ${firstName}` : ''}.</h1></div>
+        <div>
+          <h1 className="h1" style={{ fontSize: 'clamp(26px,3vw,38px)' }}>Hi{firstName ? `, ${firstName}` : ''}.</h1></div>
         <button className="btn btn-primary btn-sm pill" onClick={() => router.push('/add')}><Icon name="plus" size={16} color="#fff" /> Add a project</button>
       </div>
       <div className="complete">

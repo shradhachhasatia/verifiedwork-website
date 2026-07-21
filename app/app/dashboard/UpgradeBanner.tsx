@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from 'react'
 
-/* Shows the founding-member entry point (or a "add N more projects" nudge until
-   they're eligible), and a one-off toast when they return from Razorpay. */
+/* Shows the founding-member entry point once they've added enough projects, and
+   a one-off toast when they return from Razorpay. Until then it stays hidden -
+   no locked "add N more" nudge, so the upgrade only ever surfaces when it's
+   actually available. */
 export default function UpgradeBanner({
   premium,
   paymentsEnabled,
@@ -17,7 +19,6 @@ export default function UpgradeBanner({
 }) {
   const [toast, setToast] = useState<{ kind: 'ok' | 'info' | 'err'; msg: string } | null>(null)
   const eligible = projectCount >= minProjects
-  const remaining = Math.max(0, minProjects - projectCount)
 
   useEffect(() => {
     const p = new URLSearchParams(window.location.search)
@@ -34,34 +35,19 @@ export default function UpgradeBanner({
 
   return (
     <>
-      {!premium && paymentsEnabled && (
+      {!premium && paymentsEnabled && eligible && (
         <div className="wrap wrap-md" style={{ paddingTop: 20 }}>
-          {eligible ? (
-            <div style={{
-              display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap',
-              background: 'linear-gradient(100deg,var(--green-deep),var(--green))', color: '#fff',
-              borderRadius: 18, padding: '20px 24px',
-            }}>
-              <div style={{ minWidth: 0 }}>
-                <div style={{ fontFamily: 'var(--label)', fontWeight: 700, fontSize: 16 }}>&#9733; Become a founding member</div>
-                <div style={{ fontSize: 14, opacity: .92, marginTop: 3 }}>Unlimited verified projects, a founding badge and more - <b>$10</b> one-time.</div>
-              </div>
-              <a href="/upgrade" className="btn btn-sm" style={{ flexShrink: 0, background: '#fff', color: 'var(--green-deep)', fontWeight: 700, borderRadius: 999 }}>Upgrade</a>
+          <div style={{
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap',
+            background: 'linear-gradient(100deg,var(--green-deep),var(--green))', color: '#fff',
+            borderRadius: 18, padding: '20px 24px',
+          }}>
+            <div style={{ minWidth: 0 }}>
+              <div style={{ fontFamily: 'var(--label)', fontWeight: 700, fontSize: 16 }}>&#9733; Become a founding member</div>
+              <div style={{ fontSize: 14, opacity: .92, marginTop: 3 }}>Unlimited verified projects, a founding badge and more - <b>$10</b> one-time.</div>
             </div>
-          ) : (
-            <div style={{
-              display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap',
-              background: 'var(--surface-2)', border: '1px solid var(--line)', borderRadius: 18, padding: '18px 22px',
-            }}>
-              <div style={{ minWidth: 0 }}>
-                <div style={{ fontFamily: 'var(--label)', fontWeight: 700, fontSize: 15, color: 'var(--black)' }}>&#9733; Founding member - $10 one-time</div>
-                <div style={{ fontSize: 13.5, color: 'var(--grey)', marginTop: 3 }}>
-                  Add <b>{remaining}</b> more {remaining === 1 ? 'project' : 'projects'} to unlock it. <span style={{ fontVariantNumeric: 'tabular-nums' }}>({projectCount}/{minProjects})</span>
-                </div>
-              </div>
-              <a href="/add" className="btn btn-secondary btn-sm" style={{ flexShrink: 0, borderRadius: 999 }}>Add a project</a>
-            </div>
-          )}
+            <a href="/upgrade" className="btn btn-sm" style={{ flexShrink: 0, background: '#fff', color: 'var(--green-deep)', fontWeight: 700, borderRadius: 999 }}>Upgrade</a>
+          </div>
         </div>
       )}
       {toast && (
