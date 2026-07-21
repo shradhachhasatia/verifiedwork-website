@@ -52,6 +52,11 @@ export async function GET() {
   })
 
   if ('error' in link) {
+    // Surface the real reason in the server logs so "We couldn't start checkout"
+    // is diagnosable: 'not_configured' (missing RAZORPAY_KEY_ID/SECRET),
+    // 'network', or the description Razorpay returned (e.g. currency/amount not
+    // enabled on the account, invalid key, payment links not activated).
+    console.error('[upgrade] payment link creation failed:', link.error)
     return NextResponse.redirect(`${origin}/dashboard?upgrade_error=1`)
   }
   return NextResponse.redirect(link.url)

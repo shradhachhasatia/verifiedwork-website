@@ -6,7 +6,7 @@ import { createClient } from '@/lib/supabase/client'
 import { createUploadUrl } from '@/lib/storage-actions'
 import { Icon, CheckDot } from '@/components/Icon'
 import {
-  YEARS, REL_OPTIONS, emailOk, badgeTier, periodLabel, durationLabel,
+  YEARS, REL_OPTIONS, emailOk, badgeTier, periodLabel, durationLabel, FIELD_MAX,
 } from '@/lib/format'
 import { createEntry } from './actions'
 
@@ -26,8 +26,8 @@ function WizBar({ current, total, label, onBack }: { current: number; total: num
 }
 
 const urlOk = (v: string) => /^https?:\/\/.+\..+/i.test(v.trim())
-const DESC_MAX = 600
-const OUTCOME_MAX = 300
+const DESC_MAX = FIELD_MAX.description
+const OUTCOME_MAX = FIELD_MAX.outcome
 
 function ArtifactInput({ value, onChange }: { value: Artifact | null; onChange: (a: Artifact | null) => void }) {
   const [type, setType] = useState<'link' | 'image' | 'file'>(value ? value.type : 'link')
@@ -194,9 +194,9 @@ export default function AddProjectWizard({ selfEmail }: Props) {
       {step === 1 && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
           <div className="field"><label className="field-lbl">Project / role title</label>
-            <input className="input" value={f.title} onChange={e => set('title', e.target.value)} placeholder="What did you work on?" autoFocus /></div>
+            <input className="input" value={f.title} maxLength={FIELD_MAX.title} onChange={e => set('title', e.target.value)} placeholder="What did you work on?" autoFocus /></div>
           <div className="field"><label className="field-lbl">Company / organisation</label>
-            <input className="input" value={f.company} onChange={e => set('company', e.target.value)} placeholder="Where? (a startup, client, college…)" /></div>
+            <input className="input" value={f.company} maxLength={FIELD_MAX.company} onChange={e => set('company', e.target.value)} placeholder="Where? (a startup, client, college…)" /></div>
           <div className="field"><label className="field-lbl">How long - period</label>
             <div className="row2">
               <select className="input select" value={f.startYear} onChange={e => {
@@ -242,16 +242,17 @@ export default function AddProjectWizard({ selfEmail }: Props) {
           <div className="callout"><Icon name="info" size={18} /><p>Any email works - Gmail, university or corporate. The badge is <b>honest about how it was verified.</b></p></div>
           <div className="row2">
             <div className="field"><label className="field-lbl">Their name</label>
-              <input className="input" value={f.vName} onChange={e => set('vName', e.target.value)} placeholder="Who can confirm this?" /></div>
+              <input className="input" value={f.vName} maxLength={FIELD_MAX.vName} onChange={e => set('vName', e.target.value)} placeholder="Who can confirm this?" /></div>
             <div className="field"><label className="field-lbl">How you worked together</label>
               <select className="input select" value={f.vRel} onChange={e => set('vRel', e.target.value)}>{REL_OPTIONS.map(o => <option key={o}>{o}</option>)}</select></div>
           </div>
           <div className="field"><label className="field-lbl">Their role / title at the time</label>
-            <input className="input" value={f.vRole} onChange={e => set('vRole', e.target.value)} placeholder="e.g. Founder, Professor, Manager" /></div>
+            <input className="input" value={f.vRole} maxLength={FIELD_MAX.vRole} onChange={e => set('vRole', e.target.value)} placeholder="e.g. Founder, Professor, Manager" /></div>
           <div className="field"><label className="field-lbl">Their email</label>
             <input
               className={'input' + (isSelf || (emailTouched && f.vEmail && !emailOk(f.vEmail)) ? ' err' : '')}
               type="email"
+              maxLength={FIELD_MAX.vEmail}
               value={f.vEmail}
               onChange={e => { set('vEmail', e.target.value); if (emailTouched) setEmailTouched(true) }}
               onBlur={() => setEmailTouched(true)}
@@ -267,6 +268,7 @@ export default function AddProjectWizard({ selfEmail }: Props) {
             <input
               className={'input' + (vLinkTouched && f.vLink && !/linkedin\.com/i.test(f.vLink) ? ' err' : '')}
               value={f.vLink}
+              maxLength={FIELD_MAX.vLink}
               onChange={e => { set('vLink', e.target.value); if (vLinkTouched) setVLinkTouched(true) }}
               onBlur={() => setVLinkTouched(true)}
               placeholder="https://linkedin.com/in/…"
@@ -276,7 +278,7 @@ export default function AddProjectWizard({ selfEmail }: Props) {
             )}
           </div>
           <div className="field"><label className="field-lbl">Personal note <span style={{ textTransform: 'none', letterSpacing: 0, color: 'var(--grey-2)' }}>· optional</span></label>
-            <textarea className="textarea" value={f.vNote} maxLength={240} onChange={e => set('vNote', e.target.value)} placeholder="Hey - could you confirm this? Takes ~90 seconds. Thanks!" style={{ minHeight: 80 }} /></div>
+            <textarea className="textarea" value={f.vNote} maxLength={FIELD_MAX.vNote} onChange={e => set('vNote', e.target.value)} placeholder="Hey - could you confirm this? Takes ~90 seconds. Thanks!" style={{ minHeight: 80 }} /></div>
 
           {error && <span className="field-err">{error}</span>}
 

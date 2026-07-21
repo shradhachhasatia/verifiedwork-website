@@ -26,7 +26,8 @@ export default function UpgradeBanner({
     else if (p.get('already')) setToast({ kind: 'info', msg: "You're already a founding member." })
     else if (p.get('upgrade_error')) setToast({ kind: 'err', msg: "We couldn't start checkout. Please try again." })
     else if (p.get('need_projects')) setToast({ kind: 'info', msg: `Get ${minProjects} projects verified first to unlock founding-member pricing.` })
-    if (p.has('upgraded') || p.has('already') || p.has('upgrade_error') || p.has('need_projects')) {
+    else if (p.get('project_limit')) setToast({ kind: 'info', msg: `Free accounts can hold up to ${minProjects} projects. Become a founding member for unlimited.` })
+    if (p.has('upgraded') || p.has('already') || p.has('upgrade_error') || p.has('need_projects') || p.has('project_limit')) {
       window.history.replaceState({}, '', '/dashboard')
       const t = setTimeout(() => setToast(null), 6000)
       return () => clearTimeout(t)

@@ -3,7 +3,7 @@
 import { headers } from 'next/headers'
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
-import { badgeTier, emailOk, yearToStartDate, yearToEndDate } from '@/lib/format'
+import { badgeTier, emailOk, yearToStartDate, yearToEndDate, FIELD_MAX, FREE_PROJECT_LIMIT } from '@/lib/format'
 import { sendVerificationEmail } from '@/lib/email'
 
 export type AddProjectInput = {
@@ -46,6 +46,40 @@ export async function createEntry(
   }
   if (input.vEmail.trim().toLowerCase() === (user.email ?? '').toLowerCase()) {
     return { error: "You can't verify your own work - use someone else's email." }
+  }
+
+  // Re-check the per-field length caps the client enforces with maxLength, so an
+  // over-long value can't be slipped in past the input (e.g. a crafted request).
+  const tooLong =
+    input.title.trim().length > FIELD_MAX.title ||
+    input.company.trim().length > FIELD_MAX.company ||
+    input.description.trim().length > FIELD_MAX.description ||
+    input.outcome.trim().length > FIELD_MAX.outcome ||
+    input.vName.trim().length > FIELD_MAX.vName ||
+    input.vRole.trim().length > FIELD_MAX.vRole ||
+    input.vEmail.trim().length > FIELD_MAX.vEmail ||
+    input.vLink.trim().length > FIELD_MAX.vLink ||
+    input.vNote.trim().length > FIELD_MAX.vNote
+  if (tooLong) {
+    return { error: 'One of your entries is too long. Please shorten it and try again.' }
+  }
+
+  // Free accounts are capped at FREE_PROJECT_LIMIT projects; founding members are
+  // unlimited. Enforced here (and by a DB trigger) so it can't be bypassed by
+  // hitting the API directly. This is what stops a 4th free project.
+  const { data: profile } = await supabase
+    .from('users')
+    .select('premium')
+    .eq('id', user.id)
+    .single()
+  if (!profile?.premium) {
+    const { count } = await supabase
+      .from('entries')
+      .select('id', { count: 'exact', head: true })
+      .eq('user_id', user.id)
+    if ((count ?? 0) >= FREE_PROJECT_LIMIT) {
+      return { error: `Free accounts can hold up to ${FREE_PROJECT_LIMIT} projects. Become a founding member for unlimited projects.` }
+    }
   }
 
   const { data: entry, error: entryErr } = await supabase
