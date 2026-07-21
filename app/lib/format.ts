@@ -1,6 +1,9 @@
 // Pure helpers shared by the dashboard and the add-project flow.
 // Ported from the static mockup so behaviour matches exactly.
 
+// Founding-member pricing unlocks only after this many projects are added.
+export const MIN_PROJECTS_FOR_PREMIUM = 3
+
 export const NOW = new Date().getFullYear()
 export const YEARS = Array.from({ length: NOW - 1999 }, (_, i) => String(NOW - i))
 

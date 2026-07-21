@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { Wordmark, Icon } from '@/components/Icon'
 import DashboardView, { type Entry } from './DashboardView'
 import UpgradeBanner from './UpgradeBanner'
+import { MIN_PROJECTS_FOR_PREMIUM } from '@/lib/format'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -44,7 +45,12 @@ export default async function DashboardPage() {
           </div>
         </div>
       </header>
-      <UpgradeBanner premium={!!profile.premium} paymentsEnabled={!!process.env.RAZORPAY_KEY_ID} />
+      <UpgradeBanner
+        premium={!!profile.premium}
+        paymentsEnabled={!!process.env.RAZORPAY_KEY_ID}
+        projectCount={(entries ?? []).length}
+        minProjects={MIN_PROJECTS_FOR_PREMIUM}
+      />
       <DashboardView firstName={firstName} entries={(entries ?? []) as Entry[]} />
     </main>
   )

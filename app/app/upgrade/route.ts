@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
 import { createUpgradePaymentLink } from '@/lib/razorpay'
+import { MIN_PROJECTS_FOR_PREMIUM } from '@/lib/format'
 
 // @supabase/ssr needs Node, not Edge.
 export const runtime = 'nodejs'
@@ -30,6 +31,17 @@ export async function GET() {
     .single()
 
   if (profile?.premium) return NextResponse.redirect(`${origin}/dashboard?already=1`)
+
+  // Founding-member pricing unlocks only once they've added a few projects, so
+  // they've actually used the product before paying. Enforced here (not just in
+  // the UI) so it can't be bypassed by hitting /upgrade directly.
+  const { count } = await supabase
+    .from('entries')
+    .select('id', { count: 'exact', head: true })
+    .eq('user_id', user.id)
+  if ((count ?? 0) < MIN_PROJECTS_FOR_PREMIUM) {
+    return NextResponse.redirect(`${origin}/dashboard?need_projects=1`)
+  }
 
   const link = await createUpgradePaymentLink({
     userId: user.id,
