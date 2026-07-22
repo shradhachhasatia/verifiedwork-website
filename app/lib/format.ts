@@ -1,8 +1,27 @@
 // Pure helpers shared by the dashboard and the add-project flow.
 // Ported from the static mockup so behaviour matches exactly.
 
-// Founding-member pricing unlocks only after this many projects are added.
+// Founding-member pricing unlocks only after this many verified projects.
 export const MIN_PROJECTS_FOR_PREMIUM = 3
+
+// Free accounts can hold at most this many projects; becoming a founding member
+// removes the cap. Enforced in the add flow, the server action, and a DB trigger.
+export const FREE_PROJECT_LIMIT = 3
+
+// Per-field character caps for a project entry and its validator. The client
+// enforces these with maxLength for a good UX; the server action re-checks them
+// so an over-long value can't be sneaked in past the input.
+export const FIELD_MAX = {
+  title: 120,
+  company: 120,
+  description: 600,
+  outcome: 300,
+  vName: 80,
+  vRole: 80,
+  vEmail: 160,
+  vLink: 300,
+  vNote: 240,
+} as const
 
 export const NOW = new Date().getFullYear()
 export const YEARS = Array.from({ length: NOW - 1999 }, (_, i) => String(NOW - i))

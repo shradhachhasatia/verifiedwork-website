@@ -48,10 +48,10 @@ export default async function DashboardPage() {
       <UpgradeBanner
         premium={!!profile.premium}
         paymentsEnabled={!!process.env.RAZORPAY_KEY_ID}
-        projectCount={(entries ?? []).length}
+        projectCount={(entries ?? []).filter(e => e.status === 'verified').length}
         minProjects={MIN_PROJECTS_FOR_PREMIUM}
       />
-      <DashboardView firstName={firstName} entries={(entries ?? []) as Entry[]} />
+      <DashboardView firstName={firstName} entries={(entries ?? []) as Entry[]} premium={!!profile.premium} />
     </main>
   )
 }

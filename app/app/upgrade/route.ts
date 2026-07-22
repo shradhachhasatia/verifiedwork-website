@@ -32,13 +32,14 @@ export async function GET() {
 
   if (profile?.premium) return NextResponse.redirect(`${origin}/dashboard?already=1`)
 
-  // Founding-member pricing unlocks only once they've added a few projects, so
-  // they've actually used the product before paying. Enforced here (not just in
-  // the UI) so it can't be bypassed by hitting /upgrade directly.
+  // Founding-member pricing unlocks only once they have a few *verified*
+  // projects, so they've actually proven work before paying. Enforced here (not
+  // just in the UI) so it can't be bypassed by hitting /upgrade directly.
   const { count } = await supabase
     .from('entries')
     .select('id', { count: 'exact', head: true })
     .eq('user_id', user.id)
+    .eq('status', 'verified')
   if ((count ?? 0) < MIN_PROJECTS_FOR_PREMIUM) {
     return NextResponse.redirect(`${origin}/dashboard?need_projects=1`)
   }
@@ -51,6 +52,11 @@ export async function GET() {
   })
 
   if ('error' in link) {
+    // Surface the real reason in the server logs so "We couldn't start checkout"
+    // is diagnosable: 'not_configured' (missing RAZORPAY_KEY_ID/SECRET),
+    // 'network', or the description Razorpay returned (e.g. currency/amount not
+    // enabled on the account, invalid key, payment links not activated).
+    console.error('[upgrade] payment link creation failed:', link.error)
     return NextResponse.redirect(`${origin}/dashboard?upgrade_error=1`)
   }
   return NextResponse.redirect(link.url)
