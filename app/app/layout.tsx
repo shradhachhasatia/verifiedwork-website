@@ -5,7 +5,8 @@ import { Analytics } from "@/components/Analytics";
 
 const inter = Inter({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
+  // The app only ever uses 400-700; 800/900 were downloaded but never applied.
+  weight: ["400", "500", "600", "700"],
   variable: "--font-inter",
   display: "swap",
 });

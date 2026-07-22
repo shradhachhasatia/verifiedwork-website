@@ -80,18 +80,13 @@ a{color:inherit;}
 .btn.pill{border-radius:999px;}
 .btn-lg{min-height:52px;font-size:15.5px;padding:0 26px;}
 .btn-primary{background:var(--black);color:var(--white);}
-.btn-primary:hover{background:var(--green);}
 .btn-primary:disabled{background:var(--grey-2);cursor:not-allowed;}
 .btn-secondary{background:var(--white);color:var(--black);border-color:var(--line-strong);}
-.btn-secondary:hover{border-color:var(--black);}
 .btn-secondary:disabled{color:var(--grey-2);border-color:var(--line);cursor:not-allowed;}
 .btn-ghost{background:transparent;color:var(--grey-3);min-height:42px;}
-.btn-ghost:hover{color:var(--black);}
 .btn-sm{min-height:40px;padding:0 16px;font-size:14px;border-radius:10px;}
 .btn-danger{background:var(--white);color:var(--danger);border-color:var(--danger-tint);}
-.btn-danger:hover{background:var(--danger-tint);}
 .btn-google{background:var(--white);color:#3c4043;border:1px solid var(--line-strong);font-weight:600;}
-.btn-google:hover{background:var(--surface-2);border-color:var(--grey-2);box-shadow:var(--shadow-sm);}
 .btn-google:disabled{color:var(--grey-2);cursor:not-allowed;}
 .btn-icon{width:42px;height:42px;min-height:42px;padding:0;border-radius:11px;flex-shrink:0;}
 .divider-or{display:flex;align-items:center;gap:14px;color:var(--grey-2);font-size:13px;}
@@ -117,7 +112,6 @@ a{color:inherit;}
 .wiz-top{display:flex;align-items:center;gap:14px;}
 .wiz-back{width:36px;height:36px;border-radius:10px;border:1px solid var(--line-strong);background:#fff;color:var(--ink-2);
   display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:border-color .15s;}
-.wiz-back:hover{border-color:var(--black);}
 .wiz-bar{flex:1;height:6px;border-radius:999px;background:var(--surface-3);overflow:hidden;}
 .wiz-bar i{display:block;height:100%;background:var(--green);border-radius:999px;transition:width .5s var(--ease-out);}
 .wiz-step{font-family:var(--label);font-size:12px;font-weight:600;color:var(--grey);min-width:34px;text-align:right;}
@@ -126,7 +120,6 @@ a{color:inherit;}
 .photo-up{display:flex;align-items:center;gap:16px;}
 .photo-btn{width:72px;height:72px;border-radius:50%;border:1.5px dashed var(--line-strong);background:var(--surface-2);
   color:var(--grey-3);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;transition:border-color .15s;}
-.photo-btn:hover{border-color:var(--green);}
 .photo-btn img{width:100%;height:100%;object-fit:cover;}
 .prevcard{background:var(--white);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow-sm);padding:20px;
   display:flex;align-items:center;gap:16px;}
@@ -144,7 +137,6 @@ a{color:inherit;}
 .pill{appearance:none;flex:1;min-width:80px;background:var(--white);border:1px solid var(--line-strong);
   border-radius:10px;padding:11px 12px;font-weight:600;font-size:14px;color:var(--black);min-height:46px;
   transition:border-color .16s,background .16s,color .16s;}
-.pill:hover{border-color:var(--black);}
 .pill.sel{background:var(--green);border-color:var(--green);color:#fff;}
 .helper{font-size:13px;color:var(--grey);}
 
@@ -156,7 +148,6 @@ a{color:inherit;}
 .atab.sel{background:var(--white);color:var(--black);box-shadow:var(--shadow-sm);}
 .drop{border:1.5px dashed var(--line-strong);border-radius:12px;padding:22px;text-align:center;color:var(--grey);
   display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;transition:border-color .15s,background .15s;}
-.drop:hover{border-color:var(--green);background:var(--surface-2);}
 .drop svg{width:22px;height:22px;color:var(--grey-3);}
 .art-prev{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--white);}
 .art-prev img{width:46px;height:46px;border-radius:8px;object-fit:cover;flex-shrink:0;}
@@ -165,14 +156,12 @@ a{color:inherit;}
 .art-prev .nm{flex:1;min-width:0;font-weight:600;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .art-prev .rm{width:32px;height:32px;border-radius:8px;border:1px solid var(--line);background:#fff;color:var(--grey);
   display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.art-prev .rm:hover{border-color:var(--danger);color:var(--danger);}
 
 /* cards + expandable */
 .card{background:var(--white);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow-sm);}
 .card-pad{padding:clamp(18px,2.4vw,24px);}
 .xcard{background:var(--white);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow-sm);
   overflow:hidden;transition:border-color .2s var(--ease-out),box-shadow .2s var(--ease-out);}
-.xcard:hover{box-shadow:var(--shadow-md);}
 .xcard.open{border-color:var(--green);}
 .xcard-head{display:flex;align-items:flex-start;gap:14px;padding:clamp(16px,2.2vw,22px);cursor:pointer;
   text-align:left;width:100%;background:transparent;border:0;}
@@ -200,7 +189,6 @@ a{color:inherit;}
 .quotebox p{margin:0;padding-left:24px;font-size:16px;line-height:1.5;font-weight:500;color:var(--black);}
 .tlink{display:inline-flex;align-items:center;gap:6px;color:var(--green);font-weight:600;font-size:14px;text-decoration:none;}
 .tlink svg{width:14px;height:14px;transition:transform .2s var(--ease-out);}
-.tlink:hover svg{transform:translate(3px,-3px);}
 .callout{background:var(--green-tint);border-radius:14px;padding:16px 18px;display:flex;gap:12px;align-items:flex-start;}
 .callout svg{color:var(--green);flex-shrink:0;margin-top:2px;width:18px;height:18px;}
 .callout p{margin:0;font-size:14px;line-height:1.5;color:#23503D;}
@@ -323,6 +311,24 @@ a{color:inherit;}
 .ddot.on{background:var(--green);width:24px;}
 .dstep-label{font-size:13px;font-weight:600;color:var(--grey-3);min-width:160px;text-align:center;}
 .dnav-btn{width:40px;height:40px;border-radius:50%;background:#fff;border:1px solid var(--line);color:var(--grey-3);display:flex;align-items:center;justify-content:center;padding:0;transition:border-color .2s,color .2s;}
-.dnav-btn:hover:not(:disabled){border-color:var(--green);color:var(--green);}
 .dnav-btn:disabled{opacity:.4;cursor:default;}
 .dnav-btn svg{width:16px;height:16px;}
+
+/* Hover styling only where a real pointer exists. On a touch screen :hover
+   sticks after a tap - e.g. a primary button would turn green and stay green
+   after you press it - so every hover rule is gated behind (hover: hover). */
+@media (hover: hover) {
+  .btn-primary:hover{background:var(--green);}
+  .btn-secondary:hover{border-color:var(--black);}
+  .btn-ghost:hover{color:var(--black);}
+  .btn-danger:hover{background:var(--danger-tint);}
+  .btn-google:hover{background:var(--surface-2);border-color:var(--grey-2);box-shadow:var(--shadow-sm);}
+  .wiz-back:hover{border-color:var(--black);}
+  .photo-btn:hover{border-color:var(--green);}
+  .pill:hover{border-color:var(--black);}
+  .drop:hover{border-color:var(--green);background:var(--surface-2);}
+  .art-prev .rm:hover{border-color:var(--danger);color:var(--danger);}
+  .xcard:hover{box-shadow:var(--shadow-md);}
+  .tlink:hover svg{transform:translate(3px,-3px);}
+  .dnav-btn:hover:not(:disabled){border-color:var(--green);color:var(--green);}
+}
