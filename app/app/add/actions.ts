@@ -48,6 +48,12 @@ export async function createEntry(
     return { error: "You can't verify your own work - use someone else's email." }
   }
 
+  // Proof/artifact is optional, but if one is supplied it must be a real URL -
+  // the same check the client enforces, repeated here so it can't be bypassed.
+  if (input.artifactUrl && !/^https?:\/\/.+\..+/i.test(input.artifactUrl.trim())) {
+    return { error: 'Your proof link must be a valid URL starting with https://.' }
+  }
+
   // Re-check the per-field length caps the client enforces with maxLength, so an
   // over-long value can't be slipped in past the input (e.g. a crafted request).
   const tooLong =

@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { createUploadUrl } from '@/lib/storage-actions'
@@ -29,11 +29,17 @@ const urlOk = (v: string) => /^https?:\/\/.+\..+/i.test(v.trim())
 const DESC_MAX = FIELD_MAX.description
 const OUTCOME_MAX = FIELD_MAX.outcome
 
-function ArtifactInput({ value, onChange }: { value: Artifact | null; onChange: (a: Artifact | null) => void }) {
+function ArtifactInput({ value, onChange, onPendingError }: { value: Artifact | null; onChange: (a: Artifact | null) => void; onPendingError: (hasError: boolean) => void }) {
   const [type, setType] = useState<'link' | 'image' | 'file'>(value ? value.type : 'link')
   const [link, setLink] = useState(value && value.type === 'link' ? value.value : '')
   const [linkErr, setLinkErr] = useState('')
   const fileRef = useRef<HTMLInputElement>(null)
+
+  // Something has been typed into the link box but it isn't a valid URL (and
+  // hasn't been attached). The artifact is optional, so an empty box is fine -
+  // but random words must not slip through, so this blocks Continue upstream.
+  const pendingBadLink = type === 'link' && !value && link.trim() !== '' && !urlOk(link)
+  useEffect(() => { onPendingError(pendingBadLink) }, [pendingBadLink, onPendingError])
   const tabs = [
     { k: 'link' as const, l: 'Link', i: 'link' as const },
     { k: 'image' as const, l: 'Image', i: 'image' as const },
@@ -71,7 +77,7 @@ function ArtifactInput({ value, onChange }: { value: Artifact | null; onChange: 
       ) : type === 'link' ? (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
           <div style={{ display: 'flex', gap: 8 }}>
-            <input className={'input' + (linkErr ? ' err' : '')} placeholder="https://your-work.com/case-study" value={link} onChange={e => { setLink(e.target.value); if (linkErr) setLinkErr('') }} onKeyDown={e => e.key === 'Enter' && attachLink()} onBlur={() => { if (urlOk(link)) attachLink() }} />
+            <input className={'input' + (linkErr ? ' err' : '')} placeholder="https://your-work.com/case-study" value={link} onChange={e => { setLink(e.target.value); if (linkErr) setLinkErr('') }} onKeyDown={e => e.key === 'Enter' && attachLink()} onBlur={() => { const v = link.trim(); if (!v) { setLinkErr(''); return } if (urlOk(v)) attachLink(); else setLinkErr('Enter a valid link starting with https:// (or clear the field).') }} />
             <button className="btn btn-secondary btn-sm" type="button" disabled={!link.trim()} onClick={attachLink}>Attach</button>
           </div>
           {linkErr && <span className="field-err">{linkErr}</span>}
@@ -101,6 +107,7 @@ export default function AddProjectWizard({ selfEmail }: Props) {
     vName: '', vRel: 'Manager', vRole: '', vEmail: '', vLink: '', vNote: '',
   })
   const [artifact, setArtifact] = useState<Artifact | null>(null)
+  const [artifactErr, setArtifactErr] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
   const [sent, setSent] = useState(false)
@@ -113,7 +120,9 @@ export default function AddProjectWizard({ selfEmail }: Props) {
   const periodOk = !f.startYear || f.endYear === 'Present' || +f.endYear >= +f.startYear
   const ok1 = f.title.trim() && f.company.trim() && f.startYear && periodOk
   const descOk = f.description.trim().length >= 10
-  const ok2 = descOk && f.outcome.trim()
+  // Block Continue while the proof field holds text that isn't a valid link, so
+  // random words can't be used to skip past it. An empty field stays optional.
+  const ok2 = descOk && f.outcome.trim() && !artifactErr
   const isSelf = emailOk(f.vEmail) && !!selfEmail && f.vEmail.trim().toLowerCase() === selfEmail.toLowerCase()
   const tier = emailOk(f.vEmail) && !isSelf ? badgeTier(f.vEmail) : null
   const ok3 = f.vName.trim() && f.vRole.trim() && emailOk(f.vEmail) && !isSelf
@@ -231,7 +240,7 @@ export default function AddProjectWizard({ selfEmail }: Props) {
             <textarea className="textarea" value={f.outcome} maxLength={OUTCOME_MAX} onChange={e => set('outcome', e.target.value)} placeholder="e.g. grew traffic 3×, shipped the backend, cut drop-off 34%" style={{ minHeight: 80 }} />
             <span className="helper">{f.outcome.length}/{OUTCOME_MAX}</span></div>
           <div className="field"><label className="field-lbl">Attach an artifact · optional</label>
-            <ArtifactInput value={artifact} onChange={setArtifact} />
+            <ArtifactInput value={artifact} onChange={setArtifact} onPendingError={setArtifactErr} />
             <span className="helper">A link, image, or file your validator and viewers can open.</span></div>
           <button className="btn btn-primary block" disabled={!ok2} onClick={() => { setError(''); setStep(3) }}>Continue</button>
         </div>
