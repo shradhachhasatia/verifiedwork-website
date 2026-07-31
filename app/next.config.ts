@@ -33,7 +33,18 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   async headers() {
-    return [{ source: "/:path*", headers: securityHeaders }];
+    return [
+      { source: "/:path*", headers: securityHeaders },
+      // Force revalidation on the static marketing/product pages so no CDN
+      // or intermediate proxy ever pins a stale response (including a stale
+      // 404 from before a page existed) for longer than one request.
+      {
+        source: "/:file(index|checkout|careers|privacy|terms|app)\\.html",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=0, must-revalidate" },
+        ],
+      },
+    ];
   },
   async rewrites() {
     return {
