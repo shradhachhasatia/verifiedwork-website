@@ -60,11 +60,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ slug: 
       <header className="app-head">
         <div className="inner">
           <Wordmark />
-          <Link
-            href="/login"
-            className="btn btn-secondary pill"
-            style={{ fontSize: 12.5, minHeight: 30, padding: '0 13px' }}
-          >
+          <Link href="/" className="btn btn-secondary btn-sm pill">
             Get yours
           </Link>
         </div>

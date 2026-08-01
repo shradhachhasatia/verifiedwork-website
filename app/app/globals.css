@@ -134,10 +134,10 @@ a{color:inherit;}
   background-repeat:no-repeat;background-position:right 14px center;padding-right:38px;}
 .tier-preview{display:inline-flex;align-items:center;gap:10px;flex-wrap:wrap;animation:rise .4s var(--ease-out) both;}
 .pills{display:flex;gap:8px;flex-wrap:wrap;}
-.pill{appearance:none;flex:1;min-width:80px;background:var(--white);border:1px solid var(--line-strong);
+.pills .pill{appearance:none;flex:1;min-width:80px;background:var(--white);border:1px solid var(--line-strong);
   border-radius:10px;padding:11px 12px;font-weight:600;font-size:14px;color:var(--black);min-height:46px;
   transition:border-color .16s,background .16s,color .16s;}
-.pill.sel{background:var(--green);border-color:var(--green);color:#fff;}
+.pills .pill.sel{background:var(--green);border-color:var(--green);color:#fff;}
 .helper{font-size:13px;color:var(--grey);}
 
 /* artifact attach (link / image / file) */
