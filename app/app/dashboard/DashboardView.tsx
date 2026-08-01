@@ -162,8 +162,11 @@ export default function DashboardView({ firstName, entries, premium }: { firstNa
       <div className="dash-hd">
         <div>
           <h1 className="h1" style={{ fontSize: 'clamp(26px,3vw,38px)' }}>Hi{firstName ? `, ${firstName}` : ''}.</h1></div>
+        {/* Checkout is a real anchor, not router.push: checkout.html is a static
+            file in public/, which the client router cannot resolve - it would swap
+            the URL and render the 404 without ever hitting the server. */}
         {atFreeLimit ? (
-          <button className="btn btn-primary btn-sm pill" onClick={() => router.push('/checkout.html')}>&#9733; Become a founding member</button>
+          <a className="btn btn-primary btn-sm pill" href="/checkout.html">&#9733; Become a founding member</a>
         ) : (
           <button className="btn btn-primary btn-sm pill" onClick={() => router.push('/add')}><Icon name="plus" size={16} color="#fff" /> Add a project</button>
         )}
