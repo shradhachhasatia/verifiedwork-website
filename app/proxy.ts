@@ -20,6 +20,25 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(url)
   }
 
+  // Normalize typo'd/variant links to the known static pages (missing
+  // .html, trailing slash, wrong case) to the canonical file instead of
+  // letting them fall through to the default 404 page. Deliberately
+  // excludes "app" - app.html is the dead mockup and belongs on the /login
+  // redirect below, not served as content.
+  const staticPages = ['index', 'checkout', 'careers', 'privacy', 'terms']
+  const bareMatch = /^\/([a-zA-Z]+)(?:\.html)?\/?$/i.exec(path)
+  if (bareMatch) {
+    const name = bareMatch[1].toLowerCase()
+    if (staticPages.includes(name)) {
+      const canonical = `/${name}.html`
+      if (path !== canonical) {
+        const url = request.nextUrl.clone()
+        url.pathname = canonical
+        return NextResponse.rewrite(url)
+      }
+    }
+  }
+
   // verifiedwork.co is the canonical home for everything - the marketing
   // landing page and the app both run here natively (no cross-domain hop to
   // *.vercel.app).
