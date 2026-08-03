@@ -37,6 +37,13 @@ export async function proxy(request: NextRequest) {
         return NextResponse.rewrite(url)
       }
     }
+    // public/blog/ is a directory of static files; Next serves no directory
+    // index for it, so /blog would 404 without this.
+    if (name === 'blog') {
+      const url = request.nextUrl.clone()
+      url.pathname = '/blog/index.html'
+      return NextResponse.rewrite(url)
+    }
   }
 
   // verifiedwork.co is the canonical home for everything - the marketing
