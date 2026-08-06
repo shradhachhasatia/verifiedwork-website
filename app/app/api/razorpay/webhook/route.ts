@@ -1,7 +1,6 @@
 import { headers } from 'next/headers'
 import { verifyWebhookSignature } from '@/lib/razorpay'
-import { createAdminClient } from '@/lib/supabase/admin'
-import { sendUpgradeEmail } from '@/lib/email'
+import { grantFoundingMember } from '@/lib/premium'
 
 // crypto + service-role client need Node, not Edge.
 export const runtime = 'nodejs'
@@ -9,8 +8,12 @@ export const runtime = 'nodejs'
 /* Razorpay webhook. Registered in Razorpay Dashboard -> Settings -> Webhooks,
    pointing at https://verifiedwork.co/api/razorpay/webhook, subscribed to the
    payment_link.paid event, with the signing secret in RAZORPAY_WEBHOOK_SECRET.
-   On a verified payment we flip that exact user to premium (server-side, via
-   the service role) and send them a confirmation email. */
+
+   This is now the *backstop*, not the primary path: /api/razorpay/callback
+   grants membership when the user is redirected back, which needs none of the
+   manual setup above. This still matters for anyone who closes the tab before
+   the redirect completes. Both routes share grantFoundingMember, so whichever
+   arrives second is a no-op. */
 export async function POST(request: Request) {
   const raw = await request.text()
   const sig = (await headers()).get('x-razorpay-signature')
@@ -21,7 +24,17 @@ export async function POST(request: Request) {
 
   let body: {
     event?: string
-    payload?: { payment_link?: { entity?: { notes?: { user_id?: string } } } }
+    payload?: {
+      payment_link?: {
+        entity?: {
+          id?: string
+          amount?: number
+          currency?: string
+          notes?: { user_id?: string }
+        }
+      }
+      payment?: { entity?: { id?: string } }
+    }
   }
   try {
     body = JSON.parse(raw)
@@ -30,28 +43,22 @@ export async function POST(request: Request) {
   }
 
   if (body.event === 'payment_link.paid') {
-    const userId = body.payload?.payment_link?.entity?.notes?.user_id
+    const link = body.payload?.payment_link?.entity
+    const userId = link?.notes?.user_id
     if (userId) {
-      const admin = createAdminClient()
-      // Only flip rows that aren't premium yet, so a webhook retry can't send a
-      // second confirmation email. The update returns the row iff it changed.
-      const { data: updated, error } = await admin
-        .from('users')
-        .update({ premium: true, premium_since: new Date().toISOString() })
-        .eq('id', userId)
-        .eq('premium', false)
-        .select('email, full_name')
-        .maybeSingle()
-
-      if (error) {
-        console.error('[razorpay webhook] premium update failed:', error)
+      try {
+        await grantFoundingMember({
+          userId,
+          paymentId: body.payload?.payment?.entity?.id ?? null,
+          paymentLinkId: link?.id ?? null,
+          amount: link?.amount ?? null,
+          currency: link?.currency ?? null,
+          via: 'webhook',
+        })
+      } catch (e) {
+        console.error('[razorpay webhook] grant failed:', e)
         // 500 so Razorpay retries rather than dropping the upgrade.
         return Response.json({ error: 'update failed' }, { status: 500 })
-      }
-      if (updated?.email) {
-        await sendUpgradeEmail({ to: updated.email, name: updated.full_name ?? '' }).catch(
-          (e) => console.error('[razorpay webhook] upgrade email failed:', e),
-        )
       }
     }
   }

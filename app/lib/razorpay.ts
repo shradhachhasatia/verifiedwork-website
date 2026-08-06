@@ -14,6 +14,30 @@ function authHeader() {
   return 'Basic ' + Buffer.from(`${id}:${secret}`).toString('base64')
 }
 
+/* The user's id has to survive the round trip to Razorpay and back twice over,
+   by two different routes:
+
+   - `notes.user_id` comes back in the *webhook* payload.
+   - `reference_id` comes back as a *query param* on the post-payment redirect,
+     and - unlike notes - it is one of the four fields covered by the callback
+     signature. That is what lets the callback trust it: the id is proven to
+     belong to this payment, so we never have to guess from the browser session
+     (a replayed callback URL would otherwise upgrade whoever is logged in).
+
+   Razorpay requires reference_id to be unique per payment link, so a base36
+   timestamp is appended - a user who abandons one link and starts another must
+   not collide with themselves. */
+export function buildReferenceId(userId: string): string {
+  return `u_${userId}_${Date.now().toString(36)}`
+}
+
+export function parseReferenceId(reference: string | null | undefined): string | null {
+  const m = /^u_([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})_/i.exec(
+    reference ?? '',
+  )
+  return m ? m[1] : null
+}
+
 /* Create a per-user payment link. The user's id rides along in `notes` so the
    webhook can upgrade exactly the right account - the whole point of doing this
    in-app instead of one shared static link. */
@@ -39,6 +63,7 @@ export async function createUpgradePaymentLink(opts: {
         notify: { email: true, sms: false },
         reminder_enable: false,
         notes: { user_id: opts.userId },
+        reference_id: buildReferenceId(opts.userId),
         callback_url: opts.callbackUrl,
         callback_method: 'get',
       }),
@@ -61,7 +86,32 @@ export async function createUpgradePaymentLink(opts: {
 export function verifyWebhookSignature(rawBody: string, signature: string | null): boolean {
   const secret = process.env.RAZORPAY_WEBHOOK_SECRET
   if (!secret || !signature) return false
-  const expected = createHmac('sha256', secret).update(rawBody).digest('hex')
+  return compareHmac(rawBody, secret, signature)
+}
+
+/* Verify the params Razorpay appends to callback_url after payment. Different
+   secret and different payload from the webhook above: this one is keyed by the
+   API key secret (which we always have, unlike RAZORPAY_WEBHOOK_SECRET) over the
+   four fields joined by "|", in this exact order. That independence is the point
+   - the callback grant works even when the webhook was never configured. */
+export function verifyPaymentLinkSignature(params: {
+  paymentLinkId: string | null
+  referenceId: string | null
+  status: string | null
+  paymentId: string | null
+  signature: string | null
+}): boolean {
+  const secret = process.env.RAZORPAY_KEY_SECRET
+  const { paymentLinkId, referenceId, status, paymentId, signature } = params
+  if (!secret || !signature || !paymentLinkId || !referenceId || !status || !paymentId) {
+    return false
+  }
+  const payload = `${paymentLinkId}|${referenceId}|${status}|${paymentId}`
+  return compareHmac(payload, secret, signature)
+}
+
+function compareHmac(payload: string, secret: string, signature: string): boolean {
+  const expected = createHmac('sha256', secret).update(payload).digest('hex')
   const a = Buffer.from(expected)
   const b = Buffer.from(signature)
   return a.length === b.length && timingSafeEqual(a, b)

@@ -9,8 +9,8 @@ export const runtime = 'nodejs'
 
 /* Entry point for "Become a founding member". Runs while the user is logged in,
    mints a per-user Razorpay payment link (with their id attached), and sends
-   them to it. Razorpay's callback returns them to /dashboard?upgraded=1; the
-   webhook is what actually flips them to premium. */
+   them to it. Razorpay then returns them to /api/razorpay/callback, which
+   verifies the signed result and grants membership on the spot. */
 export async function GET() {
   const supabase = await createClient()
   const {
@@ -48,7 +48,7 @@ export async function GET() {
     userId: user.id,
     email: user.email ?? '',
     name: profile?.full_name ?? '',
-    callbackUrl: `${origin}/dashboard?upgraded=1`,
+    callbackUrl: `${origin}/api/razorpay/callback`,
   })
 
   if ('error' in link) {
