@@ -2,7 +2,6 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { Wordmark } from '@/components/Icon'
-import { FREE_PROJECT_LIMIT, MIN_PROJECTS_FOR_PREMIUM } from '@/lib/format'
 import SettingsView from './SettingsView'
 
 export default async function SettingsPage() {
@@ -29,16 +28,6 @@ export default async function SettingsPage() {
         .maybeSingle()
     : { data: null }
 
-  // Usage, so a free plan can show what's left of it rather than just naming
-  // the cap. Only needed while they're on the free plan - founding members have
-  // no limit to report against.
-  const [{ count: projectCount }, { count: verifiedCount }] = profile.premium
-    ? [{ count: 0 }, { count: 0 }]
-    : await Promise.all([
-        supabase.from('entries').select('id', { count: 'exact', head: true }).eq('user_id', user.id),
-        supabase.from('entries').select('id', { count: 'exact', head: true }).eq('user_id', user.id).eq('status', 'verified'),
-      ])
-
   return (
     <main className="app-main">
       <header className="app-head">
@@ -51,11 +40,6 @@ export default async function SettingsPage() {
         slug={profile.slug ?? ''}
         subscription={{
           premium: !!profile.premium,
-          paymentsEnabled: !!process.env.RAZORPAY_KEY_ID,
-          projectCount: projectCount ?? 0,
-          verifiedCount: verifiedCount ?? 0,
-          freeLimit: FREE_PROJECT_LIMIT,
-          minProjects: MIN_PROJECTS_FOR_PREMIUM,
           receipt: receipt
             ? {
                 receiptNumber: receipt.receipt_number,

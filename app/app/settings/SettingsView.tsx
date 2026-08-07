@@ -20,11 +20,6 @@ type Receipt = {
 
 type Subscription = {
   premium: boolean
-  paymentsEnabled: boolean
-  projectCount: number
-  verifiedCount: number
-  freeLimit: number
-  minProjects: number
   receipt: Receipt | null
 }
 
@@ -159,44 +154,35 @@ export default function SettingsView({ slug, subscription, initial }: Props) {
           </div>
         )}
 
-        {/* Subscription. Always shown - a free user should be able to see what
-            plan they're on and what it includes, not just infer it from a cap
-            they hit. Founding members get their receipt here too, so it's
-            retrievable in-app and not only in the confirmation email. */}
-        <div className="card card-pad" style={{ marginBottom: 20 }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap', marginBottom: 14 }}>
-            <p className="field-lbl" style={{ margin: 0 }}>Subscription</p>
-            {subscription.premium ? (
+        {/* Subscription. Only for founding members - it is the record of what
+            they signed up for. The headline is that the one-time payment is the
+            only payment: no renewal, no recurring charge, hence "free forever".
+            Their receipt lives here too, so it stays retrievable in-app and not
+            only in the confirmation email. */}
+        {subscription.premium && (
+          <div className="card card-pad" style={{ marginBottom: 20 }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap', marginBottom: 14 }}>
+              <p className="field-lbl" style={{ margin: 0 }}>Subscription</p>
               <span className="status verified" style={{ fontFamily: 'var(--label)' }}>&#9733; Founding member</span>
-            ) : (
-              // Neutral rather than green: the founding badge should stay the
-              // one that reads as an upgrade.
-              <span className="status" style={{ background: 'var(--surface-3)', color: 'var(--grey-3)', fontFamily: 'var(--label)' }}>Free forever</span>
-            )}
-          </div>
+            </div>
 
-          <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'grid', gap: 9, fontSize: 13.5 }}>
-            <li style={{ display: 'flex', gap: 9 }}>
-              <Icon name="check" size={14} /> Your verified profile at verified.work/{slug || 'you'}
-            </li>
-            {subscription.premium ? (
-              <>
-                <li style={{ display: 'flex', gap: 9 }}><Icon name="check" size={14} /> Unlimited verified projects</li>
-                <li style={{ display: 'flex', gap: 9 }}><Icon name="check" size={14} /> Founding-member badge on your profile</li>
-                <li style={{ display: 'flex', gap: 9 }}><Icon name="check" size={14} /> Early access to new features</li>
-              </>
-            ) : (
+            <div style={{ background: 'var(--green-tint)', color: 'var(--green-deep)', borderRadius: 12, padding: '12px 15px', marginBottom: 14 }}>
+              <div style={{ fontFamily: 'var(--label)', fontWeight: 700, fontSize: 14 }}>Free forever</div>
+              <div style={{ fontSize: 13, marginTop: 2 }}>
+                You paid once. There is no renewal and you will never be billed again.
+              </div>
+            </div>
+
+            <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'grid', gap: 9, fontSize: 13.5 }}>
               <li style={{ display: 'flex', gap: 9 }}>
-                <Icon name="check" size={14} />
-                <span>
-                  Up to {subscription.freeLimit} verified projects
-                  <span className="muted"> &middot; {subscription.projectCount} of {subscription.freeLimit} used</span>
-                </span>
+                <Icon name="check" size={14} /> Your verified profile at verified.work/{slug || 'you'}
               </li>
-            )}
-          </ul>
+              <li style={{ display: 'flex', gap: 9 }}><Icon name="check" size={14} /> Unlimited verified projects</li>
+              <li style={{ display: 'flex', gap: 9 }}><Icon name="check" size={14} /> Founding-member badge on your profile</li>
+              <li style={{ display: 'flex', gap: 9 }}><Icon name="check" size={14} /> Early access to new features</li>
+            </ul>
 
-          {subscription.premium && subscription.receipt && (
+            {subscription.receipt && (
             <dl style={{ margin: '16px 0 0', paddingTop: 16, borderTop: '1px solid var(--line, #e5e7eb)', display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '8px 16px', fontSize: 13 }}>
               <dt className="muted" style={{ margin: 0 }}>Receipt no.</dt>
               <dd style={{ margin: 0, textAlign: 'right', fontWeight: 600 }}>{subscription.receipt.receiptNumber}</dd>
@@ -214,31 +200,10 @@ export default function SettingsView({ slug, subscription, initial }: Props) {
                 <dt className="muted" style={{ margin: 0 }}>Payment ID</dt>
                 <dd style={{ margin: 0, textAlign: 'right', fontWeight: 600, wordBreak: 'break-all' }}>{subscription.receipt.paymentId}</dd>
               </>)}
-            </dl>
-          )}
-
-          {/* Upgrade path, mirroring the dashboard: offered only once enough
-              projects are verified, since /upgrade refuses it before then. */}
-          {!subscription.premium && subscription.paymentsEnabled && (
-            <div style={{ marginTop: 16, paddingTop: 16, borderTop: '1px solid var(--line, #e5e7eb)' }}>
-              {subscription.verifiedCount >= subscription.minProjects ? (
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap' }}>
-                  <p className="muted" style={{ fontSize: 13, margin: 0 }}>
-                    Unlimited projects, a founding badge and more &mdash; <b>$10</b> one-time.
-                  </p>
-                  <a href="/checkout.html" className="btn btn-primary btn-sm pill" style={{ flexShrink: 0 }}>
-                    &#9733; Become a founding member
-                  </a>
-                </div>
-              ) : (
-                <p className="muted" style={{ fontSize: 13, margin: 0 }}>
-                  Get {subscription.minProjects} projects verified to unlock founding-member pricing
-                  &mdash; {subscription.verifiedCount} of {subscription.minProjects} so far.
-                </p>
-              )}
-            </div>
-          )}
-        </div>
+              </dl>
+            )}
+          </div>
+        )}
 
         {/* Photo */}
         <div className="card card-pad" style={{ marginBottom: 20 }}>
