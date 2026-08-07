@@ -10,17 +10,27 @@ import { Icon, LinkedInLogo } from '@/components/Icon'
 
 const linkedinOk = (v: string) => !v.trim() || /linkedin\.com/i.test(v.trim())
 
-type Membership = {
-  receiptNumber: string | null
+type Receipt = {
+  receiptNumber: string
   date: string | null
   amount: number | null
   currency: string | null
   paymentId: string | null
 }
 
+type Subscription = {
+  premium: boolean
+  paymentsEnabled: boolean
+  projectCount: number
+  verifiedCount: number
+  freeLimit: number
+  minProjects: number
+  receipt: Receipt | null
+}
+
 type Props = {
   slug: string
-  membership: Membership | null
+  subscription: Subscription
   initial: {
     full_name: string
     title: string
@@ -32,7 +42,7 @@ type Props = {
   }
 }
 
-export default function SettingsView({ slug, membership, initial }: Props) {
+export default function SettingsView({ slug, subscription, initial }: Props) {
   const [name, setName] = useState(initial.full_name)
   const [title, setTitle] = useState(initial.title)
   const [location, setLocation] = useState(initial.location)
@@ -149,40 +159,86 @@ export default function SettingsView({ slug, membership, initial }: Props) {
           </div>
         )}
 
-        {/* Membership + purchase receipt. Shown to founding members so the
-            receipt is retrievable in-app, not only in the confirmation email. */}
-        {membership && (
-          <div className="card card-pad" style={{ marginBottom: 20 }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap', marginBottom: membership.receiptNumber ? 14 : 0 }}>
-              <p className="field-lbl" style={{ margin: 0 }}>Membership</p>
+        {/* Subscription. Always shown - a free user should be able to see what
+            plan they're on and what it includes, not just infer it from a cap
+            they hit. Founding members get their receipt here too, so it's
+            retrievable in-app and not only in the confirmation email. */}
+        <div className="card card-pad" style={{ marginBottom: 20 }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap', marginBottom: 14 }}>
+            <p className="field-lbl" style={{ margin: 0 }}>Subscription</p>
+            {subscription.premium ? (
               <span className="status verified" style={{ fontFamily: 'var(--label)' }}>&#9733; Founding member</span>
-            </div>
-            {membership.receiptNumber ? (
-              <dl style={{ margin: 0, display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '8px 16px', fontSize: 13 }}>
-                <dt className="muted" style={{ margin: 0 }}>Receipt no.</dt>
-                <dd style={{ margin: 0, textAlign: 'right', fontWeight: 600 }}>{membership.receiptNumber}</dd>
-                {membership.date && (<>
-                  <dt className="muted" style={{ margin: 0 }}>Date</dt>
-                  <dd style={{ margin: 0, textAlign: 'right', fontWeight: 600 }}>
-                    {new Date(membership.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
-                  </dd>
-                </>)}
-                {membership.amount != null && membership.currency && (<>
-                  <dt className="muted" style={{ margin: 0 }}>Amount paid</dt>
-                  <dd style={{ margin: 0, textAlign: 'right', fontWeight: 600 }}>{formatMoney(membership.amount, membership.currency)}</dd>
-                </>)}
-                {membership.paymentId && (<>
-                  <dt className="muted" style={{ margin: 0 }}>Payment ID</dt>
-                  <dd style={{ margin: 0, textAlign: 'right', fontWeight: 600, wordBreak: 'break-all' }}>{membership.paymentId}</dd>
-                </>)}
-              </dl>
             ) : (
-              <p className="muted" style={{ fontSize: 13, margin: '10px 0 0' }}>
-                Unlimited verified projects and a founding badge on your profile.
-              </p>
+              // Neutral rather than green: the founding badge should stay the
+              // one that reads as an upgrade.
+              <span className="status" style={{ background: 'var(--surface-3)', color: 'var(--grey-3)', fontFamily: 'var(--label)' }}>Free forever</span>
             )}
           </div>
-        )}
+
+          <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'grid', gap: 9, fontSize: 13.5 }}>
+            <li style={{ display: 'flex', gap: 9 }}>
+              <Icon name="check" size={14} /> Your verified profile at verified.work/{slug || 'you'}
+            </li>
+            {subscription.premium ? (
+              <>
+                <li style={{ display: 'flex', gap: 9 }}><Icon name="check" size={14} /> Unlimited verified projects</li>
+                <li style={{ display: 'flex', gap: 9 }}><Icon name="check" size={14} /> Founding-member badge on your profile</li>
+                <li style={{ display: 'flex', gap: 9 }}><Icon name="check" size={14} /> Early access to new features</li>
+              </>
+            ) : (
+              <li style={{ display: 'flex', gap: 9 }}>
+                <Icon name="check" size={14} />
+                <span>
+                  Up to {subscription.freeLimit} verified projects
+                  <span className="muted"> &middot; {subscription.projectCount} of {subscription.freeLimit} used</span>
+                </span>
+              </li>
+            )}
+          </ul>
+
+          {subscription.premium && subscription.receipt && (
+            <dl style={{ margin: '16px 0 0', paddingTop: 16, borderTop: '1px solid var(--line, #e5e7eb)', display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '8px 16px', fontSize: 13 }}>
+              <dt className="muted" style={{ margin: 0 }}>Receipt no.</dt>
+              <dd style={{ margin: 0, textAlign: 'right', fontWeight: 600 }}>{subscription.receipt.receiptNumber}</dd>
+              {subscription.receipt.date && (<>
+                <dt className="muted" style={{ margin: 0 }}>Date</dt>
+                <dd style={{ margin: 0, textAlign: 'right', fontWeight: 600 }}>
+                  {new Date(subscription.receipt.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
+                </dd>
+              </>)}
+              {subscription.receipt.amount != null && subscription.receipt.currency && (<>
+                <dt className="muted" style={{ margin: 0 }}>Amount paid</dt>
+                <dd style={{ margin: 0, textAlign: 'right', fontWeight: 600 }}>{formatMoney(subscription.receipt.amount, subscription.receipt.currency)}</dd>
+              </>)}
+              {subscription.receipt.paymentId && (<>
+                <dt className="muted" style={{ margin: 0 }}>Payment ID</dt>
+                <dd style={{ margin: 0, textAlign: 'right', fontWeight: 600, wordBreak: 'break-all' }}>{subscription.receipt.paymentId}</dd>
+              </>)}
+            </dl>
+          )}
+
+          {/* Upgrade path, mirroring the dashboard: offered only once enough
+              projects are verified, since /upgrade refuses it before then. */}
+          {!subscription.premium && subscription.paymentsEnabled && (
+            <div style={{ marginTop: 16, paddingTop: 16, borderTop: '1px solid var(--line, #e5e7eb)' }}>
+              {subscription.verifiedCount >= subscription.minProjects ? (
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap' }}>
+                  <p className="muted" style={{ fontSize: 13, margin: 0 }}>
+                    Unlimited projects, a founding badge and more &mdash; <b>$10</b> one-time.
+                  </p>
+                  <a href="/checkout.html" className="btn btn-primary btn-sm pill" style={{ flexShrink: 0 }}>
+                    &#9733; Become a founding member
+                  </a>
+                </div>
+              ) : (
+                <p className="muted" style={{ fontSize: 13, margin: 0 }}>
+                  Get {subscription.minProjects} projects verified to unlock founding-member pricing
+                  &mdash; {subscription.verifiedCount} of {subscription.minProjects} so far.
+                </p>
+              )}
+            </div>
+          )}
+        </div>
 
         {/* Photo */}
         <div className="card card-pad" style={{ marginBottom: 20 }}>
