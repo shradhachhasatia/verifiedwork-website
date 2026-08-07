@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Icon, CheckDot, LinkedInLogo } from '@/components/Icon'
-import { periodLabel, durationLabel, dateToYear, FREE_PROJECT_LIMIT } from '@/lib/format'
+import { periodLabel, durationLabel, dateToYear, FREE_PROJECT_LIMIT, MIN_PROJECTS_FOR_PREMIUM } from '@/lib/format'
 import { deleteEntry } from './actions'
 
 type Validator = { name: string | null; role: string | null; linkedin: string | null }
@@ -134,6 +134,11 @@ export default function DashboardView({ firstName, entries, premium }: { firstNa
   const verified = items.filter(e => e.status === 'verified').length
   // Free accounts are capped; at the cap the primary action becomes "upgrade".
   const atFreeLimit = !premium && items.length >= FREE_PROJECT_LIMIT
+  // ...but the upgrade itself only unlocks once their projects are verified, so
+  // at the cap with unverified work there is nothing to buy yet. Without this
+  // the button offered a purchase that /upgrade would refuse, bouncing them
+  // back with "get N verified first" and no idea why they were sent away.
+  const canUpgrade = verified >= MIN_PROJECTS_FOR_PREMIUM
 
   async function handleDelete(id: string) {
     const result = await deleteEntry(id)
@@ -165,8 +170,17 @@ export default function DashboardView({ firstName, entries, premium }: { firstNa
         {/* Checkout is a real anchor, not router.push: checkout.html is a static
             file in public/, which the client router cannot resolve - it would swap
             the URL and render the 404 without ever hitting the server. */}
-        {atFreeLimit ? (
+        {atFreeLimit && canUpgrade ? (
           <a className="btn btn-primary btn-sm pill" href="/checkout.html">&#9733; Become a founding member</a>
+        ) : atFreeLimit ? (
+          <div style={{ textAlign: 'right', maxWidth: '32ch' }}>
+            <div style={{ fontWeight: 700, fontSize: 14 }}>
+              {MIN_PROJECTS_FOR_PREMIUM - verified} more to verify
+            </div>
+            <div className="muted" style={{ fontSize: 13, marginTop: 2 }}>
+              Get all {MIN_PROJECTS_FOR_PREMIUM} projects verified to unlock founding-member pricing and add more.
+            </div>
+          </div>
         ) : (
           <button className="btn btn-primary btn-sm pill" onClick={() => router.push('/add')}><Icon name="plus" size={16} color="#fff" /> Add a project</button>
         )}

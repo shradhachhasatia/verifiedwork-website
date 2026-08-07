@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
 import { createUpgradePaymentLink } from '@/lib/razorpay'
-import { FREE_PROJECT_LIMIT, MIN_PROJECTS_FOR_PREMIUM } from '@/lib/format'
+import { MIN_PROJECTS_FOR_PREMIUM } from '@/lib/format'
 
 // @supabase/ssr needs Node, not Edge.
 export const runtime = 'nodejs'
@@ -32,28 +32,15 @@ export async function GET() {
 
   if (profile?.premium) return NextResponse.redirect(`${origin}/dashboard?already=1`)
 
-  // Founding-member pricing unlocks once they have a few *verified* projects, so
-  // they've actually proven work before paying. Enforced here (not just in the
-  // UI) so it can't be bypassed by hitting /upgrade directly.
-  const { count: verified } = await supabase
+  // Founding-member pricing unlocks only once they have a few *verified*
+  // projects, so they've actually proven work before paying. Enforced here (not
+  // just in the UI) so it can't be bypassed by hitting /upgrade directly.
+  const { count } = await supabase
     .from('entries')
     .select('id', { count: 'exact', head: true })
     .eq('user_id', user.id)
     .eq('status', 'verified')
-
-  // ...but a user sitting on the free cap must always be allowed to pay. The
-  // dashboard offers the upgrade at FREE_PROJECT_LIMIT *total* projects while
-  // this gate counted only *verified* ones, so someone with 3 projects awaiting
-  // verification was trapped: too many projects to add another, too few verified
-  // to upgrade, and the only way out was a validator who might never reply.
-  const { count: total } = await supabase
-    .from('entries')
-    .select('id', { count: 'exact', head: true })
-    .eq('user_id', user.id)
-
-  const proven = (verified ?? 0) >= MIN_PROJECTS_FOR_PREMIUM
-  const capped = (total ?? 0) >= FREE_PROJECT_LIMIT
-  if (!proven && !capped) {
+  if ((count ?? 0) < MIN_PROJECTS_FOR_PREMIUM) {
     return NextResponse.redirect(`${origin}/dashboard?need_projects=1`)
   }
 

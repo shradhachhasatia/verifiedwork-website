@@ -24,11 +24,14 @@ function authHeader() {
      belong to this payment, so we never have to guess from the browser session
      (a replayed callback URL would otherwise upgrade whoever is logged in).
 
-   Razorpay requires reference_id to be unique per payment link, so a base36
-   timestamp is appended - a user who abandons one link and starts another must
-   not collide with themselves. */
+   Razorpay requires reference_id to be unique per payment link, so a timestamp
+   and a random suffix are appended - a user who abandons one link and starts
+   another must not collide with themselves, and two clicks landing in the same
+   millisecond must not either (a collision fails link creation outright, which
+   the user sees as "we couldn't start checkout"). */
 export function buildReferenceId(userId: string): string {
-  return `u_${userId}_${Date.now().toString(36)}`
+  const rand = Math.random().toString(36).slice(2, 8)
+  return `u_${userId}_${Date.now().toString(36)}${rand}`
 }
 
 export function parseReferenceId(reference: string | null | undefined): string | null {
