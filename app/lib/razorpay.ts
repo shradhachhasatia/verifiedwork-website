@@ -81,6 +81,39 @@ export async function createUpgradePaymentLink(opts: {
   }
 }
 
+/* What was actually charged, for the receipt. The post-payment redirect names
+   the payment but not its amount, and a receipt that says "$10" because that is
+   what the config default happens to be would be a receipt we cannot stand
+   behind - so ask Razorpay. Best-effort: a failure here must never cost someone
+   the membership they just paid for, so the caller falls back to the configured
+   amount and the receipt still goes out. */
+export async function fetchPayment(
+  paymentId: string,
+): Promise<{ amount: number; currency: string } | null> {
+  if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) return null
+  try {
+    // Bounded: this sits on the redirect path a paying user is waiting behind,
+    // so a slow Razorpay costs them the configured amount on the receipt, never
+    // a stalled page.
+    const res = await fetch(`${API}/payments/${paymentId}`, {
+      headers: { Authorization: authHeader() },
+      signal: AbortSignal.timeout(4000),
+    })
+    if (!res.ok) return null
+    const d = (await res.json()) as { amount?: number; currency?: string }
+    if (typeof d.amount !== 'number' || typeof d.currency !== 'string') return null
+    return { amount: d.amount, currency: d.currency }
+  } catch {
+    return null
+  }
+}
+
+/* The configured price, used as the receipt fallback when Razorpay can't be
+   reached. Exported so callers don't re-read the env vars themselves. */
+export function configuredPrice(): { amount: number; currency: string } {
+  return { amount: AMOUNT, currency: CURRENCY }
+}
+
 /* Verify the X-Razorpay-Signature header: HMAC-SHA256 of the raw request body
    keyed by the webhook secret. Timing-safe compare. */
 export function verifyWebhookSignature(rawBody: string, signature: string | null): boolean {

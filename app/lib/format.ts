@@ -8,6 +8,19 @@ export const MIN_PROJECTS_FOR_PREMIUM = 3
 // removes the cap. Enforced in the add flow, the server action, and a DB trigger.
 export const FREE_PROJECT_LIMIT = 3
 
+/* Formats a Razorpay amount, which is always in the currency's smallest unit
+   (paise, cents), into something a buyer would recognise on a receipt. Lives
+   here rather than in lib/email so the settings page can render a receipt
+   without pulling the mailer into the client bundle. */
+export function formatMoney(amount: number, currency: string): string {
+  try {
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency }).format(amount / 100)
+  } catch {
+    // Unknown/mis-cased currency code - never let a receipt fail to render.
+    return `${(amount / 100).toFixed(2)} ${currency}`
+  }
+}
+
 // Per-field character caps for a project entry and its validator. The client
 // enforces these with maxLength for a good UX; the server action re-checks them
 // so an over-long value can't be sneaked in past the input.

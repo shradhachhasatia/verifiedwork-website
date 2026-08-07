@@ -1,4 +1,5 @@
 import { Resend } from 'resend'
+import { formatMoney } from '@/lib/format'
 
 // Fallback keeps `next build` from throwing when the key isn't present at
 // build time; the real key is injected from the environment at runtime.
@@ -69,9 +70,47 @@ export async function sendFeedbackEmail({
   if (error) throw new Error(error.message)
 }
 
-export async function sendUpgradeEmail({ to, name }: { to: string; name: string }) {
+export async function sendUpgradeEmail({
+  to,
+  name,
+  receipt,
+}: {
+  to: string
+  name: string
+  receipt?: {
+    receipt_number: string
+    created_at: string
+    amount: number | null
+    currency: string | null
+    razorpay_payment_id: string | null
+  } | null
+}) {
   const first = (name || '').trim().split(/\s+/)[0]
   const hi = first ? `Hi ${esc(first)}, ` : ''
+
+  // Doubles as the purchase receipt, so there's one email to keep rather than
+  // two. Omitted entirely rather than rendered half-empty if the receipt row
+  // couldn't be written - the welcome still goes out.
+  const row = (label: string, value: string) =>
+    `<tr>
+       <td style="padding:7px 0;font-size:13px;color:#6b7280;">${esc(label)}</td>
+       <td style="padding:7px 0;font-size:13px;color:#1a1a1a;font-weight:600;text-align:right;">${esc(value)}</td>
+     </tr>`
+
+  const receiptBlock = receipt
+    ? `<table width="100%" cellpadding="0" cellspacing="0" style="padding:0 36px 28px;">
+         <tr><td style="border:1px solid #e5e7eb;border-radius:14px;padding:18px 22px;">
+           <p style="margin:0 0 10px;font-size:12px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:#6b7280;">Receipt</p>
+           <table width="100%" cellpadding="0" cellspacing="0">
+             ${row('Receipt no.', receipt.receipt_number)}
+             ${row('Date', new Date(receipt.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }))}
+             ${receipt.amount != null && receipt.currency ? row('Amount paid', formatMoney(receipt.amount, receipt.currency)) : ''}
+             ${row('Item', 'verified.work Founding member (one-time)')}
+             ${receipt.razorpay_payment_id ? row('Payment ID', receipt.razorpay_payment_id) : ''}
+           </table>
+         </td></tr>
+       </table>`
+    : ''
   const html = `<!DOCTYPE html>
 <html lang="en">
 <head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>You're a founding member</title></head>
@@ -98,6 +137,7 @@ export async function sendUpgradeEmail({ to, name }: { to: string; name: string 
             <p style="margin:0;font-size:14px;color:#374151;line-height:1.55;">&#10003;&nbsp; Early access to new features</p>
           </td></tr>
         </table>
+        ${receiptBlock}
         <table width="100%" cellpadding="0" cellspacing="0" style="padding:0 36px 36px;">
           <tr><td align="center">
             <a href="https://verifiedwork.co/dashboard" style="display:inline-block;background:#2D6A4F;color:#ffffff;font-size:15px;font-weight:600;letter-spacing:-.01em;text-decoration:none;padding:15px 32px;border-radius:999px;">Go to your dashboard &rarr;</a>
@@ -115,7 +155,10 @@ export async function sendUpgradeEmail({ to, name }: { to: string; name: string 
   const { error } = await resend.emails.send({
     from: FROM,
     to,
-    subject: "You're a verified.work founding member",
+    // Receipt number in the subject so it's findable by search later.
+    subject: receipt
+      ? `You're a verified.work founding member - receipt ${receipt.receipt_number}`
+      : "You're a verified.work founding member",
     html,
   })
   if (error) throw new Error(error.message)

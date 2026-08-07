@@ -5,12 +5,22 @@ import { createClient } from '@/lib/supabase/client'
 import { createUploadUrl } from '@/lib/storage-actions'
 import { updateProfile, deleteAccount } from './actions'
 import { signOut } from '@/lib/auth-actions'
+import { formatMoney } from '@/lib/format'
 import { Icon, LinkedInLogo } from '@/components/Icon'
 
 const linkedinOk = (v: string) => !v.trim() || /linkedin\.com/i.test(v.trim())
 
+type Membership = {
+  receiptNumber: string | null
+  date: string | null
+  amount: number | null
+  currency: string | null
+  paymentId: string | null
+}
+
 type Props = {
   slug: string
+  membership: Membership | null
   initial: {
     full_name: string
     title: string
@@ -22,7 +32,7 @@ type Props = {
   }
 }
 
-export default function SettingsView({ slug, initial }: Props) {
+export default function SettingsView({ slug, membership, initial }: Props) {
   const [name, setName] = useState(initial.full_name)
   const [title, setTitle] = useState(initial.title)
   const [location, setLocation] = useState(initial.location)
@@ -136,6 +146,41 @@ export default function SettingsView({ slug, initial }: Props) {
                 {copied ? <><Icon name="check" size={14} /> Copied</> : 'Copy link'}
               </button>
             </div>
+          </div>
+        )}
+
+        {/* Membership + purchase receipt. Shown to founding members so the
+            receipt is retrievable in-app, not only in the confirmation email. */}
+        {membership && (
+          <div className="card card-pad" style={{ marginBottom: 20 }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap', marginBottom: membership.receiptNumber ? 14 : 0 }}>
+              <p className="field-lbl" style={{ margin: 0 }}>Membership</p>
+              <span className="status verified" style={{ fontFamily: 'var(--label)' }}>&#9733; Founding member</span>
+            </div>
+            {membership.receiptNumber ? (
+              <dl style={{ margin: 0, display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '8px 16px', fontSize: 13 }}>
+                <dt className="muted" style={{ margin: 0 }}>Receipt no.</dt>
+                <dd style={{ margin: 0, textAlign: 'right', fontWeight: 600 }}>{membership.receiptNumber}</dd>
+                {membership.date && (<>
+                  <dt className="muted" style={{ margin: 0 }}>Date</dt>
+                  <dd style={{ margin: 0, textAlign: 'right', fontWeight: 600 }}>
+                    {new Date(membership.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
+                  </dd>
+                </>)}
+                {membership.amount != null && membership.currency && (<>
+                  <dt className="muted" style={{ margin: 0 }}>Amount paid</dt>
+                  <dd style={{ margin: 0, textAlign: 'right', fontWeight: 600 }}>{formatMoney(membership.amount, membership.currency)}</dd>
+                </>)}
+                {membership.paymentId && (<>
+                  <dt className="muted" style={{ margin: 0 }}>Payment ID</dt>
+                  <dd style={{ margin: 0, textAlign: 'right', fontWeight: 600, wordBreak: 'break-all' }}>{membership.paymentId}</dd>
+                </>)}
+              </dl>
+            ) : (
+              <p className="muted" style={{ fontSize: 13, margin: '10px 0 0' }}>
+                Unlimited verified projects and a founding badge on your profile.
+              </p>
+            )}
           </div>
         )}
 

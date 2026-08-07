@@ -1,6 +1,11 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import { headers } from 'next/headers'
-import { parseReferenceId, verifyPaymentLinkSignature } from '@/lib/razorpay'
+import {
+  configuredPrice,
+  fetchPayment,
+  parseReferenceId,
+  verifyPaymentLinkSignature,
+} from '@/lib/razorpay'
 import { grantFoundingMember } from '@/lib/premium'
 
 // crypto + service-role client need Node, not Edge.
@@ -37,6 +42,10 @@ export async function GET(request: NextRequest) {
   // a celebration - never claim a payment succeeded on unverified input.
   const pending = NextResponse.redirect(`${origin}/dashboard?upgrade_pending=1`)
 
+  if (!paymentId || !paymentLinkId || !referenceId || !status || !signature) {
+    console.error('[razorpay callback] missing callback params')
+    return pending
+  }
   if (!verifyPaymentLinkSignature({ paymentLinkId, referenceId, status, paymentId, signature })) {
     console.error('[razorpay callback] signature verification failed', { paymentLinkId, status })
     return pending
@@ -55,8 +64,20 @@ export async function GET(request: NextRequest) {
     return pending
   }
 
+  // What was actually charged, for the receipt. Falls back to the configured
+  // price if Razorpay is unreachable - a receipt with a best-known amount beats
+  // holding up a membership that has already been paid for.
+  const charged = (await fetchPayment(paymentId)) ?? configuredPrice()
+
   try {
-    await grantFoundingMember({ userId, paymentId, paymentLinkId, via: 'callback' })
+    await grantFoundingMember({
+      userId,
+      paymentId,
+      paymentLinkId,
+      amount: charged.amount,
+      currency: charged.currency,
+      via: 'callback',
+    })
   } catch (e) {
     console.error('[razorpay callback] grant failed:', e)
     return pending
