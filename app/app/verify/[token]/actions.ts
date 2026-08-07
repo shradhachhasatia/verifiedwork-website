@@ -34,14 +34,20 @@ export async function submitVerification(
     const proto = host.startsWith('localhost') ? 'http' : 'https'
     const profileUrl = `${proto}://${host}`
 
-    sendVerifiedEmail({
+    // Awaited: a floating promise can be cut off when the serverless function
+    // returns, losing the confirmation. The verification itself is already
+    // committed, so a send failure is logged rather than surfaced to the
+    // validator, who did nothing wrong.
+    await sendVerifiedEmail({
       to: result.owner_email,
       ownerName: result.owner_name ?? '',
       validatorName: data.validatorName,
       roleTitle: result.role_title ?? '',
       company: result.company ?? '',
       profileUrl,
-    }).catch(() => {})
+    }).catch((err) => {
+      console.error('[verified email] send failed:', err)
+    })
   }
 
   return { ok: true }

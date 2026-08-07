@@ -70,21 +70,25 @@ export async function sendFeedbackEmail({
   if (error) throw new Error(error.message)
 }
 
-export async function sendUpgradeEmail({
-  to,
+export type UpgradeReceipt = {
+  receipt_number: string
+  created_at: string
+  amount: number | null
+  currency: string | null
+  razorpay_payment_id: string | null
+}
+
+/* Split out from the send so the exact subject and body a buyer receives can be
+   rendered and inspected without dispatching mail - and so a membership granted
+   out-of-band (a support backfill) can be sent the identical email rather than a
+   hand-written approximation of it. */
+export function renderUpgradeEmail({
   name,
   receipt,
 }: {
-  to: string
   name: string
-  receipt?: {
-    receipt_number: string
-    created_at: string
-    amount: number | null
-    currency: string | null
-    razorpay_payment_id: string | null
-  } | null
-}) {
+  receipt?: UpgradeReceipt | null
+}): { subject: string; html: string } {
   const first = (name || '').trim().split(/\s+/)[0]
   const hi = first ? `Hi ${esc(first)}, ` : ''
 
@@ -152,15 +156,26 @@ export async function sendUpgradeEmail({
 </table>
 </body></html>`
 
-  const { error } = await resend.emails.send({
-    from: FROM,
-    to,
+  return {
     // Receipt number in the subject so it's findable by search later.
     subject: receipt
       ? `You're a verified.work founding member - receipt ${receipt.receipt_number}`
       : "You're a verified.work founding member",
     html,
-  })
+  }
+}
+
+export async function sendUpgradeEmail({
+  to,
+  name,
+  receipt,
+}: {
+  to: string
+  name: string
+  receipt?: UpgradeReceipt | null
+}) {
+  const { subject, html } = renderUpgradeEmail({ name, receipt })
+  const { error } = await resend.emails.send({ from: FROM, to, subject, html })
   if (error) throw new Error(error.message)
 }
 
